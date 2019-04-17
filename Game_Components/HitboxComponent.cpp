@@ -55,6 +55,18 @@ namespace SSEngine
         return m_Hitbox.getGlobalBounds().intersects( rect );
     }
 
+    void HitboxComponent::UpdatePosition( const float& offset_x, const float& offset_y,
+            const float& width, const float& height )
+    {
+        m_Hitbox.setSize( sf::Vector2f( width, height ) );
+
+        m_OffsetX = offset_x;
+        m_OffsetY = offset_y;
+
+        // m_Hitbox.setPosition( m_Sprite.getPosition().x + offset_x + m_ShiftX,
+        //                       m_Sprite.getPosition().y + offset_y );
+    }
+
     void HitboxComponent::Update()
     {
         m_Hitbox.setPosition( m_Sprite.getPosition().x + m_OffsetX + m_ShiftX,

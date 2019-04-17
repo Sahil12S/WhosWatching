@@ -19,19 +19,11 @@ namespace SSEngine
     void GameState::InitTextures()
     {
         // Load game background
-        m_Data->assets.LoadTexture( "Game Background", GAME_BACKGROUND_FILEPATH );
-        m_BackgroundSprite.setTexture( m_Data->assets.GetTexture( "Game Background" ) );
+        // m_Data->assets.LoadTexture( "Game Background", GAME_BACKGROUND_FILEPATH );
+        // m_BackgroundSprite.setTexture( m_Data->assets.GetTexture( "Game Background" ) );
 
         // Set Background position
-        m_BackgroundSprite.setPosition( 0, -( m_BackgroundSprite.getGlobalBounds().height - SCREEN_HEIGHT ) );
-
-        // Load textures for Mario
-/*        m_Data->assets.LoadTexture( "Mario Idle", MARIO_IDLE_FILEPATH );
-        m_Data->assets.LoadTexture( "Mario Walk 01", MARIO_WALK_01_FILEPATH );
-        m_Data->assets.LoadTexture( "Mario Walk 02", MARIO_WALK_02_FILEPATH );
-        m_Data->assets.LoadTexture( "Mario Walk 03", MARIO_WALK_03_FILEPATH );
-        m_Data->assets.LoadTexture( "Mario Jump", MARIO_JUMP_FILEPATH );
-        m_Data->assets.LoadTexture( "Mario Turn", MARIO_TURN_FILEPATH );*/
+        // m_BackgroundSprite.setPosition( 0, -( m_BackgroundSprite.getGlobalBounds().height - SCREEN_HEIGHT ) );
     }
 
     void GameState::InitFonts()
@@ -66,7 +58,6 @@ namespace SSEngine
         {
             std::string keyAction;
             std::string key;
-
             while ( ifs >> keyAction >> key )
             {
                 m_KeyBinds[keyAction] = m_Data->input.getSupportedKeys().at( key );
@@ -82,12 +73,12 @@ namespace SSEngine
     {
         Debug( "**Initialized** Game State" )
 
+        InitKeyBinds();
         InitTextures();
         InitFonts();
         InitSounds();
         InitButtons();
         InitVariables();
-        InitKeyBinds();
     }
 
     void GameState::HandleInput( float dt )
@@ -123,50 +114,37 @@ namespace SSEngine
         /*
          * Handle movements
          */
-        // Jump
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["JUMP"] ) ) )
-        {
-            m_Player->Jump();
-        }
 
         // Walk Left
         if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_LEFT"] ) ) )
         {
-            m_Player->MoveLeft();
-        }
-        else
-        {
-            m_Player->StopLeft();
+            m_Player->Move( dt, -1.0f, 0.0f);
         }
 
         // Walk right
         if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_RIGHT"] ) ) )
         {
-            m_Player->MoveRight();
-        }
-        else
-        {
-            m_Player->StopRight();
+            m_Player->Move( dt, 1.0f, 0.0f);
         }
 
-        // Run
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["RUN"] ) ) )
+        // Walk Up
+        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_UP"] ) ) )
         {
-            m_Player->Run();
-        }
-        else
-        {
-            m_Player->StopRunning();
+            m_Player->Move( dt, 0.0f, -1.0f);
         }
 
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["DUCK"] ) ) )
+        // Walk Down
+        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_DOWN"] ) ) )
         {
-            m_Player->Duck();
+            m_Player->Move( dt, 0.0f, 1.0f);
         }
-        else
+        // Attack ( Enter )
+        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["ATTACK"] ) ) )
         {
-            m_Player->StopDuck();
+            m_Player->Attack();
         }
+
+        // Interact ( Use Space )
 
     }
 

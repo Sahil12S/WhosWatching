@@ -33,33 +33,23 @@ namespace SSEngine
 
             case eMovingLeft:
 
-                if ( m_Velocity.x < 0.f && m_Velocity.x >= -m_MaxVelocity )
+                if ( m_Velocity.x < 0.f)
                     return true;
                 break;
 
             case eMovingRight:
 
-                if (m_Velocity.x > 0.f && m_Velocity.x <= m_MaxVelocity )
+                if (m_Velocity.x > 0.f )
                     return true;
                 break;
 
-            case eJumping:
-                if (m_Velocity.y < 0.f)
+            case eMovingUp:
+                if (m_Velocity.y < 0.f )
                     return true;
                 break;
 
-            case eFalling:
-                if (m_Velocity.y > 0.f)
-                    return true;
-                break;
-
-            case eRunningLeft:
-                if ( m_Velocity.x < -m_MaxVelocity )
-                    return true;
-                break;
-
-            case eRunningRight:
-                if ( m_Velocity.x > m_MaxVelocity )
+            case eMovingDown:
+                if (m_Velocity.y > 0.f )
                     return true;
                 break;
 
@@ -71,22 +61,22 @@ namespace SSEngine
 
     void MovementComponent::Move( const float& dt, const float& dir_x, const float& dir_y )
     {
-        /*m_Velocity.x += dir_x * m_Acceleration;
-        m_Velocity.y += dir_y * m_Acceleration;*/
-        m_Velocity.x = dir_x * m_MaxVelocity;
+        m_Velocity.x += dir_x * m_Acceleration * dt;
+        m_Velocity.y += dir_y * m_Acceleration * dt;
+        // m_Velocity.x = dir_x * m_MaxVelocity;
 
         // We are considering jump as dir_y
-        m_Velocity.y = dir_y;
-        m_Sprite.move( m_Velocity * dt );
+        // m_Velocity.y = dir_y * m_MaxVelocity;
+        // m_Sprite.move( m_Velocity * dt );
     }
 
     void MovementComponent::Update(const float &dt)
     {
-        m_Sprite.move( m_Velocity * dt );
+        // m_Sprite.move( m_Velocity * dt );
         // When using acceleration and deceleration
         // which we are not using this time
 
-        /*if (this->m_Velocity.x > 0.f) //Check for positive x
+        if (this->m_Velocity.x > 0.f) //Check for positive x
         {
             //Max velocity check
             if (this->m_Velocity.x > this->m_MaxVelocity)
@@ -132,7 +122,7 @@ namespace SSEngine
                 this->m_Velocity.y = 0.f;
         }
 
-        m_Sprite.move( m_Velocity * dt );*/
+        m_Sprite.move( m_Velocity * dt );
     }
 
     const float &MovementComponent::GetMaxVelocity() const

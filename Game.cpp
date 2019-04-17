@@ -16,6 +16,14 @@ namespace SSEngine
         Run();
     }
 
+    void Game::UpdateDt()
+    {
+        /*
+         * Updates the dt variable with time it takes to update & render one frame
+         */
+        dt = m_Clock.restart().asSeconds();
+    }
+
     void Game::Run()
     {
         float newTime, frameTime, interpolation;
@@ -42,8 +50,8 @@ namespace SSEngine
 
             // while ( accumulator >= dt )
             // {
-                m_Data->machine.GetActiveState()->HandleInput( dt );
-                m_Data->machine.GetActiveState()->Update( dt );
+            m_Data->machine.GetActiveState()->HandleInput( dt );
+            m_Data->machine.GetActiveState()->Update( dt );
 
                 // accumulator -= dt;
             // }
@@ -51,14 +59,5 @@ namespace SSEngine
             // interpolation = accumulator / dt;
             m_Data->machine.GetActiveState()->Draw( );
         }
-    }
-
-    void Game::UpdateDt()
-    {
-        /*
-         * Updates the dt variable with time it takes to update & render one frame
-         */
-        dt = m_Clock.restart().asSeconds();
-        // std::cout << dt << std::endl;
     }
 }

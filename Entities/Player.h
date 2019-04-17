@@ -10,12 +10,8 @@
 /*
     Properties of player
     - Walk
-    - Run ( Accelerate )
-    - Jump
-    - Duck ( only when grown )
     - Die
-    - Grow ( Power up )
-    - Shoot ( Power )
+    - Attack
 */
 
 namespace SSEngine
@@ -25,27 +21,15 @@ namespace SSEngine
     private:
         GameDataRef m_Data;
 
-
         /* Variables */
+        bool m_IsAttacking;
+        int m_AttackCount;
+        AttackFace m_LastAttackFace;
+        AttackFace m_CurrentFace;
 
-        bool m_IsJumping;
-        bool m_IsFalling;
-        bool m_IsMovingLeft;
-        bool m_IsMovingRight;
-        bool m_IsDucking;
-
-        float m_RunningFactor;
-
-
-        bool m_JustJumped = false;
-
-        // Clock to handle movements
-        sf::Clock m_MovementClock;
-
-        /* Variables to check for powers */
-        bool m_IsGrownUp;
-        bool m_IsPowered;
-
+        // sf::Clock m_MovementClock;
+        // Clock to handle Attack
+        sf::Clock m_AttackClock;
 
         /* Initializers */
         void InitTextures();
@@ -60,47 +44,7 @@ namespace SSEngine
 
 
         /* Functions */
-
-        /*
-         * Jump()
-         * StopJump()
-         *          Toggles jumping action for player
-         */
-        void Jump();
-        // void StopJump();
-
-        /*
-         * Duck()
-         * StopDuck()
-         *          Toggles ducking action for player
-         */
-        void Duck();
-        void StopDuck();
-
-        /*
-         * MoveLeft()
-         * StopLeft()
-         *          Toggles left movement for player
-         */
-        void MoveLeft();
-        void StopLeft();
-
-        /*
-         * MoveRight()
-         * StopRight()
-         *          Toggles right movement for player
-         */
-        void MoveRight();
-        void StopRight();
-
-        /*
-         * Run()
-         * StopRunning()
-         *          Toggles if player is running or not.
-         */
-        void Run();
-        void StopRunning();
-
+        void Attack();
 
         void UpdateAnimation( const float& dt );
 

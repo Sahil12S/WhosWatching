@@ -14,15 +14,10 @@ namespace SSEngine
 
     void Player::InitVariables()
     {
-        // Trigger variables
-        m_IsJumping = false;
-        m_IsFalling = false;
-        m_IsMovingLeft = false;
-        m_IsMovingRight = false;
-        m_IsDucking = false;
-        m_IsGrownUp = true;
-        m_IsPowered = false;
-        m_RunningFactor = 1.f;
+        m_IsAttacking = false;
+        m_AttackCount = 0;
+        m_CurrentFace = eAttackFaceRight;
+        m_LastAttackFace = eNone;
     }
 
     void Player::InitComponents()
@@ -37,22 +32,21 @@ namespace SSEngine
         InitVariables();
         InitComponents();
 
-        CreateMovementComponent( PLAYER_MOVEMENT_SPEED, 0, 0 );
+        // Set acceleration and deceleration
+        CreateMovementComponent( PLAYER_MOVEMENT_SPEED, 1500, 500 );
         CreateAnimationComponent( "Player Sheet" );
+        // OffsetX, OffsetY, width, height
+        CreateHitboxComponent( 50.f, 20.f, 30.f, 60.f );
 
         // Animation name, animation timer, start pos X, start pos Y, frames X, frames Y, tile size
-        m_AC->AddAnimation("IDLE", 0.f, 0, 2, 1, 1, TILE_WIDTH, TILE_HEIGHT );
-        m_AC->AddAnimation("WALK", WALK_ANIMATION_DURATION, 1, 2, 3, 1, TILE_WIDTH, TILE_HEIGHT );
-        m_AC->AddAnimation("JUMP", 0.f, 5, 2, 1, 1, TILE_WIDTH, TILE_HEIGHT );
-        m_AC->AddAnimation("FALL", 0.f, 5, 2, 1, 1, TILE_WIDTH, TILE_HEIGHT );
-        m_AC->AddAnimation("GROWN_UP_IDLE", 0.f, 0, 0, 1, 1, TILE_WIDTH, TILE_HEIGHT * 2 );
-        m_AC->AddAnimation("GROWN_UP_WALK", WALK_ANIMATION_DURATION, 1, 0, 3, 1, TILE_WIDTH, TILE_HEIGHT * 2 );
-        m_AC->AddAnimation("GROWN_UP_JUMP", 0.f, 5, 0, 1, 1, TILE_WIDTH, TILE_HEIGHT * 2 );
-        m_AC->AddAnimation("GROWN_UP_FALL", 0.f, 5, 0, 1, 1, TILE_WIDTH, TILE_HEIGHT * 2 );
-        m_AC->AddAnimation("GROWN_UP_DUCK", 0.f, 6, 0, 1, 1, TILE_WIDTH, TILE_HEIGHT * 2 );
+        // Lesser the timer, faster the animation speed
+        m_AC->AddAnimation("IDLE", 15, 0, 0, 4, 1, TILE_WIDTH, TILE_HEIGHT );
+        m_AC->AddAnimation("WALK", 10, 0, 1, 6, 1, TILE_WIDTH, TILE_HEIGHT );
+        m_AC->AddAnimation("ATTACK0", 7, 0, 3, 6, 1, TILE_WIDTH, TILE_HEIGHT );
+        m_AC->AddAnimation("ATTACK1", 7, 0, 4, 5, 1, TILE_WIDTH, TILE_HEIGHT );
 
-        // Hit box size for mario
-        CreateHitboxComponent( 0.f, 0.f, 20.f, 32.f );
+        // Implement later
+        // m_AC->AddAnimation("TURN_ATTACK", 67, 0, 5, 6, 1, TILE_WIDTH, TILE_HEIGHT );
     }
 
     Player::~Player() = default;
@@ -70,174 +64,148 @@ namespace SSEngine
         // Debug( m_PlayerSprite.getPosition().x )
     }*/
 
-    void Player::MoveLeft()
+    void Player::Attack()
     {
-        m_IsMovingLeft = true;
-    }
-    void Player::StopLeft()
-    {
-        m_IsMovingLeft = false;
-    }
-
-    void Player::MoveRight()
-    {
-        m_IsMovingRight = true;
-    }
-    void Player::StopRight()
-    {
-        m_IsMovingRight = false;
-    }
-
-    void Player::Run()
-    {
-        m_RunningFactor = RUNNING_FACTOR;
-    }
-    void Player::StopRunning()
-    {
-        m_RunningFactor = 1.f;
-    }
-
-    void Player::Jump()
-    {
-        if ( !m_IsFalling && !m_JustJumped )
+        if ( m_LastAttackFace == eNone )
         {
-            m_IsJumping = true;
-            m_JustJumped = true;
-            m_IsFalling = false;
-            m_IsDucking = false;
-            m_MovementClock.restart();
+            m_LastAttackFace = m_CurrentFace;
         }
+        m_IsAttacking = true;
     }
-
-    void Player::Duck()
-    {
-        if ( !m_IsJumping && !m_IsFalling )
-        {
-            m_IsDucking = true;
-        }
-    }
-
-    void Player::StopDuck()
-    {
-        m_IsDucking = false;
-    }
-
-    /*void Player::StopJump()
-    {
-        m_IsJumping = false;
-    }
-
-    void Player::StopFalling()
-    {
-        m_IsFalling = false;
-    }*/
 
     void Player::UpdateAnimation(const float &dt)
     {
-        if ( m_MC->GetState( eIdle ) && !m_IsJumping )
+        if ( m_AttackClock.getElapsedTime().asSeconds() > 1.3f )
         {
-            if ( !m_IsGrownUp )
+            m_AttackCount = 0;
+            m_AttackClock.restart();
+            m_LastAttackFace = m_CurrentFace;
+        }
+        if ( m_IsAttacking )
+        {
+            // Set the origin in facing direction
+            if ( m_Sprite.getScale().x < 0.f )  // Facing left
             {
-                m_AC->Play("IDLE", dt);
+                m_Sprite.setOrigin( 50.f + 2.f, 0.f );
+                m_HC->UpdatePosition( 25.f, 10.f, 45.f, 70.f );
             }
-            else if ( !m_IsDucking )
+            else    // Facing right
             {
-                m_AC->Play("GROWN_UP_IDLE", dt);
+                m_Sprite.setOrigin( 0.f + 2.f, 0.f );
+                m_HC->UpdatePosition( 60.f, 10.f, 45.f, 70.f );
             }
+
+
+            // If player's face during last attack was same as player's current face
+            // Implement turn attack later
+            /*if ( m_LastAttackFace == m_CurrentFace )
+            {
+                if ( m_AC->Play( "ATTACK"+ std::to_string(m_AttackCount), dt, true ) )
+                {
+                    m_IsAttacking = false;
+                    m_AttackCount = (m_AttackCount + 1 ) % 2 ;
+                    m_AttackClock.restart().asSeconds();
+                    // m_JustAttacked = true;
+
+                    // Reset position after player is done attacking
+                    // Set the origin in facing direction
+                    if ( m_Sprite.getScale().x < 0.f )  // Facing left
+                    {
+                        m_Sprite.setOrigin( 50.f, 0.f );
+                        m_HC->UpdatePosition( 50.f, 20.f, 30.f, 60.f );
+                    }
+                    else    // Facing right
+                    {
+                        m_Sprite.setOrigin( 0.f, 0.f );
+                        m_HC->UpdatePosition( 50.f, 20.f, 30.f, 60.f );
+                    }
+                }
+            }
+            else
+            {
+                m_LastAttackFace = m_CurrentFace;
+
+                if ( m_AC->Play( "TURN_ATTACK", dt, true ) )
+                {
+                    m_IsAttacking = false;
+                    m_AttackCount = 0 ;
+                    m_AttackClock.restart().asSeconds();
+                    // m_JustAttacked = true;
+
+                    // Reset position after player is done attacking
+                    // Set the origin in facing direction
+                    if ( m_Sprite.getScale().x < 0.f )  // Facing left
+                    {
+                        m_Sprite.setOrigin( 50.f, 0.f );
+                        m_HC->UpdatePosition( 50.f, 20.f, 30.f, 60.f );
+                    }
+                    else    // Facing right
+                    {
+                        m_Sprite.setOrigin( 0.f, 0.f );
+                        m_HC->UpdatePosition( 50.f, 20.f, 30.f, 60.f );
+                    }
+                }
+            }*/
+
+            if ( m_AC->Play( "ATTACK"+ std::to_string(m_AttackCount), dt, true ) )
+            {
+                m_IsAttacking = false;
+                m_AttackCount = (m_AttackCount + 1 ) % 2 ;
+                m_AttackClock.restart().asSeconds();
+
+                // Reset position after player is done attacking
+                // Set the origin in facing direction
+                if ( m_Sprite.getScale().x < 0.f )  // Facing left
+                {
+                    m_Sprite.setOrigin( 50.f, 0.f );
+                    m_HC->UpdatePosition( 50.f, 20.f, 30.f, 60.f );
+                }
+                else    // Facing right
+                {
+                    m_Sprite.setOrigin( 0.f, 0.f );
+                    m_HC->UpdatePosition( 50.f, 20.f, 30.f, 60.f );
+                }
+            }
+        }
+
+
+        if ( m_MC->GetState( eIdle ) )
+        {
+            m_AC->Play("IDLE", dt);
         }
         else if ( m_MC->GetState( eMovingLeft ) )
         {
+            m_CurrentFace = eAttackFaceLeft;
+
             if ( m_Sprite.getScale().x > 0.f )
             {
-                m_Sprite.setOrigin(16.f, 0.f);
+                // Set Proper origin
+                m_Sprite.setOrigin(50.f, 0.f);
                 m_Sprite.setScale(-SCALE_X, SCALE_Y);
             }
-            if ( !m_IsGrownUp )
-            {
-                m_AC->Play("WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity());
-            }
-            else if ( !m_IsDucking )
-            {
-                m_AC->Play("GROWN_UP_WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity());
-            }
+            m_AC->Play("WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity());
         }
         else if ( m_MC->GetState( eMovingRight ) )
         {
+            m_CurrentFace = eAttackFaceRight;
+
             if (m_Sprite.getScale().x < 0.f)
             {
                 m_Sprite.setOrigin(0.f, 0.f);
                 m_Sprite.setScale(SCALE_X, SCALE_Y);
             }
-            if ( !m_IsGrownUp )
-            {
-                m_AC->Play("WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity());
-            }
-            else if ( !m_IsDucking )
-            {
-                m_AC->Play("GROWN_UP_WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity());
-            }
+            m_AC->Play("WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity());
         }
-        else if ( m_MC->GetState( eRunningLeft ) )
+        else if ( m_MC->GetState( eMovingUp ) || m_MC->GetState( eMovingDown ) || m_MC->GetState( eMoving ) )
         {
-            if ( m_Sprite.getScale().x > 0.f )
-            {
-                m_Sprite.setOrigin(16.f, 0.f);
-                m_Sprite.setScale(-SCALE_X, SCALE_Y);
-            }
-            if ( !m_IsGrownUp )
-            {
-                m_AC->Play("WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity() * m_RunningFactor );
-            }
-            else if ( !m_IsDucking )
-            {
-                m_AC->Play("GROWN_UP_WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity() * m_RunningFactor );
-            }
+            m_AC->Play("WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity());
         }
-        else if ( m_MC->GetState( eRunningRight ) )
-        {
-            if (m_Sprite.getScale().x < 0.f)
-            {
-                m_Sprite.setOrigin(0.f, 0.f);
-                m_Sprite.setScale(SCALE_X, SCALE_Y);
-            }
-            if ( !m_IsGrownUp )
-            {
-                m_AC->Play("WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity() * m_RunningFactor );
-            }
-            else if ( !m_IsDucking )
-            {
-                m_AC->Play("GROWN_UP_WALK", dt, m_MC->GetVelocity().x, m_MC->GetMaxVelocity() * m_RunningFactor );
 
-            }
-        }
-        else if ( m_MC->GetState( eJumping ) )
-        {
-            if ( !m_IsGrownUp )
-            {
-                m_AC->Play("JUMP", dt );
-            }
-            else if ( !m_IsDucking )
-            {
-                m_AC->Play("GROWN_UP_JUMP", dt );
-            }
-        }
-        else if ( m_MC->GetState( eFalling ) )
-        {
-            if ( !m_IsGrownUp )
-            {
-                m_AC->Play( "FALL", dt );
-            }
-            else if ( !m_IsDucking )
-            {
-                m_AC->Play( "GROWN_UP_FALL", dt );
-
-            }
-        }
     }
 
     void Player::Update(float dt)
     {
-        if ( m_IsMovingLeft )
+        /*if ( m_IsMovingLeft )
         {
             Move( dt, -1.0f * m_RunningFactor, 0.0f);
             UpdateAnimation( dt );
@@ -282,7 +250,9 @@ namespace SSEngine
         if ( m_Sprite.getPosition().y > SCREEN_HEIGHT - 100 )
         {
             m_IsFalling = false;
-        }
+        }*/
+        m_MC->Update( dt );
+        UpdateAnimation( dt );
 
         m_HC->Update();
 

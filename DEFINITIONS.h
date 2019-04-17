@@ -20,17 +20,15 @@
 
 #define GAME_BACKGROUND_FILEPATH "../Resources/img/background.png"
 
-#define PLAYER_SHEET_FILEPATH "../Resources/img/Mario.png"
+#define PLAYER_SHEET_FILEPATH "../Resources/img/player2.png"
 #define SCALE_X 2.f
 #define SCALE_Y 2.f
-#define TILE_WIDTH 16
-#define TILE_HEIGHT 16
+#define TILE_WIDTH 50
+#define TILE_HEIGHT 40
 
-/*#define MARIO_IDLE_FILEPATH "../Resources/img/Mario_Idle.png"
-#define MARIO_WALK_01_FILEPATH "../Resources/img/Mario_Walk_01.png"
-#define MARIO_WALK_02_FILEPATH "../Resources/img/Mario_Walk_02.png"
-#define MARIO_WALK_03_FILEPATH "../Resources/img/Mario_Walk_03.png"
-#define MARIO_JUMP_FILEPATH "../Resources/img/Mario_Jump.png"
+/* Define box sizes */
+
+
 #define MARIO_TURN_FILEPATH "../Resources/img/Mario_Turn.png"*/
 
 // Fonts
@@ -86,10 +84,15 @@ enum MovementStates
     eMoving,
     eMovingLeft,
     eMovingRight,
-    eJumping,
-    eFalling,
-    eRunningLeft,
-    eRunningRight
+    eMovingUp,
+    eMovingDown,
+};
+
+enum AttackFace
+{
+    eNone,
+    eAttackFaceLeft,
+    eAttackFaceRight
 };
 
 enum PlayerStates

@@ -36,6 +36,9 @@ namespace SSEngine
         /* Functions */
         bool CheckIntersects( const sf::FloatRect& rect );
 
+        void UpdatePosition( const float& offset_x, const float& offset_y,
+                const float& width, const float& height );
+
         void Update ( );
         void Draw();
     };

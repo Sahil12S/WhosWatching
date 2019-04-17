@@ -12,7 +12,6 @@ namespace SSEngine
 
     InputManager::~InputManager() = default;
 
-
     bool InputManager::IsSpriteClicked(const sf::Sprite& object, sf::Mouse::Button button, sf::RenderWindow &window)
     {
         if ( sf::Mouse::isButtonPressed( button ) )
