@@ -1,5 +1,4 @@
 #include "StateMachine.h"
-#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {
@@ -66,7 +65,7 @@ namespace SSEngine
         return m_States.top();
     }
 
-    const int StateMachine::GetStatesCount()
+    int StateMachine::GetStatesCount()
     {
         return m_States.size();
     }

@@ -1,10 +1,10 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <SFML/Graphics.hpp>
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
 
 #include "../Game.h"
-#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {
@@ -43,7 +43,7 @@ namespace SSEngine
          * Text, font type
          * Vector of colors ( or we can set them same for all buttons )
         */
-        void SetButtonPosition( float x, float y );
+        void CreateButton( float x, float y, float width, float height );
         void SetButtonProperties( const std::string& fontName, const std::string& text,
                                   unsigned int characterSize,
                                   const std::vector<sf::Color>& textColors,
@@ -51,7 +51,12 @@ namespace SSEngine
 
         sf::RectangleShape& GetButton();
 
+        // Accessors
         const bool isPressed() const;
+        const std::string getText() const;
+
+        // Modifiers
+        void setText( std::string text );
 
         void Update( const sf::Vector2f& mousePosition );
 

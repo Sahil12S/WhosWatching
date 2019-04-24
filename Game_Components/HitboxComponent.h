@@ -1,7 +1,7 @@
 #ifndef HITBOX_COMPONENT_H
 #define HITBOX_COMPONENT_H
 
-#include <SFML/Graphics.hpp>
+#include "../pch.cpp"
 #include "../Game.h"
 /*
  * Create a box around our sprite

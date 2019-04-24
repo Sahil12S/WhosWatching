@@ -1,6 +1,7 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "../pch.cpp"
+
 #include "../Game.h"
 
 namespace SSEngine
@@ -10,15 +11,20 @@ namespace SSEngine
     public:
         HUD( GameDataRef data );
 
-        void SetTitle( const std::string& fontName, const std::string& text );
+        void SetText( const std::string& fontName, const std::string& text, const float& size, const float& x, const float& y  );
+
+        void Move( const std::string& font, const float& x, const float& y );
+        void Reset();
 
         void Draw( bool isTitle = false);
         void UpdateText( std::string& text );
 
     private:
         GameDataRef m_Data;
-
-        sf::Text m_Title;
+        sf::Font font;
+        
+        sf::Vector2f offset;
+        
         sf::Text m_Text;
     };
 }

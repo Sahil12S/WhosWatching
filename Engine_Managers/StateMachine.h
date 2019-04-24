@@ -1,7 +1,9 @@
-#pragma once
+#ifndef STATE_MACHINE_H
+#define STATE_MACHINE_H
 
-#include <stack>
-#include <memory>
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
+
 #include "../States/State.h"
 
 namespace SSEngine
@@ -13,6 +15,18 @@ namespace SSEngine
 
     class StateMachine
     {
+    private:
+        std::stack<StateRef> m_States;
+
+        StateRef m_NewState;
+
+        /*
+         * Check for action with state
+         */
+        bool m_IsAdding;
+        bool m_IsRemoving;
+        bool m_IsReplacing;
+
     public:
         StateMachine();
         ~StateMachine();
@@ -44,23 +58,14 @@ namespace SSEngine
         /*
          * Return number of states in stack
          */
-        const int GetStatesCount();
+        int GetStatesCount();
 
         /*
          * Removes all states from stack except the top one
          */
         void ClearStates();
 
-    private:
-        std::stack<StateRef> m_States;
-
-        StateRef m_NewState;
-
-        /*
-         * Check for action with state
-         */
-        bool m_IsAdding;
-        bool m_IsRemoving;
-        bool m_IsReplacing;
     };
 }
+
+#endif  // STATE_MACHINE_H

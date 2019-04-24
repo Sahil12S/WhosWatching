@@ -1,11 +1,13 @@
 #ifndef PAUSE_STATE_H
 #define PAUSE_STATE_H
 
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
+
 #include "State.h"
 #include "../Game.h"
 #include "../Game_Components/Button.h"
 #include "../Game_Components/HUD.h"
-#include "../DEFINITIONS.h"
 
 // TODO: Remove Paused State and create on-screen pause
 namespace SSEngine

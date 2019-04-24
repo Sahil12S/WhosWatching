@@ -1,5 +1,4 @@
 #include "MovementComponent.h"
-#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {

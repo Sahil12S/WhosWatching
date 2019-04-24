@@ -1,7 +1,5 @@
-// #include "GameState.h"
 #include "SplashState.h"
 #include "MainMenuState.h"
-#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {

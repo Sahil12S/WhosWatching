@@ -1,8 +1,8 @@
-#pragma once
+#ifndef ASSET_MANAGER_H
+#define ASSET_MANAGER_H
 
-#include <map>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {
@@ -28,3 +28,5 @@ namespace SSEngine
         std::map<std::string, sf::SoundBuffer> m_Audios;
     };
 }
+
+#endif // ASSET_MANAGER_H

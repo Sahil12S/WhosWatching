@@ -1,6 +1,4 @@
 #include "InputManager.h"
-#include "../DEFINITIONS.h"
-#include <fstream>
 
 namespace SSEngine
 {

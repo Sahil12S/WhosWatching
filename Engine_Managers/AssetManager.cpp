@@ -1,6 +1,4 @@
 #include "AssetManager.h"
-#include "../DEFINITIONS.h"
-#include <SFML/System.hpp>
 
 namespace SSEngine
 {

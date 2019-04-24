@@ -1,9 +1,6 @@
 #include "GameState.h"
 #include "PauseState.h"
 #include "MainMenuState.h"
-#include "../DEFINITIONS.h"
-
-#include <sstream>
 
 namespace SSEngine
 {
@@ -14,6 +11,7 @@ namespace SSEngine
     GameState::~GameState()
     {
         delete m_Player;
+        delete m_Map;
     }
 
     void GameState::InitTextures()
@@ -47,6 +45,8 @@ namespace SSEngine
         // TODO: Make collision with ground
         m_Player = new Player( m_Data );
         m_Player->SetPosition(sf::Vector2f(100, SCREEN_HEIGHT - 100));
+
+        m_Map = new TileMap( m_Data );
     }
 
     void GameState::InitKeyBinds()
@@ -157,7 +157,9 @@ namespace SSEngine
     void GameState::Draw()
     {
         m_Data->window.clear();
-        m_Data->window.draw( m_BackgroundSprite );
+        // m_Data->window.draw( m_BackgroundSprite );
+
+        m_Map->Draw();
 
         m_Player->Draw();
 

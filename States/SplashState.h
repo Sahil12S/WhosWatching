@@ -1,6 +1,9 @@
 #ifndef SPLASH_STATE_H
 #define SPLASH_STATE_H
 
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
+
 #include "State.h"
 #include "../Game.h"
 #include "MainMenuState.h"

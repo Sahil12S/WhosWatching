@@ -1,6 +1,5 @@
 #include "GameSettingsState.h"
 #include "MainMenuState.h"
-#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {
@@ -33,6 +32,7 @@ namespace SSEngine
     void GameSettingsState::InitFonts()
     {
         m_Data->assets.LoadFont( "Button Font", BUTTON_FONT_FILEPATH );
+        m_Data->assets.LoadFont( "DDList Font", LIST_FONT_FILEPATH );
     }
 
     void GameSettingsState::InitSounds()
@@ -47,11 +47,13 @@ namespace SSEngine
         m_Buttons["Exit"] = new Button( m_Data );
         m_Buttons["Back"] = new Button( m_Data );
 
-        m_Buttons["Back"]->SetButtonPosition( 25.f, 25.f );
-        m_Buttons["Exit"]->SetButtonPosition( 2.f * SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
-                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f );
-        m_Buttons["Home"]->SetButtonPosition( SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
-                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f );
+        m_Buttons["Back"]->CreateButton( 25.f, 25.f, BUTTON_WIDTH, BUTTON_HEIGHT );
+        m_Buttons["Exit"]->CreateButton( 2.f * SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
+                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f,
+                                              BUTTON_WIDTH, BUTTON_HEIGHT );
+        m_Buttons["Home"]->CreateButton( SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
+                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f,
+                                              BUTTON_WIDTH, BUTTON_HEIGHT );
 
         std::vector<sf::Color> textColor = { sf::Color( TEXT_IDLE_FILL_COLOR ),
                                              sf::Color( TEXT_HOVER_FILL_COLOR ),
@@ -65,13 +67,17 @@ namespace SSEngine
         m_Buttons["Back"]->SetButtonProperties( "Button Font", "Back", BUTTON_TEXT_SIZE, textColor, buttonColor );
         m_Buttons["Exit"]->SetButtonProperties( "Button Font", "Exit", BUTTON_TEXT_SIZE, textColor, buttonColor );
         m_Buttons["Home"]->SetButtonProperties( "Button Font", "Home", BUTTON_TEXT_SIZE, textColor, buttonColor );
+
+        std::string list[] = { "abc", "def", "fgh", "ijk", "lmn" };
+
+        m_DropdownList = new DropDownList( m_Data, "DDList Font", SCREEN_WIDTH / 2.f - LIST_WIDTH / 2.f, 400.f, list, 5 );
     }
 
     void GameSettingsState::InitVariables()
     {
         // Initialize HUD
         m_Hud = new HUD( m_Data );
-        m_Hud->SetTitle( "Main Menu Font", "SETTINGS" );
+        m_Hud->SetText( "Main Menu Font", "SETTINGS" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
     }
 
     GameSettingsState::GameSettingsState(SSEngine::GameDataRef data) : m_Data ( move( data ) )
@@ -84,6 +90,8 @@ namespace SSEngine
         {
             delete button.second;
         }
+
+        delete m_DropdownList;
     }
 
     void GameSettingsState::Init()
@@ -153,6 +161,8 @@ namespace SSEngine
         {
             button.second->Update(m_Data->input.GetViewMousePosition());
         }
+
+        m_DropdownList->Update( dt, m_Data->input.GetViewMousePosition() );
     }
 
     void GameSettingsState::Draw()
@@ -167,6 +177,8 @@ namespace SSEngine
         {
             button.second->Draw();
         }
+
+        m_DropdownList->Draw();
 
         m_Data->window.display();
     }

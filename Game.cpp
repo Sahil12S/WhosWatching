@@ -1,14 +1,11 @@
 #include "Game.h"
 #include "States/SplashState.h"
 
-#include <time.h>
-
 namespace SSEngine
 {
     Game::Game(unsigned int width, unsigned int height, std::string title)
     {
         srand( time( NULL ) );
-
         m_Data->window.create( sf::VideoMode( width, height ), title, sf::Style::Close | sf::Style::Titlebar );
         m_Data->window.setFramerateLimit( 60 );
         m_Data->machine.AddState( StateRef( new SplashState ( m_Data ) ) );

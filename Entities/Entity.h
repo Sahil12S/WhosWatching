@@ -1,13 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <SFML/Graphics.hpp>
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
 
 #include "../Game.h"
 #include "../Game_Components/MovementComponent.h"
 #include "../Game_Components/AnimationComponent.h"
 #include "../Game_Components/HitboxComponent.h"
-#include <memory>
 
 namespace SSEngine
 {

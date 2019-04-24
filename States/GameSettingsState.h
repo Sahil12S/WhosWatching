@@ -1,10 +1,14 @@
 #ifndef GAME_SETTINGS_STATE_H
 #define GAME_SETTINGS_STATE_H
 
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
+
 #include "../Game.h"
 #include "State.h"
 #include "../Game_Components/HUD.h"
 #include "../Game_Components/Button.h"
+#include "../Game_Components/DropDownList.h"
 
 namespace SSEngine
 {
@@ -21,6 +25,7 @@ namespace SSEngine
         sf::RectangleShape m_Background;
 
         std::map<std::string, Button*> m_Buttons;
+        DropDownList* m_DropdownList;
 
         /* Functions */
         // Initializers

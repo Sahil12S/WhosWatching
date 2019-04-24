@@ -1,10 +1,9 @@
 #ifndef ANIMATIONCOMPONENT_H
 #define ANIMATIONCOMPONENT_H
 
-#include "../Game.h"
+#include "../pch.cpp"
 #include "../DEFINITIONS.h"
-
-#include <SFML/Graphics.hpp>
+#include "../Game.h"
 
 namespace SSEngine
 {

@@ -1,7 +1,8 @@
-#pragma once
+#ifndef INPUT_MANAGER_H
+#define INPUT_MANAGER_H
 
-#include <map>
-#include <SFML/Graphics.hpp>
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {
@@ -34,3 +35,5 @@ namespace SSEngine
 
     };
 }
+
+#endif // INPUT_MANAGER_H

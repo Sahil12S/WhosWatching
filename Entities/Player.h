@@ -1,10 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
 #include "Entity.h"
 #include "../Game.h"
 #include "../Game.h"
-#include "../DEFINITIONS.h"
 #include "../Game_Components/MovementComponent.h"
 
 /*

@@ -1,7 +1,7 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
 
-#include <memory>
-#include <SFML/Graphics.hpp>
+#include "pch.cpp"
 
 #include "Engine_Managers/AssetManager.h"
 #include "Engine_Managers/InputManager.h"
@@ -39,3 +39,5 @@ namespace SSEngine
 
     };
 }
+
+#endif // GAME_H

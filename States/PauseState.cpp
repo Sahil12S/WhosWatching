@@ -1,6 +1,5 @@
 #include "PauseState.h"
 #include "MainMenuState.h"
-#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {
@@ -42,10 +41,12 @@ namespace SSEngine
         m_Buttons["Quit"] = new Button( m_Data );
         m_Buttons["Back"] = new Button( m_Data );
 
-        m_Buttons["Back"]->SetButtonPosition( SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
-                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f );
-        m_Buttons["Quit"]->SetButtonPosition( 2.f * SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
-                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f );
+        m_Buttons["Back"]->CreateButton( SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
+                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f,
+                                              BUTTON_WIDTH, BUTTON_HEIGHT );
+        m_Buttons["Quit"]->CreateButton( 2.f * SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
+                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f,
+                                              BUTTON_WIDTH, BUTTON_HEIGHT );
 
 
         std::vector<sf::Color> textColor = { sf::Color( TEXT_IDLE_FILL_COLOR ),
@@ -63,7 +64,7 @@ namespace SSEngine
     void PauseState::InitVariables()
     {
         m_Hud = new HUD( m_Data );
-        m_Hud->SetTitle( "Main Menu Font", "PAUSED" );
+        m_Hud->SetText( "Main Menu Font", "PAUSED" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
     }
 
     void PauseState::InitKeyBinds()

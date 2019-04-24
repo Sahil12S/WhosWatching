@@ -9,9 +9,9 @@ namespace SSEngine
 
     Button::~Button() = default;
 
-    void Button::SetButtonPosition( float x, float y )
+    void Button::CreateButton( float x, float y, float width, float height )
     {
-        m_Shape.setSize( sf::Vector2f( BUTTON_WIDTH, BUTTON_HEIGHT ) );
+        m_Shape.setSize( sf::Vector2f( width, height ) );
         m_Shape.setPosition( sf::Vector2f( x, y ) );
     }
 
@@ -63,6 +63,16 @@ namespace SSEngine
             return true;
         }
         return false;
+    }
+
+    const std::string Button::getText() const
+    {
+        return m_Text.getString();
+    }
+
+    void Button::setText( std::string text )
+    {
+        m_Text.setString( text );
     }
 
     void Button::Update(const sf::Vector2f& mousePosition)

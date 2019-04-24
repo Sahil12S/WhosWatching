@@ -1,7 +1,8 @@
 #ifndef MOVEMENTCOMPONENT_H
 #define MOVEMENTCOMPONENT_H
 
-#include <SFML/Graphics.hpp>
+#include "../pch.cpp"
+#include "../DEFINITIONS.h"
 
 namespace SSEngine
 {

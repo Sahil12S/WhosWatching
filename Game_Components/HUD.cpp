@@ -7,22 +7,39 @@ namespace SSEngine
 
     }
 
-    void HUD::SetTitle(const std::string& fontName, const std::string& text)
+    void HUD::SetText(const std::string& fontName, const std::string& text, const float& size, const float& x, const float& y )
     {
-        m_Title.setFont( m_Data->assets.GetFont( fontName ) );
-        m_Title.setString( text );
-        m_Title.setCharacterSize( 128 );
-        m_Title.setFillColor( sf::Color::White );
-        m_Title.setOrigin( m_Title.getGlobalBounds().width / 2,
-                               m_Title.getGlobalBounds().height / 2 );
-        m_Title.setPosition( ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
+        font = m_Data->assets.GetFont( fontName );
+        m_Text.setFont( font );
+        m_Text.setString( text );
+        m_Text.setCharacterSize( size );
+        m_Text.setFillColor( sf::Color::White );
+        m_Text.setOrigin( m_Text.getGlobalBounds().width / 2,
+                               m_Text.getGlobalBounds().height / 2 );
+        // m_Text.setPosition( ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
+     
+        m_Text.setPosition( x, y );
+    }
+
+
+    void HUD::Move( const std::string& font, const float& x, const float& y )
+    {
+        m_Text.setFont( m_Data->assets.GetFont( font ) );
+        offset = sf::Vector2f( x, y );
+        m_Text.move( offset );
+    }
+    
+    void HUD::Reset()
+    {
+        m_Text.move( -offset );
+        offset = sf::Vector2f( 0.f, 0.f );
     }
 
     void HUD::Draw( bool isTitle )
     {
         if ( isTitle )
         {
-            m_Data->window.draw( m_Title );
+            m_Data->window.draw( m_Text );
         }
     }
 

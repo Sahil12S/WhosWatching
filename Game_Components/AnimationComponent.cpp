@@ -3,7 +3,7 @@
 namespace SSEngine
 {
     AnimationComponent::AnimationComponent(GameDataRef data, sf::Sprite& sprite, const std::string& texture ) :
-        m_Data( std::move( data ) ), m_TextureSheet( m_Data->assets.GetTexture( texture ) ), m_Sprite( sprite )
+        m_Data( std::move( data ) ),  m_Sprite( sprite ), m_TextureSheet( m_Data->assets.GetTexture( texture ) )
     {
         m_LastAnimation = nullptr;
         m_PriorityAnimation = nullptr;
