@@ -34,7 +34,8 @@
 #define SCREEN_FONT_FILEPATH "../Resources/font/multivac-interference.ttf"
 #define SCREEN_FONT_FILEPATH2 "../Resources/font/multivac-ghost.ttf"
 #define BUTTON_FONT_FILEPATH "../Resources/font/Hacked.ttf"
-#define LIST_FONT_FILEPATH "../Resources/font/Chapaza.ttf"
+#define LIST_FONT_FILEPATH "../Resources/font/Hacked.ttf"
+// #define LIST_FONT_FILEPATH "../Resources/font/Chapaza.ttf"
 #define DEBUG_FONT_FILEPATH "../Resources/font/Alexandria.ttf"
 
 #define TITLE_SIZE 80
@@ -62,7 +63,7 @@ enum ButtonState
 
 // For Dropdown list
 #define LIST_WIDTH 150
-#define LIST_HEIGHT 30
+#define LIST_HEIGHT 40
 #define LIST_TEXT_SIZE 15
 
 #define LIST_TEXT_IDLE_FILL_COLOR 70, 70, 70, 150

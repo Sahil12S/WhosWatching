@@ -6,6 +6,8 @@ namespace SSEngine
     // Initializers
     void GameSettingsState::InitKeyBinds()
     {
+        Debug( "Settings State: Initializing Key bindings...")
+
         std::fstream ifs ( SETTINGS_STATE_KEY_BIND_FILEPATH );
 
         if ( ifs.is_open() )
@@ -18,12 +20,11 @@ namespace SSEngine
                 m_KeyBinds[keyAction] = m_Data->input.getSupportedKeys().at( key );
             }
         }
-
-        Debug( "Key binds initialized for Settings State" )
     }
 
     void GameSettingsState::InitTextures()
     {
+        Debug( "Settings State: Initializing Textures...")
         // Set Background
         m_Background.setSize( sf::Vector2f( m_Data->window.getSize() ) );
         m_Background.setFillColor( sf::Color(97, 143, 216) );
@@ -31,6 +32,7 @@ namespace SSEngine
 
     void GameSettingsState::InitFonts()
     {
+        Debug( "Settings State: Initializing Key Fonts...")
         m_Data->assets.LoadFont( "Button Font", BUTTON_FONT_FILEPATH );
         m_Data->assets.LoadFont( "DDList Font", LIST_FONT_FILEPATH );
     }
@@ -40,8 +42,13 @@ namespace SSEngine
         // Empty for now
     }
 
-    void GameSettingsState::InitButtons()
+    /*
+     * Initialize Buttons and Dropdown list
+     */
+    void GameSettingsState::InitComponents()
     {
+        Debug( "Settings State: Initializing components...")
+
         // Set Buttons
         m_Buttons["Home"] = new Button( m_Data );
         m_Buttons["Exit"] = new Button( m_Data );
@@ -68,13 +75,16 @@ namespace SSEngine
         m_Buttons["Exit"]->SetButtonProperties( "Button Font", "Exit", BUTTON_TEXT_SIZE, textColor, buttonColor );
         m_Buttons["Home"]->SetButtonProperties( "Button Font", "Home", BUTTON_TEXT_SIZE, textColor, buttonColor );
 
-        std::string list[] = { "abc", "def", "fgh", "ijk", "lmn" };
+        // std::string list[] = { "abc", "def", "fgh", "ijk", "lmn" };
+        std::string list[] = { "1920 x 1080", "1280 x 720", "800 x 600", "640 x 480" };
 
-        m_DropdownList = new DropDownList( m_Data, "DDList Font", SCREEN_WIDTH / 2.f - LIST_WIDTH / 2.f, 400.f, list, 5 );
+        m_DropdownList["RESOLUTION"] = new DropDownList( m_Data, "DDList Font", SCREEN_WIDTH / 2.f - LIST_WIDTH / 2.f, 400.f, list, 4 );
     }
 
     void GameSettingsState::InitVariables()
     {
+        Debug( "Settings State: Initializing variables...")
+
         // Initialize HUD
         m_Hud = new HUD( m_Data );
         m_Hud->SetText( "Main Menu Font", "SETTINGS" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
@@ -91,23 +101,23 @@ namespace SSEngine
             delete button.second;
         }
 
-        delete m_DropdownList;
+        for ( const auto& dl : m_DropdownList )
+        {
+            delete dl.second;
+        }
+        // delete m_DropdownList;
     }
 
     void GameSettingsState::Init()
     {
-        Debug( "Game Settings State" )
+        Debug( "Settings State: Initializing..." )
 
         InitKeyBinds();
-
-        // Assets
         InitTextures();
         InitSounds();
         InitFonts();
-
         InitVariables();
-
-        InitButtons();
+        InitComponents();
     }
 
     void GameSettingsState::HandleInput( float dt )
@@ -152,17 +162,27 @@ namespace SSEngine
             }
         }
     }
+    
+
+     void GameSettingsState::UpdateComponents( const float& dt )
+     {
+         for ( auto button : m_Buttons )
+        {
+            button.second->Update(m_Data->input.GetViewMousePosition());
+        }
+
+        for ( auto dl : m_DropdownList )
+        {
+            dl.second->Update(dt, m_Data->input.GetViewMousePosition());
+        }
+     }
 
     void GameSettingsState::Update(float dt)
     {
         m_Data->input.UpdateMousePosition( m_Data->window );
 
-        for ( auto button : m_Buttons )
-        {
-            button.second->Update(m_Data->input.GetViewMousePosition());
-        }
+        UpdateComponents( dt );
 
-        m_DropdownList->Update( dt, m_Data->input.GetViewMousePosition() );
     }
 
     void GameSettingsState::Draw()
@@ -178,7 +198,13 @@ namespace SSEngine
             button.second->Draw();
         }
 
-        m_DropdownList->Draw();
+        
+        for ( auto dl : m_DropdownList )
+        {
+            dl.second->Draw();
+        }
+
+        // m_DropdownList["RESOLUTION"]->Draw();
 
         m_Data->window.display();
     }

@@ -34,7 +34,7 @@ namespace SSEngine
         // Nothing for now
     }
 
-    void GameState::InitButtons()
+    void GameState::InitComponents()
     {
         // Nothing for now
     }
@@ -77,7 +77,7 @@ namespace SSEngine
         InitTextures();
         InitFonts();
         InitSounds();
-        InitButtons();
+        InitComponents();
         InitVariables();
     }
 

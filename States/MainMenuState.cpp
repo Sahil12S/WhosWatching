@@ -36,7 +36,7 @@ void MainMenuState::InitSounds()
 {
 }
 
-void MainMenuState::InitButtons()
+void MainMenuState::InitComponents()
 {
     //Draw Buttons
     m_Buttons["Play"] = new Button(m_Data);
@@ -87,7 +87,7 @@ void MainMenuState::Init()
     InitTextures();
     InitFonts();
     InitSounds();
-    InitButtons();
+    InitComponents();
     InitVariables();
     InitKeyBinds();
 }
@@ -156,10 +156,12 @@ void MainMenuState::Update(float dt)
         movedLeft = true;
         clock.restart().asSeconds();
     }
+
     if ( movedLeft && clock.getElapsedTime().asSeconds() > ( 4 + static_cast<int>( 5.f * rand() / ( RAND_MAX + 1.f ) ) ) / 10.f )
     {
         // Debug( "Move back");
-        m_Hud->Move( "Main Menu Font", 50.f , 0.f );
+        // m_Hud->Move( "Main Menu Font", 50.f , 0.f );
+        m_Hud->Reset();
         movedLeft = false;
         clock.restart().asSeconds();
     }

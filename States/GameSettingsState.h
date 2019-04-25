@@ -25,7 +25,7 @@ namespace SSEngine
         sf::RectangleShape m_Background;
 
         std::map<std::string, Button*> m_Buttons;
-        DropDownList* m_DropdownList;
+        std::map<std::string, DropDownList*> m_DropdownList;
 
         /* Functions */
         // Initializers
@@ -33,9 +33,9 @@ namespace SSEngine
         void InitTextures();
         void InitFonts();
         void InitSounds();
-        void InitButtons();
-
+        void InitComponents();
         void InitVariables();
+
 
 
     public:
@@ -46,6 +46,7 @@ namespace SSEngine
         void Init() override;
 
         void HandleInput( float dt ) override;
+        void UpdateComponents( const float& dt );
         void Update( float dt ) override;
         void Draw() override;
     };

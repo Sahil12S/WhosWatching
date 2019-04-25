@@ -35,7 +35,7 @@ namespace SSEngine
 
     }
 
-    void PauseState::InitButtons()
+    void PauseState::InitComponents()
     {
         m_Buttons["Home"] = new Button( m_Data );
         m_Buttons["Quit"] = new Button( m_Data );
@@ -92,7 +92,7 @@ namespace SSEngine
         InitTextures();
         InitFonts();
         InitSounds();
-        InitButtons();
+        InitComponents();
         InitVariables();
         InitKeyBinds();
     }

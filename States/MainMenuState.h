@@ -36,7 +36,7 @@ namespace SSEngine
         void InitTextures();
         void InitFonts();
         void InitSounds();
-        void InitButtons();
+        void InitComponents();
 
         void InitVariables();
     
