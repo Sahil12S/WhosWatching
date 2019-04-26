@@ -51,15 +51,15 @@ namespace SSEngine
 
         // Set Buttons
         m_Buttons["Home"] = new Button( m_Data );
-        m_Buttons["Exit"] = new Button( m_Data );
+        m_Buttons["Apply"] = new Button( m_Data );
         m_Buttons["Back"] = new Button( m_Data );
 
         m_Buttons["Back"]->CreateButton( 25.f, 25.f, BUTTON_WIDTH, BUTTON_HEIGHT );
-        m_Buttons["Exit"]->CreateButton( 2.f * SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
-                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f,
+        m_Buttons["Apply"]->CreateButton( 2.f * m_Data->window.getSize().x / 3.f - BUTTON_WIDTH / 2.f,
+                                               m_Data->window.getSize().y - BUTTON_HEIGHT / 0.4f,
                                               BUTTON_WIDTH, BUTTON_HEIGHT );
-        m_Buttons["Home"]->CreateButton( SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
-                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f,
+        m_Buttons["Home"]->CreateButton(  m_Data->window.getSize().x / 3.f - BUTTON_WIDTH / 2.f,
+                                               m_Data->window.getSize().y - BUTTON_HEIGHT / 0.4f,
                                               BUTTON_WIDTH, BUTTON_HEIGHT );
 
         std::vector<sf::Color> textColor = { sf::Color( TEXT_IDLE_FILL_COLOR ),
@@ -72,13 +72,13 @@ namespace SSEngine
 
 
         m_Buttons["Back"]->SetButtonProperties( "Button Font", "Back", BUTTON_TEXT_SIZE, textColor, buttonColor );
-        m_Buttons["Exit"]->SetButtonProperties( "Button Font", "Exit", BUTTON_TEXT_SIZE, textColor, buttonColor );
+        m_Buttons["Apply"]->SetButtonProperties( "Button Font", "Apply", BUTTON_TEXT_SIZE, textColor, buttonColor );
         m_Buttons["Home"]->SetButtonProperties( "Button Font", "Home", BUTTON_TEXT_SIZE, textColor, buttonColor );
 
         // std::string list[] = { "abc", "def", "fgh", "ijk", "lmn" };
         std::string list[] = { "1920 x 1080", "1280 x 720", "800 x 600", "640 x 480" };
 
-        m_DropdownList["RESOLUTION"] = new DropDownList( m_Data, "DDList Font", SCREEN_WIDTH / 2.f - LIST_WIDTH / 2.f, 400.f, list, 4 );
+        m_DropdownList["RESOLUTION"] = new DropDownList( m_Data, "DDList Font",  m_Data->window.getSize().x / 2.f - LIST_WIDTH / 2.f, 400.f, list, 4 );
     }
 
     void GameSettingsState::InitVariables()
@@ -146,11 +146,11 @@ namespace SSEngine
                 m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
             }
 
-            if ( m_Buttons["Exit"]->isPressed() )
-            {
-                m_Data->machine.RemoveState();
-                m_Data->window.close();
-            }
+            // if ( m_Buttons["Exit"]->isPressed() )
+            // {
+            //     m_Data->machine.RemoveState();
+            //     m_Data->window.close();
+            // }
 
             // Go back to last active state or home
             if ( m_Buttons["Back"]->isPressed() )

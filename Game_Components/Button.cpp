@@ -38,6 +38,7 @@ namespace SSEngine
 
         m_Shape.setFillColor( m_BtnIdleColor );
         m_Shape.setOutlineColor( m_OutlineIdleColor );
+        m_Shape.setOutlineThickness( 1 );
 
         m_Font = m_Data->assets.GetFont( fontName );
         m_Text.setFont( m_Font );
@@ -77,9 +78,19 @@ namespace SSEngine
         return m_Text.getString();
     }
 
+    const short unsigned& Button::getId() const
+    {
+        return m_Id;
+    }
+
     void Button::setText( std::string text )
     {
         m_Text.setString( text );
+    }
+
+    void Button::setId( const short unsigned id )
+    {
+        m_Id = id;
     }
 
     void Button::Update(const sf::Vector2f& mousePosition)

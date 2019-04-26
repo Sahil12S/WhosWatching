@@ -6,8 +6,26 @@ namespace SSEngine
     Game::Game(unsigned int width, unsigned int height, std::string title)
     {
         srand( time( NULL ) );
-        m_Data->window.create( sf::VideoMode( width, height ), title, sf::Style::Close | sf::Style::Titlebar );
+        m_Data->videoModes = sf::VideoMode::getFullscreenModes();
+        sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
+        bool fullscreen = true;
+        bool vertical_sync_enabled = false;
+        unsigned antialiasing_level = 0;
+
+        m_Data->windowSettings.antialiasingLevel = antialiasing_level;
+        
+        if ( fullscreen )
+        {
+            m_Data->window.create( window_bounds, title, sf::Style::Fullscreen, m_Data->windowSettings );
+        }
+        else
+        {
+            m_Data->window.create( window_bounds, title, sf::Style::Close | sf::Style::Titlebar, m_Data->windowSettings );
+        }
+        
         m_Data->window.setFramerateLimit( 60 );
+        m_Data->window.setVerticalSyncEnabled( vertical_sync_enabled );
+
         m_Data->machine.AddState( StateRef( new SplashState ( m_Data ) ) );
 
         Run();

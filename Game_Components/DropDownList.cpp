@@ -13,18 +13,25 @@ DropDownList::DropDownList(GameDataRef data, const std::string &font, const floa
     std::vector<sf::Color> listBgColor = {sf::Color(LIST_IDLE_FILL_COLOR), 
                                         sf::Color(LIST_HOVER_FILL_COLOR),
                                         sf::Color(LIST_ACTIVE_FILL_COLOR)};
+    std::vector<sf::Color> outlineColor = { sf::Color( OUTLINE_COLOR_IDLE ), 
+                                        sf::Color( OUTLINE_COLOR_HOVER ),
+                                        sf::Color( OUTLINE_COLOR_ACTIVE ) };
 
     // int numOfElements = sizeof( list ) / sizeof( std::string );
     m_ActiveElement = new Button(m_Data);
     m_ActiveElement->CreateButton(x, y, LIST_WIDTH, LIST_HEIGHT );
-    m_ActiveElement->SetButtonProperties( font, list[default_idx], LIST_TEXT_SIZE, textColor, listBgColor );
+    m_ActiveElement->SetButtonProperties( font, list[default_idx], LIST_TEXT_SIZE, textColor, listBgColor, outlineColor );
+
+    outlineColor = { sf::Color( 255, 255, 255, 0 ),
+                sf::Color( 255, 255, 255, 0 ),
+                sf::Color( 20, 20, 20, 0 ) };
 
     for (size_t i = 0; i < numOfElements; i++)
     {
         // Create new button
         m_List.emplace_back( new Button( m_Data ) );
         m_List.back()->CreateButton( x, y + ( ( i + 1 ) * LIST_HEIGHT), LIST_WIDTH, LIST_HEIGHT );
-        m_List.back()->SetButtonProperties( font, list[i], LIST_TEXT_SIZE, textColor, listBgColor );
+        m_List.back()->SetButtonProperties( font, list[i], LIST_TEXT_SIZE, textColor, listBgColor, outlineColor, i );
     }
 
 }
@@ -78,6 +85,7 @@ void DropDownList::Update(const float &dt, const sf::Vector2f &mousePosition)
             {
                 m_ShowList = false;
                 m_ActiveElement->setText( i->getText() );
+                m_ActiveElement->setId( i->getId() );
             }
         }
     }

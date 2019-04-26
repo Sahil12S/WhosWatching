@@ -41,11 +41,11 @@ namespace SSEngine
         m_Buttons["Quit"] = new Button( m_Data );
         m_Buttons["Back"] = new Button( m_Data );
 
-        m_Buttons["Back"]->CreateButton( SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
-                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f,
+        m_Buttons["Back"]->CreateButton(  m_Data->window.getSize().x / 3.f - BUTTON_WIDTH / 2.f,
+                                               m_Data->window.getSize().y - BUTTON_HEIGHT / 0.4f,
                                               BUTTON_WIDTH, BUTTON_HEIGHT );
-        m_Buttons["Quit"]->CreateButton( 2.f * SCREEN_WIDTH / 3.f - BUTTON_WIDTH / 2.f,
-                                              SCREEN_HEIGHT - BUTTON_HEIGHT / 0.8f,
+        m_Buttons["Quit"]->CreateButton( 2.f *  m_Data->window.getSize().x / 3.f - BUTTON_WIDTH / 2.f,
+                                               m_Data->window.getSize().y - BUTTON_HEIGHT / 0.4f,
                                               BUTTON_WIDTH, BUTTON_HEIGHT );
 
 

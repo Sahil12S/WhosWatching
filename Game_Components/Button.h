@@ -57,9 +57,11 @@ namespace SSEngine
         // Accessors
         const bool isPressed() const;
         const std::string getText() const;
+        const short unsigned& getId() const;
 
         // Modifiers
         void setText( std::string text );
+        void setId( const short unsigned id );
 
         void Update( const sf::Vector2f& mousePosition );
 
