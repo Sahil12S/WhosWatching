@@ -35,11 +35,28 @@ namespace SSEngine
         Debug( "Settings State: Initializing Key Fonts...")
         m_Data->assets.LoadFont( "Button Font", BUTTON_FONT_FILEPATH );
         m_Data->assets.LoadFont( "DDList Font", LIST_FONT_FILEPATH );
+        m_Data->assets.LoadFont( "Text Font", TEXT_FONT_FILEPATH );
+        m_Data->assets.LoadFont( "Debug Font", DEBUG_FONT_FILEPATH );
     }
 
     void GameSettingsState::InitSounds()
     {
         // Empty for now
+    }
+
+    void GameSettingsState::InitVariables()
+    {
+        Debug( "Settings State: Initializing variables...")
+
+        // Initialize HUD
+        m_Hud = new HUD( m_Data );
+        m_Hud->SetText( "Main Menu Font", "SETTINGS" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
+        
+        m_Modes = sf::VideoMode::getFullscreenModes();
+
+        clock.restart().asSeconds();
+        movedLeft = false;
+        srand((unsigned)time(0));
     }
 
     /*
@@ -77,21 +94,25 @@ namespace SSEngine
 
         // std::string list[] = { "abc", "def", "fgh", "ijk", "lmn" };
         std::string list[] = { "1920 x 1080", "1280 x 720", "800 x 600", "640 x 480" };
+        std::vector< std::string > modes_str;
+        for ( auto& mode : m_Modes )
+        {
+            modes_str.emplace_back( std::to_string( mode.width ) + " x " + std::to_string( mode.height ) );
+        }
 
-        m_DropdownList["RESOLUTION"] = new DropDownList( m_Data, "DDList Font",  m_Data->window.getSize().x / 2.f - LIST_WIDTH / 2.f, 400.f, list, 4 );
+        m_DropdownList["Resolution"] = new DropDownList( m_Data, "DDList Font",  m_Data->window.getSize().x / 2.f - LIST_WIDTH / 2.f, 400.f, modes_str.data(), modes_str.size() );
     }
 
-    void GameSettingsState::InitVariables()
-    {
-        Debug( "Settings State: Initializing variables...")
 
-        // Initialize HUD
-        m_Hud = new HUD( m_Data );
-        m_Hud->SetText( "Main Menu Font", "SETTINGS" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
-        
-        clock.restart().asSeconds();
-        movedLeft = false;
-        srand((unsigned)time(0));
+    void GameSettingsState::InitTexts()
+    {
+        m_OptionsText.setFont( m_Data->assets.GetFont( "Text Font" ) );
+        m_OptionsText.setCharacterSize( 30 );
+        m_OptionsText.setPosition( 500.f, 400.f );
+        m_OptionsText.setFillColor( sf::Color( 255, 255, 255, 200 ) );
+        m_OptionsText.setString( 
+            "Resoultion\n\nFullscreen\n\nVsync\n\nAnti-Aliasing"
+        );
     }
 
     GameSettingsState::GameSettingsState(SSEngine::GameDataRef data) : m_Data ( move( data ) )
@@ -122,6 +143,7 @@ namespace SSEngine
         InitFonts();
         InitVariables();
         InitComponents();
+        InitTexts();
     }
 
     void GameSettingsState::HandleInput( float dt )
@@ -146,15 +168,11 @@ namespace SSEngine
                 m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
             }
 
-            // if ( m_Buttons["Exit"]->isPressed() )
-            // {
-            //     m_Data->machine.RemoveState();
-            //     m_Data->window.close();
-            // }
 
             // Go back to last active state or home
             if ( m_Buttons["Back"]->isPressed() )
             {
+                Debug( "called" )
                 if ( m_Data->machine.GetStatesCount() > 1 )
                 {
                     m_Data->machine.RemoveState();
@@ -173,6 +191,13 @@ namespace SSEngine
          for ( auto button : m_Buttons )
         {
             button.second->Update(m_Data->input.GetViewMousePosition());
+        }
+
+
+        if ( m_Buttons["Apply"]->isPressed() )
+        {
+            // TODO: for test, remove later
+            m_Data->window.create( m_Modes[ m_DropdownList["Resolution"]->getActiveElementId() ], "Testing...", sf::Style::Default );
         }
 
         for ( auto dl : m_DropdownList )
@@ -216,12 +241,23 @@ namespace SSEngine
         {
             button.second->Draw();
         }
-
         
         for ( auto dl : m_DropdownList )
         {
             dl.second->Draw();
         }
+
+        m_Data->window.draw( m_OptionsText );
+
+        // Draw coordinates on mouse pointer for debugging
+        sf::Text mouseText;
+        mouseText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
+        mouseText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
+        mouseText.setCharacterSize( 20 );
+        std::stringstream ss;
+        ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y;
+        mouseText.setString( ss.str() );
+        m_Data->window.draw( mouseText );
 
         m_Data->window.display();
     }

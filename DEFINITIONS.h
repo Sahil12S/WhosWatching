@@ -35,6 +35,7 @@
 #define SCREEN_FONT_FILEPATH2 "../Resources/font/multivac-ghost.ttf"
 #define BUTTON_FONT_FILEPATH "../Resources/font/Hacked.ttf"
 #define LIST_FONT_FILEPATH "../Resources/font/Hacked.ttf"
+#define TEXT_FONT_FILEPATH "../Resources/font/Hacked.ttf"
 // #define LIST_FONT_FILEPATH "../Resources/font/Chapaza.ttf"
 #define DEBUG_FONT_FILEPATH "../Resources/font/Alexandria.ttf"
 

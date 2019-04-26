@@ -29,6 +29,9 @@ namespace SSEngine
                 std::string list[], unsigned numOfElements, unsigned default_idx = 0 );
         virtual ~DropDownList();
 
+        // Accessors
+        const short unsigned& getActiveElementId();
+
         // Functions
         /*
          * Key time will prevent spamming of one button

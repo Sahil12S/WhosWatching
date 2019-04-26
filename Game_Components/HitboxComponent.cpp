@@ -18,31 +18,6 @@ namespace SSEngine
         m_Hitbox.setFillColor( sf::Color::Transparent );
         m_Hitbox.setOutlineThickness( 1.f );
         m_Hitbox.setOutlineColor( sf::Color::Magenta );
-
-        /*Debug( "--For sprite position--" )
-        Debug( m_Sprite.getPosition().x )
-        Debug( m_Sprite.getPosition().y )
-        Debug( "--For sprite global bounds--" )
-        Debug( m_Sprite.getGlobalBounds().left )
-        Debug( m_Sprite.getGlobalBounds().top )
-        Debug( m_Sprite.getGlobalBounds().width )
-        Debug( m_Sprite.getGlobalBounds().height )
-        Debug( "--For sprite origin--" )
-        Debug( m_Sprite.getOrigin().x )
-        Debug( m_Sprite.getOrigin().y )
-        Debug( "--For hitbox--" )
-        Debug( m_Hitbox.getPosition().x )
-        Debug( m_Hitbox.getPosition().y )
-        Debug( "--For hitbox global bounds--" )
-        Debug( m_Hitbox.getGlobalBounds().left )
-        Debug( m_Hitbox.getGlobalBounds().top )
-        Debug( m_Hitbox.getGlobalBounds().width )
-        Debug( m_Hitbox.getGlobalBounds().height )
-        Debug( "--For hitbox origin--" )
-        Debug( m_Hitbox.getOrigin().x )
-        Debug( m_Hitbox.getOrigin().y )
-
-        Debug( "Hitbox component created" )*/
     }
 
     HitboxComponent::~HitboxComponent()

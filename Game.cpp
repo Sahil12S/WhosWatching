@@ -8,7 +8,7 @@ namespace SSEngine
         srand( time( NULL ) );
         m_Data->videoModes = sf::VideoMode::getFullscreenModes();
         sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
-        bool fullscreen = true;
+        bool fullscreen = false;
         bool vertical_sync_enabled = false;
         unsigned antialiasing_level = 0;
 

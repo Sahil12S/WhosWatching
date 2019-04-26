@@ -23,9 +23,12 @@ namespace SSEngine
         std::map<std::string, int> m_KeyBinds;
 
         sf::RectangleShape m_Background;
+        sf::Text m_OptionsText;
 
         std::map<std::string, Button*> m_Buttons;
         std::map<std::string, DropDownList*> m_DropdownList;
+
+        std::vector< sf::VideoMode > m_Modes;
 
         // Handle title animation
         sf::Clock clock;
@@ -39,6 +42,7 @@ namespace SSEngine
         void InitSounds();
         void InitComponents();
         void InitVariables();
+        void InitTexts();
 
 
 

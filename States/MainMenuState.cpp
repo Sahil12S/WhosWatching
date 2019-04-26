@@ -44,7 +44,6 @@ void MainMenuState::InitComponents()
     m_Buttons["Settings"] = new Button(m_Data);
 
     // Set Button Properties
-    Debug( m_Data->window.getSize().y )
     m_Buttons["Exit"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
                                     m_Data->window.getSize().y - BUTTON_HEIGHT / 0.4f,
                                     BUTTON_WIDTH, BUTTON_HEIGHT);
