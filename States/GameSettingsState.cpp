@@ -88,6 +88,10 @@ namespace SSEngine
         // Initialize HUD
         m_Hud = new HUD( m_Data );
         m_Hud->SetText( "Main Menu Font", "SETTINGS" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
+        
+        clock.restart().asSeconds();
+        movedLeft = false;
+        srand((unsigned)time(0));
     }
 
     GameSettingsState::GameSettingsState(SSEngine::GameDataRef data) : m_Data ( move( data ) )
@@ -180,6 +184,21 @@ namespace SSEngine
     void GameSettingsState::Update(float dt)
     {
         m_Data->input.UpdateMousePosition( m_Data->window );
+        
+        // Handle title animation
+        if ( !movedLeft && clock.getElapsedTime().asSeconds() > ( 2 + static_cast<int>( 4 * rand() / ( RAND_MAX + 1.f ) ) ) )
+        {
+            m_Hud->Move( "Hack Font", -50.f, 0.f );
+            movedLeft = true;
+            clock.restart().asSeconds();
+        }
+
+        if ( movedLeft && clock.getElapsedTime().asSeconds() > ( 4 + static_cast<int>( 5.f * rand() / ( RAND_MAX + 1.f ) ) ) / 10.f )
+        {
+            m_Hud->Reset();
+            movedLeft = false;
+            clock.restart().asSeconds();
+        }
 
         UpdateComponents( dt );
 
@@ -203,8 +222,6 @@ namespace SSEngine
         {
             dl.second->Draw();
         }
-
-        // m_DropdownList["RESOLUTION"]->Draw();
 
         m_Data->window.display();
     }

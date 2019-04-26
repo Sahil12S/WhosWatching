@@ -27,6 +27,10 @@ namespace SSEngine
         std::map<std::string, Button*> m_Buttons;
         std::map<std::string, DropDownList*> m_DropdownList;
 
+        // Handle title animation
+        sf::Clock clock;
+        bool movedLeft;
+
         /* Functions */
         // Initializers
         void InitKeyBinds();

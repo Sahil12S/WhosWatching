@@ -9,7 +9,7 @@ namespace SSEngine
 
     Button::~Button() = default;
 
-    void Button::CreateButton( float x, float y, float width, float height )
+    void Button::CreateButton( float x, float y, float width, float height)
     {
         m_Shape.setSize( sf::Vector2f( width, height ) );
         m_Shape.setPosition( sf::Vector2f( x, y ) );
@@ -18,9 +18,11 @@ namespace SSEngine
     void Button::SetButtonProperties(const std::string &fontName, const std::string &text,
                                      unsigned int characterSize,
                                      const std::vector<sf::Color>& textColors,
-                                     const std::vector<sf::Color>& buttonColors)
+                                     const std::vector<sf::Color>& buttonColors,
+                                     const std::vector< sf::Color >& outlineColors, unsigned short id )
     {
         m_ButtonState = eBtnIdle;
+        m_Id = id;
 
         m_TextIdleColor = textColors[0];
         m_TextHoverColor = textColors[1];
@@ -30,7 +32,12 @@ namespace SSEngine
         m_BtnHoverColor = buttonColors[1];
         m_BtnActiveColor = buttonColors[2];
 
+        m_OutlineIdleColor = outlineColors[0];
+        m_OutlineHoverColor = outlineColors[1];
+        m_OutlineActiveColor = outlineColors[2];
+
         m_Shape.setFillColor( m_BtnIdleColor );
+        m_Shape.setOutlineColor( m_OutlineIdleColor );
 
         m_Font = m_Data->assets.GetFont( fontName );
         m_Text.setFont( m_Font );
@@ -98,19 +105,23 @@ namespace SSEngine
             case eBtnIdle:
                 m_Shape.setFillColor( m_BtnIdleColor );
                 m_Text.setFillColor( m_TextIdleColor );
+                m_Text.setOutlineColor( m_OutlineIdleColor );
                 break;
             case eBtnHover:
                 m_Shape.setFillColor( m_BtnHoverColor );
                 m_Text.setFillColor( m_TextHoverColor );
+                m_Text.setOutlineColor( m_OutlineHoverColor );
                 break;
             case eBtnActive:
                 m_Shape.setFillColor( m_BtnActiveColor );
                 m_Text.setFillColor( m_TextActiveColor );
+                m_Text.setOutlineColor( m_OutlineActiveColor );
                 break;
 
             default:
                 m_Shape.setFillColor( sf::Color::Red );
                 m_Text.setFillColor( sf::Color::Blue );
+                m_Text.setOutlineColor( sf::Color::Green );
                 break;
         }
 
@@ -121,5 +132,4 @@ namespace SSEngine
         m_Data->window.draw( m_Shape );
         m_Data->window.draw( m_Text );
     }
-
 }

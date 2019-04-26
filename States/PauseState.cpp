@@ -65,6 +65,10 @@ namespace SSEngine
     {
         m_Hud = new HUD( m_Data );
         m_Hud->SetText( "Main Menu Font", "PAUSED" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
+
+        clock.restart().asSeconds();
+        movedLeft = false;
+        srand((unsigned)time(0));
     }
 
     void PauseState::InitKeyBinds()
@@ -128,6 +132,23 @@ namespace SSEngine
     void PauseState::Update(float dt)
     {
         m_Data->input.UpdateMousePosition( m_Data->window );
+
+        if ( !movedLeft && clock.getElapsedTime().asSeconds() > ( 2 + static_cast<int>( 4 * rand() / ( RAND_MAX + 1.f ) ) ) )
+        {
+            // std::string font = "H"
+            m_Hud->Move( "Hack Font", -50.f, 0.f );
+            movedLeft = true;
+            clock.restart().asSeconds();
+        }
+
+        if ( movedLeft && clock.getElapsedTime().asSeconds() > ( 4 + static_cast<int>( 5.f * rand() / ( RAND_MAX + 1.f ) ) ) / 10.f )
+        {
+            // Debug( "Move back");
+            // m_Hud->Move( "Main Menu Font", 50.f , 0.f );
+            m_Hud->Reset();
+            movedLeft = false;
+            clock.restart().asSeconds();
+        }
 
         // Update mouse position for buttons
         for ( auto button : m_Buttons )

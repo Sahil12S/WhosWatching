@@ -13,13 +13,9 @@ namespace SSEngine
     private:
         GameDataRef m_Data;
 
-        // Shape of our button
+        // Button
         sf::RectangleShape m_Shape;
-
-        // Text font for button
         sf::Font m_Font;
-
-        // Text for button
         sf::Text m_Text;
 
         sf::Color m_TextIdleColor;
@@ -30,7 +26,12 @@ namespace SSEngine
         sf::Color m_BtnHoverColor;
         sf::Color m_BtnActiveColor;
 
+        sf::Color m_OutlineIdleColor;
+        sf::Color m_OutlineHoverColor;
+        sf::Color m_OutlineActiveColor;
+
         unsigned short m_ButtonState;
+        unsigned short m_Id;
 
     public:
         Button( GameDataRef data );
@@ -45,9 +46,11 @@ namespace SSEngine
         */
         void CreateButton( float x, float y, float width, float height );
         void SetButtonProperties( const std::string& fontName, const std::string& text,
-                                  unsigned int characterSize,
-                                  const std::vector<sf::Color>& textColors,
-                                  const std::vector< sf::Color >& buttonColors );
+                                unsigned int characterSize,
+                                const std::vector<sf::Color>& textColors,
+                                const std::vector< sf::Color >& buttonColors,
+                                const std::vector< sf::Color >& outlineColors = { sf::Color::Transparent, sf::Color::Transparent, sf::Color::Transparent },
+                                unsigned short id = 0 );
 
         sf::RectangleShape& GetButton();
 

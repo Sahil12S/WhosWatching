@@ -26,8 +26,8 @@ namespace SSEngine
 
         std::map<std::string, Button*> m_Buttons;
 
+        // Handle title animation
         sf::Clock clock;
-
         bool movedLeft;
 
         /* Functions */

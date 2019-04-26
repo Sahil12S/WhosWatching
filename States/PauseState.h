@@ -47,6 +47,10 @@ namespace SSEngine
         void InitComponents();
 
         void InitVariables();
+
+        // Handle title animation
+        sf::Clock clock;
+        bool movedLeft;
     };
 }
 
