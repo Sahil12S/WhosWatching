@@ -3,33 +3,55 @@
 
 namespace SSEngine
 {
-    Game::Game(unsigned int width, unsigned int height, std::string title)
+    void Game::InitVariables()
     {
         srand( time( NULL ) );
-        m_Data->videoModes = sf::VideoMode::getFullscreenModes();
-        sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
-        bool fullscreen = false;
-        bool vertical_sync_enabled = false;
-        unsigned antialiasing_level = 0;
+        dt = 0.f;
+    }
 
-        m_Data->windowSettings.antialiasingLevel = antialiasing_level;
-        
-        if ( fullscreen )
+    void Game::InitGraphicsSettings()
+    {
+        m_Data->GfxSettings.LoadFromFile("Config/graphics.ini");
+    }
+
+    void Game::InitWindow()
+    {
+        if ( m_Data->GfxSettings.fullscreen )
         {
-            m_Data->window.create( window_bounds, title, sf::Style::Fullscreen, m_Data->windowSettings );
+            m_Data->window.create(
+                                m_Data->GfxSettings.resolution,
+                                m_Data->GfxSettings.title,
+                                sf::Style::Fullscreen,
+                                m_Data->GfxSettings.contextSettings );
         }
         else
         {
-            m_Data->window.create( window_bounds, title, sf::Style::Close | sf::Style::Titlebar, m_Data->windowSettings );
+            Debug( "Here" )
+            m_Data->window.create(
+                                m_Data->GfxSettings.resolution,
+                                m_Data->GfxSettings.title,
+                                sf::Style::Titlebar | sf::Style::Close,
+                                m_Data->GfxSettings.contextSettings );
         }
-        
-        m_Data->window.setFramerateLimit( 60 );
-        m_Data->window.setVerticalSyncEnabled( vertical_sync_enabled );
 
-        m_Data->machine.AddState( StateRef( new SplashState ( m_Data ) ) );
-
-        Run();
+        m_Data->window.setFramerateLimit( m_Data->GfxSettings.frameRateLimit );
+        m_Data->window.setVerticalSyncEnabled( m_Data->GfxSettings.verticalSync );
     }
+
+    void Game::InitStates()
+    {
+        m_Data->machine.AddState( StateRef( new SplashState ( m_Data ) ) );
+    }
+
+
+    Game::Game()
+    {        
+        InitVariables();
+        InitGraphicsSettings();
+        InitWindow();
+        InitStates();
+    }
+
 
     void Game::UpdateDt()
     {

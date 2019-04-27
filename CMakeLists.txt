@@ -16,7 +16,8 @@ States/GameState.cpp States/GameSettingsState.cpp
 Entities/Entity.cpp Entities/Player.cpp
 Game_Components/HUD.cpp Game_Components/Button.cpp Game_Components/MovementComponent.cpp 
 Game_Components/AnimationComponent.cpp Game_Components/HitboxComponent.cpp
-Tile/Tile.cpp Map/TileMap.cpp Game_Components/DropDownList.h Game_Components/DropDownList.cpp )
+Tile/Tile.cpp Map/TileMap.cpp Game_Components/DropDownList.h Game_Components/DropDownList.cpp
+Engine_Managers/GraphicsSettings.h Engine_Managers/GraphicsSettings.cpp )
 
 add_executable( WhosWatching ${SOURCE_FILES} )
 

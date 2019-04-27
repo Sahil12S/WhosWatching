@@ -3,6 +3,8 @@
 
 int main()
 {
-    SSEngine::Game game( SCREEN_WIDTH, SCREEN_HEIGHT, "Mario Bros" );
+    SSEngine::Game game;
+    game.Run();
+    
     return EXIT_SUCCESS;
 }

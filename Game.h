@@ -6,6 +6,7 @@
 #include "Engine_Managers/AssetManager.h"
 #include "Engine_Managers/InputManager.h"
 #include "Engine_Managers/StateMachine.h"
+#include "Engine_Managers/GraphicsSettings.h"
 #include "Entities/Entity.h"
 
 namespace SSEngine
@@ -16,18 +17,15 @@ namespace SSEngine
         AssetManager assets;
         InputManager input;
         sf::RenderWindow window;
-        sf::ContextSettings windowSettings;
-        std::vector< sf::VideoMode > videoModes;
+        // sf::ContextSettings windowSettings;
+        // std::vector< sf::VideoMode > videoModes;
+        GraphicsSettings GfxSettings;
     };
 
     typedef std::shared_ptr<GameData> GameDataRef;
 
     class Game
     {
-    public:
-        Game( unsigned int width, unsigned int height, std::string title );
-
-
     private:
         float dt;
         // const float dt = 1.0f / 60.0f;
@@ -35,10 +33,18 @@ namespace SSEngine
         sf::Clock m_Clock;
 
         GameDataRef m_Data = std::make_shared<GameData>();
+        // GraphicsSettings* m_Gfx;
+
+        void InitVariables();
+        void InitGraphicsSettings();
+        void InitWindow();
+        void InitStates();
 
         void UpdateDt();
-        void Run();
 
+    public:
+        Game();
+        void Run();
     };
 }
 
