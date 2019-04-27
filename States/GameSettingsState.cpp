@@ -159,29 +159,37 @@ namespace SSEngine
                 m_Data->window.close();
             }
 
-            // Go back to Main Menu on Button click or Escape
-            if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ||
-                    m_Buttons["Home"]->isPressed() )
+            
+        }
+
+        // Go back to Main Menu on Button click or Escape
+        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ||
+                m_Buttons["Home"]->isPressed() )
+        {
+            // If there are more than 1 state in stack, remove all but active one
+            m_Data->machine.ClearStates();
+            m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
+        }
+
+
+        // Go back to last active state or home
+        if ( m_Buttons["Back"]->isPressed() )
+        {
+            Debug( "called" )
+            if ( m_Data->machine.GetStatesCount() > 1 )
             {
-                // If there are more than 1 state in stack, remove all but active one
-                m_Data->machine.ClearStates();
+                m_Data->machine.RemoveState();
+            }
+            else
+            {
                 m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
             }
+        }
 
-
-            // Go back to last active state or home
-            if ( m_Buttons["Back"]->isPressed() )
-            {
-                Debug( "called" )
-                if ( m_Data->machine.GetStatesCount() > 1 )
-                {
-                    m_Data->machine.RemoveState();
-                }
-                else
-                {
-                    m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
-                }
-            }
+        if ( m_Buttons["Apply"]->isPressed() )
+        {
+            // TODO: for test, remove later
+            m_Data->window.create( m_Modes[ m_DropdownList["Resolution"]->getActiveElementId() ], "Testing...", sf::Style::Default );
         }
     }
     
@@ -193,12 +201,6 @@ namespace SSEngine
             button.second->Update(m_Data->input.GetViewMousePosition());
         }
 
-
-        if ( m_Buttons["Apply"]->isPressed() )
-        {
-            // TODO: for test, remove later
-            m_Data->window.create( m_Modes[ m_DropdownList["Resolution"]->getActiveElementId() ], "Testing...", sf::Style::Default );
-        }
 
         for ( auto dl : m_DropdownList )
         {
