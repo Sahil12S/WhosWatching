@@ -29,7 +29,7 @@ namespace SSEngine
         }
         catch ( std::exception& e)
         {
-            Error( "No entry found for texture with name ", name )
+            Error( "No entry found for texture with name", name )
             exit( -1 );
         }
     }
@@ -41,6 +41,7 @@ namespace SSEngine
         if ( font.loadFromFile( fileName ) )
         {
             m_Fonts[name] = font;
+            Debug( "Loaded font " + name )
         }
         else
         {
@@ -58,7 +59,7 @@ namespace SSEngine
 
         catch ( std::exception& e)
         {
-            Error( "No entry found for font with name ", name )
+            Error( "No entry found for font with name", name )
             exit( -1 );
         }
     }
@@ -86,7 +87,7 @@ namespace SSEngine
         }
         catch ( std::exception& e)
         {
-            Error( "No entry found for audio with name ", name )
+            Error( "No entry found for audio with name", name )
             exit( -1 );
         }
     }

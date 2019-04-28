@@ -27,7 +27,7 @@ void MainMenuState::InitTextures()
 
 void MainMenuState::InitFonts()
 {
-    m_Data->assets.LoadFont("Main Menu Font", SCREEN_FONT_FILEPATH);
+    m_Data->assets.LoadFont("Title Font", SCREEN_FONT_FILEPATH);
     m_Data->assets.LoadFont("Button Font", BUTTON_FONT_FILEPATH);
     m_Data->assets.LoadFont("Hack Font", SCREEN_FONT_FILEPATH2);
     // m_Data->assets.LoadFont( "Debug Font", DEBUG_FONT_FILEPATH );
@@ -46,19 +46,19 @@ void MainMenuState::InitComponents()
     m_Buttons["Editor"] = new Button(m_Data);
 
     // Set Button Properties
-    m_Buttons["Exit"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
-                                    m_Data->window.getSize().y - BUTTON_HEIGHT / 0.4f,
+    m_Buttons["Exit"]->CreateButton(m_Data->GfxSettings.resolution.width / 2.0f - BUTTON_WIDTH / 2.0f,
+                                    m_Data->GfxSettings.resolution.height - BUTTON_HEIGHT / 0.4f,
                                     BUTTON_WIDTH, BUTTON_HEIGHT);
 
     m_Buttons["Settings"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
                                         m_Buttons["Exit"]->GetButton().getPosition().y - BUTTON_HEIGHT / 0.8f,
                                         BUTTON_WIDTH, BUTTON_HEIGHT);
 
-    m_Buttons["Editor"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
+    m_Buttons["Editor"]->CreateButton(m_Data->GfxSettings.resolution.width / 2.0f - BUTTON_WIDTH / 2.0f,
                                     m_Buttons["Settings"]->GetButton().getPosition().y - BUTTON_HEIGHT / 0.8f,
                                     BUTTON_WIDTH, BUTTON_HEIGHT);
 
-    m_Buttons["Play"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
+    m_Buttons["Play"]->CreateButton(m_Data->GfxSettings.resolution.width / 2.0f - BUTTON_WIDTH / 2.0f,
                                     m_Buttons["Editor"]->GetButton().getPosition().y - BUTTON_HEIGHT / 0.8f,
                                     BUTTON_WIDTH, BUTTON_HEIGHT);
 
@@ -81,7 +81,7 @@ void MainMenuState::InitComponents()
 void MainMenuState::InitVariables()
 {
     m_Hud = new HUD(m_Data);
-    m_Hud->SetText("Main Menu Font", "WHO'S WATCHING??", TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
+    m_Hud->SetText("Title Font", "WHO'S WATCHING??", TITLE_SIZE, ( m_Data->GfxSettings.resolution.width / 2.0f ), m_Data->GfxSettings.resolution.height / 6.0f );
     clock.restart().asSeconds();
     movedLeft = false;
 
@@ -174,7 +174,7 @@ void MainMenuState::Update(float dt)
     if ( movedLeft && clock.getElapsedTime().asSeconds() > ( 4 + static_cast<int>( 5.f * rand() / ( RAND_MAX + 1.f ) ) ) / 10.f )
     {
         // Debug( "Move back");
-        // m_Hud->Move( "Main Menu Font", 50.f , 0.f );
+        // m_Hud->Move( "Title Font", 50.f , 0.f );
         m_Hud->Reset();
         movedLeft = false;
         clock.restart().asSeconds();
