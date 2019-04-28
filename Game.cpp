@@ -26,7 +26,6 @@ namespace SSEngine
         }
         else
         {
-            Debug( "Here" )
             m_Data->window.create(
                                 m_Data->GfxSettings.resolution,
                                 m_Data->GfxSettings.title,

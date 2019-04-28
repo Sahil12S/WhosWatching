@@ -8,41 +8,57 @@
 #include "../Game.h"
 #include "../Entities/Player.h"
 #include "../Map/TileMap.h"
+#include "PauseMenu.h"
 
 namespace SSEngine
 {
-    class GameState : public State
-    {
-    private:
-        /* Variables */
-        GameDataRef m_Data;
+class GameState : public State
+{
+private:
+    /* Variables */
+    GameDataRef m_Data;
 
-        std::map<std::string, int> m_KeyBinds;
+    std::map<std::string, int> m_KeyBinds;
 
-        Player* m_Player;
-        TileMap* m_Map;
+    Player* m_Player;
+    TileMap* m_Map;
+    PauseMenu* m_PauseMenu;
 
-        sf::Sprite m_BackgroundSprite;
+    sf::Sprite m_BackgroundSprite;
 
-        /* Functions */
-        // Initializers
-        void InitKeyBinds();
-        void InitTextures();
-        void InitFonts();
-        void InitSounds();
-        void InitComponents();
+    float m_KeyTime;
+    float m_KeyTimeMax;
+    bool m_Paused;
 
-        void InitVariables();
+    /* Functions */
+    // Initializers
+    void InitKeyBinds();
+    void InitTextures();
+    void InitFonts();
+    void InitSounds();
+    void InitPauseMenu();
+    void InitComponents();
+
+    void InitVariables();
 
 
-    public:
-        GameState( GameDataRef data );
-        ~GameState();
+public:
+    GameState( GameDataRef data );
+    ~GameState();
 
-        void Init() override;
-        void HandleInput( float dt ) override;
-        void Update( float dt ) override;
-        void Draw() override;
-    };
+    void PauseState();
+    void UnpauseState();
+
+
+    void Init() override;
+    void HandleInput( float dt ) override;
+
+    const bool GetKeyTime();
+    
+    void UpdatePauseMenuButtons();
+    void UpdateKeyTime( const float& dt );
+    void Update( float dt ) override;
+    void Draw() override;
+};
 }
 #endif // GAME_STATE_H

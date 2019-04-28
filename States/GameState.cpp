@@ -1,120 +1,139 @@
 #include "GameState.h"
-#include "PauseState.h"
 #include "MainMenuState.h"
 
 namespace SSEngine
 {
-    GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
+GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
+{
+}
+
+GameState::~GameState()
+{
+    delete m_Player;
+    delete m_Map;
+    delete m_PauseMenu;
+}
+
+void GameState::InitTextures()
+{
+    // Load game background
+    // m_Data->assets.LoadTexture( "Game Background", GAME_BACKGROUND_FILEPATH );
+    // m_BackgroundSprite.setTexture( m_Data->assets.GetTexture( "Game Background" ) );
+
+    // Set Background position
+    // m_BackgroundSprite.setPosition( 0, -( m_BackgroundSprite.getGlobalBounds().height - SCREEN_HEIGHT ) );
+}
+
+void GameState::InitFonts()
+{
+    m_Data->assets.LoadFont( "Debug Font", DEBUG_FONT_FILEPATH );
+}
+
+void GameState::InitSounds()
+{
+    // Nothing for now
+}
+
+void GameState::InitPauseMenu()
+{
+    m_PauseMenu = new PauseMenu( m_Data );
+    m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
+}
+
+void GameState::InitComponents()
+{
+    // Nothing for now
+}
+
+void GameState::InitVariables()
+{
+    // Initialize player & spawn it
+    m_Player = new Player( m_Data );
+    m_Player->SetPosition(sf::Vector2f(100, SCREEN_HEIGHT - 100));
+
+    m_Map = new TileMap( m_Data );
+
+    m_Paused = false;
+    m_KeyTime = 0.f;
+	m_KeyTimeMax = 10.f;
+}
+
+void GameState::InitKeyBinds()
+{
+    // Read Key Bindings from file
+    std::ifstream ifs ( GAMESTATE_KEY_BIND_FILEPATH );
+
+    if ( ifs.is_open() )
     {
-    }
-
-    GameState::~GameState()
-    {
-        delete m_Player;
-        delete m_Map;
-    }
-
-    void GameState::InitTextures()
-    {
-        // Load game background
-        // m_Data->assets.LoadTexture( "Game Background", GAME_BACKGROUND_FILEPATH );
-        // m_BackgroundSprite.setTexture( m_Data->assets.GetTexture( "Game Background" ) );
-
-        // Set Background position
-        // m_BackgroundSprite.setPosition( 0, -( m_BackgroundSprite.getGlobalBounds().height - SCREEN_HEIGHT ) );
-    }
-
-    void GameState::InitFonts()
-    {
-        m_Data->assets.LoadFont( "Debug Font", DEBUG_FONT_FILEPATH );
-    }
-
-    void GameState::InitSounds()
-    {
-        // Nothing for now
-    }
-
-    void GameState::InitComponents()
-    {
-        // Nothing for now
-    }
-
-    void GameState::InitVariables()
-    {
-        // Initialize player & spawn it
-        // TODO: Make collision with ground
-        m_Player = new Player( m_Data );
-        m_Player->SetPosition(sf::Vector2f(100, SCREEN_HEIGHT - 100));
-
-        m_Map = new TileMap( m_Data );
-    }
-
-    void GameState::InitKeyBinds()
-    {
-        // Read Key Bindings from file
-        std::ifstream ifs ( GAMESTATE_KEY_BIND_FILEPATH );
-
-        if ( ifs.is_open() )
+        std::string keyAction;
+        std::string key;
+        while ( ifs >> keyAction >> key )
         {
-            std::string keyAction;
-            std::string key;
-            while ( ifs >> keyAction >> key )
-            {
-                m_KeyBinds[keyAction] = m_Data->input.getSupportedKeys().at( key );
-            }
+            m_KeyBinds[keyAction] = m_Data->input.getSupportedKeys().at( key );
+        }
+    }
+
+    ifs.close();
+
+    Debug( "Game State: Initializing key bindings..." )
+}
+
+void GameState::Init()
+{
+    Debug( "Game State: Initializing..." )
+
+    InitKeyBinds();
+    InitTextures();
+    InitFonts();
+    InitSounds();
+    InitVariables();
+    InitComponents();
+    InitPauseMenu();
+}
+
+void GameState::HandleInput( float dt )
+{
+    sf::Event event;
+
+    while ( m_Data->window.pollEvent( event ) )
+    {
+        // Check for window close
+        if ( sf::Event::Closed == event.type )
+        {
+            m_Data->machine.ClearStates();
+            m_Data->machine.RemoveState();
+            m_Data->window.close();
         }
 
-        ifs.close();
-
-        Debug( "Key bindings initialized for Game State" )
-    }
-
-    void GameState::Init()
-    {
-        Debug( "**Initialized** Game State" )
-
-        InitKeyBinds();
-        InitTextures();
-        InitFonts();
-        InitSounds();
-        InitComponents();
-        InitVariables();
-    }
-
-    void GameState::HandleInput( float dt )
-    {
-        sf::Event event;
-
-        while ( m_Data->window.pollEvent( event ) )
+        if ( sf::Event::KeyPressed == event.type )
         {
-            // Check for window close
-            if ( sf::Event::Closed == event.type )
+            // Go to Pause Screen if game is paused
+            if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["PAUSE"] ) ) && GetKeyTime() )
             {
-                m_Data->machine.ClearStates();
-                m_Data->machine.RemoveState();
-                m_Data->window.close();
+                Debug( "Game State: Game Paused" )
+                if ( !m_Paused )
+                    m_Paused = true;
+                else
+                    m_Paused = false;
             }
 
-            if ( sf::Event::KeyPressed == event.type )
+            // Go to Main Menu on pressing of Escape
+            if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && GetKeyTime() )
             {
-                // Go to Pause Screen if game is paused
-                if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["PAUSE"] ) ) )
-                {
-                    m_Data->machine.AddState( StateRef ( new PauseState ( m_Data )), false );
-                }
-
-                // Go to Main Menu on pressing of Escape
-                if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) )
-                {
-                    m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data )), true );
-                }
+                Debug( "Game State: Game Paused" )
+                if ( !m_Paused )
+                    m_Paused = true;
+                else
+                    m_Paused = false;
             }
         }
+    }
 
-        /*
-         * Handle movements
-         */
-
+    /*
+    * Handle movements
+    */
+    if ( !m_Paused )
+    {
         // Walk Left
         if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_LEFT"] ) ) )
         {
@@ -144,35 +163,79 @@ namespace SSEngine
             m_Player->Attack();
         }
 
-        // Interact ( Use Space )
-
     }
+    
 
-    void GameState::Update(float dt)
+    // Interact ( Use Space )
+
+}
+
+const bool GameState::GetKeyTime()
+{
+    if ( m_KeyTime >= m_KeyTimeMax )
+	{
+		m_KeyTime = 0.f;
+		return true;
+	}
+
+	return false;
+}
+
+void GameState::UpdatePauseMenuButtons()
+{
+    if ( m_PauseMenu->IsButtonPressed("Quit") )
     {
-        m_Data->input.UpdateMousePosition( m_Data->window );
+        m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
+    }
+}
+
+void GameState::UpdateKeyTime( const float& dt )
+{
+    if ( m_KeyTime < m_KeyTimeMax)
+		m_KeyTime += 100.f * dt;
+}
+
+void GameState::Update(float dt)
+{
+    m_Data->input.UpdateMousePosition( m_Data->window );
+    UpdateKeyTime( dt );
+
+    if ( !m_Paused )
+    {
         m_Player->Update( dt );
     }
-
-    void GameState::Draw()
+    else
     {
-        m_Data->window.clear();
-        // m_Data->window.draw( m_BackgroundSprite );
-
-        m_Map->Draw();
-
-        m_Player->Draw();
-
-        // Draw coordinates on mouse pointer for debugging
-        sf::Text mouseText;
-        mouseText.setPosition( m_Data->input.GetViewMousePosition().x + 5, m_Data->input.GetViewMousePosition().y );
-        mouseText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
-        mouseText.setCharacterSize( 20 );
-        std::stringstream ss;
-        ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y;
-        mouseText.setString( ss.str() );
-        m_Data->window.draw( mouseText );
-
-        m_Data->window.display();
+        this->m_PauseMenu->Update( m_Data->input.GetWindowMousePosition() );
+		this->UpdatePauseMenuButtons();
     }
+    
+}
+
+void GameState::Draw()
+{
+    m_Data->window.clear();
+    // m_Data->window.draw( m_BackgroundSprite );
+
+    m_Map->Draw();
+
+    m_Player->Draw();
+
+    if ( m_Paused )
+    {
+        m_PauseMenu->Draw();
+    }
+
+    // Draw coordinates on mouse pointer for debugging
+    sf::Text mouseText;
+    mouseText.setPosition( m_Data->input.GetViewMousePosition().x + 5, m_Data->input.GetViewMousePosition().y );
+    mouseText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
+    mouseText.setCharacterSize( 20 );
+    std::stringstream ss;
+    ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y;
+    mouseText.setString( ss.str() );
+    m_Data->window.draw( mouseText );
+
+    m_Data->window.display();
+}
 }

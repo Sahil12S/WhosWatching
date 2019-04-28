@@ -189,7 +189,8 @@ namespace SSEngine
         if ( m_Buttons["Apply"]->isPressed() )
         {
             // TODO: for test, remove later
-            m_Data->window.create( m_Modes[ m_DropdownList["Resolution"]->getActiveElementId() ], "Testing...", sf::Style::Default );
+            m_Data->GfxSettings.resolution = m_Modes[ m_DropdownList["Resolution"]->getActiveElementId() ];
+            m_Data->window.create( m_Data->GfxSettings.resolution, m_Data->GfxSettings.title, sf::Style::Default );
         }
     }
     

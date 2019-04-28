@@ -1,6 +1,7 @@
 #include "MainMenuState.h"
 #include "GameState.h"
 #include "GameSettingsState.h"
+#include "EditorState.h"
 
 namespace SSEngine
 {
@@ -42,16 +43,23 @@ void MainMenuState::InitComponents()
     m_Buttons["Play"] = new Button(m_Data);
     m_Buttons["Exit"] = new Button(m_Data);
     m_Buttons["Settings"] = new Button(m_Data);
+    m_Buttons["Editor"] = new Button(m_Data);
 
     // Set Button Properties
     m_Buttons["Exit"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
                                     m_Data->window.getSize().y - BUTTON_HEIGHT / 0.4f,
                                     BUTTON_WIDTH, BUTTON_HEIGHT);
+
     m_Buttons["Settings"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
                                         m_Buttons["Exit"]->GetButton().getPosition().y - BUTTON_HEIGHT / 0.8f,
                                         BUTTON_WIDTH, BUTTON_HEIGHT);
-    m_Buttons["Play"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
+
+    m_Buttons["Editor"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
                                     m_Buttons["Settings"]->GetButton().getPosition().y - BUTTON_HEIGHT / 0.8f,
+                                    BUTTON_WIDTH, BUTTON_HEIGHT);
+
+    m_Buttons["Play"]->CreateButton(m_Data->window.getSize().x / 2.0f - BUTTON_WIDTH / 2.0f,
+                                    m_Buttons["Editor"]->GetButton().getPosition().y - BUTTON_HEIGHT / 0.8f,
                                     BUTTON_WIDTH, BUTTON_HEIGHT);
 
     // Set Text and Button colors
@@ -66,6 +74,7 @@ void MainMenuState::InitComponents()
 
     m_Buttons["Exit"]->SetButtonProperties("Button Font", "Exit", BUTTON_TEXT_SIZE, textColor, buttonColor);
     m_Buttons["Settings"]->SetButtonProperties("Button Font", "Settings", BUTTON_TEXT_SIZE, textColor, buttonColor);
+    m_Buttons["Editor"]->SetButtonProperties("Button Font", "Editor", BUTTON_TEXT_SIZE, textColor, buttonColor);
     m_Buttons["Play"]->SetButtonProperties("Button Font", "Play", BUTTON_TEXT_SIZE, textColor, buttonColor);
 }
 
@@ -124,15 +133,6 @@ void MainMenuState::HandleInput(float dt)
             m_Data->window.close();
         }
 
-        if (m_Buttons["Play"]->isPressed())
-        {
-            m_Data->machine.AddState(StateRef(new GameState(m_Data)), true);
-        }
-        if (m_Buttons["Settings"]->isPressed())
-        {
-            m_Data->machine.AddState(StateRef(new GameSettingsState(m_Data)), true);
-        }
-
         /*if ( m_Data->input.IsSpriteClicked( m_PlayButton, sf::Mouse::Left, m_Data->window ) )
             {
                 m_Data->machine.AddState( StateRef ( new GameState( m_Data ) ), true );
@@ -141,6 +141,19 @@ void MainMenuState::HandleInput(float dt)
             {
                 m_Data->machine.AddState( StateRef ( new GameSettingsState( m_Data ) ), true );
             }*/
+    }
+
+    if (m_Buttons["Play"]->isPressed())
+    {
+        m_Data->machine.AddState(StateRef(new GameState(m_Data)), true);
+    }
+    if (m_Buttons["Editor"]->isPressed())
+    {
+        m_Data->machine.AddState(StateRef(new EditorState(m_Data)), true);
+    }
+    if (m_Buttons["Settings"]->isPressed())
+    {
+        m_Data->machine.AddState(StateRef(new GameSettingsState(m_Data)), true);
     }
 }
 

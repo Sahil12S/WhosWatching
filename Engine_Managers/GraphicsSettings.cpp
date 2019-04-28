@@ -43,12 +43,10 @@ void GraphicsSettings::LoadFromFile( const std::string& path )
         std::getline( ifs, title );
         ifs >> resolution.width >> resolution.height;
         ifs >> fullscreen;
-        std::cout << fullscreen << std::endl;
         ifs >> frameRateLimit;
         ifs >> verticalSync;
         ifs >> contextSettings.antialiasingLevel;
     }
-    std::cout << fullscreen << std::endl;
 
     ifs.close();
 }
