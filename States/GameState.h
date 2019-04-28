@@ -26,8 +26,6 @@ private:
 
     sf::Sprite m_BackgroundSprite;
 
-    float m_KeyTime;
-    float m_KeyTimeMax;
     bool m_Paused;
 
     /* Functions */
@@ -53,10 +51,8 @@ public:
     void Init() override;
     void HandleInput( float dt ) override;
 
-    const bool GetKeyTime();
-    
     void UpdatePauseMenuButtons();
-    void UpdateKeyTime( const float& dt );
+
     void Update( float dt ) override;
     void Draw() override;
 };

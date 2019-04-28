@@ -54,8 +54,6 @@ void GameState::InitVariables()
     m_Map = new TileMap( m_Data );
 
     m_Paused = false;
-    m_KeyTime = 0.f;
-	m_KeyTimeMax = 10.f;
 }
 
 void GameState::InitKeyBinds()
@@ -107,18 +105,20 @@ void GameState::HandleInput( float dt )
 
         if ( sf::Event::KeyPressed == event.type )
         {
-            // Go to Pause Screen if game is paused
-            if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["PAUSE"] ) ) && GetKeyTime() )
-            {
-                Debug( "Game State: Game Paused" )
-                if ( !m_Paused )
-                    m_Paused = true;
-                else
-                    m_Paused = false;
-            }
+            // // Go to Pause Screen if game is paused
+            // if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["PAUSE"] ) ) && 
+            //         m_Data->input.GetKeyTime() )
+            // {
+            //     Debug( "Game State: Game Paused" )
+            //     if ( !m_Paused )
+            //         m_Paused = true;
+            //     else
+            //         m_Paused = false;
+            // }
 
             // Go to Main Menu on pressing of Escape
-            if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && GetKeyTime() )
+            if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
+                    m_Data->input.GetKeyTime() )
             {
                 Debug( "Game State: Game Paused" )
                 if ( !m_Paused )
@@ -170,35 +170,18 @@ void GameState::HandleInput( float dt )
 
 }
 
-const bool GameState::GetKeyTime()
+void GameState::UpdatePauseMenuButtons( )
 {
-    if ( m_KeyTime >= m_KeyTimeMax )
-	{
-		m_KeyTime = 0.f;
-		return true;
-	}
-
-	return false;
-}
-
-void GameState::UpdatePauseMenuButtons()
-{
-    if ( m_PauseMenu->IsButtonPressed("Quit") )
+    if ( m_PauseMenu->IsButtonPressed("Quit") && m_Data->input.GetKeyTime() )
     {
         m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
     }
 }
 
-void GameState::UpdateKeyTime( const float& dt )
-{
-    if ( m_KeyTime < m_KeyTimeMax)
-		m_KeyTime += 100.f * dt;
-}
-
 void GameState::Update(float dt)
 {
     m_Data->input.UpdateMousePosition( m_Data->window );
-    UpdateKeyTime( dt );
+    m_Data->input.UpdateKeyTime( dt );
 
     if ( !m_Paused )
     {

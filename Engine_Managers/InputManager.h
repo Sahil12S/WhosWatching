@@ -6,34 +6,39 @@
 
 namespace SSEngine
 {
-    class InputManager
-    {
-    public:
-        InputManager();
-        ~InputManager();
+class InputManager
+{
+private:
+    /*
+        * Key map so that player can change key bindings
+        */
+    std::map<std::string, int> m_SupportedKeys;
 
-        bool IsSpriteClicked( const sf::Sprite& object, sf::Mouse::Button button, sf::RenderWindow& window );
+    sf::Vector2i m_MousePosScreen;
+    sf::Vector2i m_MousePosWindow;
+    sf::Vector2f m_MousePosView;
 
-        void InitKeys();
+    float m_KeyTime;
+    float m_KeyTimeMax;
 
-        void UpdateMousePosition(sf::RenderWindow &window);
-        sf::Vector2i GetScreenMousePosition();
-        sf::Vector2i GetWindowMousePosition();
-        sf::Vector2f GetViewMousePosition();
+public:
+    InputManager();
+    ~InputManager();
 
-        std::map<std::string, int>& getSupportedKeys();
+    bool IsSpriteClicked( const sf::Sprite& object, sf::Mouse::Button button, sf::RenderWindow& window );
 
-    private:
-        /*
-         * Key map so that player can change key bindings
-         */
-        std::map<std::string, int> m_SupportedKeys;
+    void InitKeys();
 
-        sf::Vector2i m_MousePosScreen;
-        sf::Vector2i m_MousePosWindow;
-        sf::Vector2f m_MousePosView;
+    void UpdateMousePosition(sf::RenderWindow &window);
+    void UpdateKeyTime( const float& dt );
 
-    };
+    sf::Vector2i GetScreenMousePosition();
+    sf::Vector2i GetWindowMousePosition();
+    sf::Vector2f GetViewMousePosition();
+    const bool GetKeyTime();
+
+    std::map<std::string, int>& getSupportedKeys();
+};
 }
 
 #endif // INPUT_MANAGER_H

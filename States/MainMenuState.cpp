@@ -126,7 +126,7 @@ void MainMenuState::HandleInput(float dt)
     while (m_Data->window.pollEvent(event))
     {
         // Check for game close
-        if (sf::Event::Closed == event.type || m_Buttons["Exit"]->isPressed())
+        if (sf::Event::Closed == event.type || m_Buttons["Exit"]->isPressed() && m_Data->input.GetKeyTime() )
         {
             m_Data->machine.ClearStates();
             m_Data->machine.RemoveState();
@@ -143,15 +143,15 @@ void MainMenuState::HandleInput(float dt)
             }*/
     }
 
-    if (m_Buttons["Play"]->isPressed())
+    if (m_Buttons["Play"]->isPressed() && m_Data->input.GetKeyTime() )
     {
         m_Data->machine.AddState(StateRef(new GameState(m_Data)), true);
     }
-    if (m_Buttons["Editor"]->isPressed())
+    if (m_Buttons["Editor"]->isPressed() && m_Data->input.GetKeyTime() )
     {
         m_Data->machine.AddState(StateRef(new EditorState(m_Data)), true);
     }
-    if (m_Buttons["Settings"]->isPressed())
+    if (m_Buttons["Settings"]->isPressed() && m_Data->input.GetKeyTime() )
     {
         m_Data->machine.AddState(StateRef(new GameSettingsState(m_Data)), true);
     }
@@ -161,6 +161,7 @@ void MainMenuState::HandleInput(float dt)
 void MainMenuState::Update(float dt)
 {
     m_Data->input.UpdateMousePosition(m_Data->window);
+    m_Data->input.UpdateKeyTime( dt );
 
     if ( !movedLeft && clock.getElapsedTime().asSeconds() > ( 2 + static_cast<int>( 4 * rand() / ( RAND_MAX + 1.f ) ) ) )
     {
