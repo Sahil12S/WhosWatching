@@ -33,6 +33,8 @@ namespace SSEngine
     void GameSettingsState::InitFonts()
     {
         Debug( "Settings State: Initializing Key Fonts...")
+        m_Data->assets.LoadFont( "Title Font", SCREEN_FONT_FILEPATH );
+        m_Data->assets.LoadFont( "Hack Font", SCREEN_FONT_FILEPATH2 );
         m_Data->assets.LoadFont( "Button Font", BUTTON_FONT_FILEPATH );
         m_Data->assets.LoadFont( "DDList Font", LIST_FONT_FILEPATH );
         m_Data->assets.LoadFont( "Text Font", TEXT_FONT_FILEPATH );
@@ -50,7 +52,7 @@ namespace SSEngine
 
         // Initialize HUD
         m_Hud = new HUD( m_Data );
-        m_Hud->SetText( "Main Menu Font", "SETTINGS" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
+        m_Hud->SetText( "Title Font", "SETTINGS" , TITLE_SIZE, ( m_Data->window.getSize().x / 2.0f ), m_Data->window.getSize().y / 5.0f );
         
         m_Modes = sf::VideoMode::getFullscreenModes();
 
@@ -175,7 +177,6 @@ namespace SSEngine
         // Go back to last active state or home
         if ( m_Buttons["Back"]->isPressed() )
         {
-            Debug( "called" )
             if ( m_Data->machine.GetStatesCount() > 1 )
             {
                 m_Data->machine.RemoveState();
