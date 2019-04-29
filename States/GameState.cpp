@@ -3,16 +3,7 @@
 
 namespace SSEngine
 {
-GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
-{
-}
 
-GameState::~GameState()
-{
-    delete m_Player;
-    delete m_Map;
-    delete m_PauseMenu;
-}
 
 void GameState::InitTextures()
 {
@@ -32,28 +23,6 @@ void GameState::InitFonts()
 void GameState::InitSounds()
 {
     // Nothing for now
-}
-
-void GameState::InitPauseMenu()
-{
-    m_PauseMenu = new PauseMenu( m_Data );
-    m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
-}
-
-void GameState::InitComponents()
-{
-    // Nothing for now
-}
-
-void GameState::InitVariables()
-{
-    // Initialize player & spawn it
-    m_Player = new Player( m_Data );
-    m_Player->SetPosition(sf::Vector2f(100, SCREEN_HEIGHT - 100));
-
-    m_Map = new TileMap( m_Data );
-
-    m_Paused = false;
 }
 
 void GameState::InitKeyBinds()
@@ -76,6 +45,39 @@ void GameState::InitKeyBinds()
     Debug( "Game State: Initializing key bindings..." )
 }
 
+void GameState::InitVariables()
+{
+    // Initialize player & spawn it
+    m_Player = new Player( m_Data );
+    m_Player->SetPosition(sf::Vector2f(100, SCREEN_HEIGHT - 100));
+
+    m_Map = new TileMap( m_Data );
+
+    m_Paused = false;
+}
+
+void GameState::InitPauseMenu()
+{
+    m_PauseMenu = new PauseMenu( m_Data );
+    m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
+}
+
+void GameState::InitComponents()
+{
+    // Nothing for now
+}
+
+
+GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
+{
+}
+
+GameState::~GameState()
+{
+    delete m_Player;
+    delete m_Map;
+    delete m_PauseMenu;
+}
 void GameState::Init()
 {
     Debug( "Game State: Initializing..." )
@@ -117,16 +119,18 @@ void GameState::HandleInput( float dt )
             // }
 
             // Go to Main Menu on pressing of Escape
-            if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
-                    m_Data->input.GetKeyTime() )
-            {
-                Debug( "Game State: Game Paused" )
-                if ( !m_Paused )
-                    m_Paused = true;
-                else
-                    m_Paused = false;
-            }
+            
         }
+    }
+
+    if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
+                    m_Data->input.GetKeyTime() )
+    {
+        Debug( "Game State: Game Paused" )
+        if ( !m_Paused )
+            m_Paused = true;
+        else
+            m_Paused = false;
     }
 
     /*

@@ -14,39 +14,39 @@
 
 namespace SSEngine
 {
-    class State
-    {
-    public:
-        /*
-         * Initialize the game state
-         */
-        virtual void Init() = 0;
+class State
+{
+public:
+    /*
+        * Initialize the game state
+        */
+    virtual void Init() = 0;
 
-        /*
-         * Handle input in current state
-         */
-        virtual void HandleInput( float dt ) = 0;
+    /*
+        * Handle input in current state
+        */
+    virtual void HandleInput( float dt ) = 0;
 
-        /*
-         * Update frames / game in current state
-         */
-        virtual void Update( float dt ) = 0;
+    /*
+        * Update frames / game in current state
+        */
+    virtual void Update( float dt ) = 0;
 
-        /*
-         * Draw frame in current state
-         */
-        virtual void Draw() = 0;
+    /*
+        * Draw frame in current state
+        */
+    virtual void Draw() = 0;
 
-        /*
-         * Pause game
-         */
-        virtual void Pause() {};
+    /*
+        * Pause game
+        */
+    virtual void Pause() {};
 
-        /*
-         * Resume game
-         */
-        virtual void Resume() {};
-    };
+    /*
+        * Resume game
+        */
+    virtual void Resume() {};
+};
 }
 
 #endif // STATE_H

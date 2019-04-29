@@ -17,8 +17,6 @@ namespace SSEngine
         AssetManager assets;
         InputManager input;
         sf::RenderWindow window;
-        // sf::ContextSettings windowSettings;
-        // std::vector< sf::VideoMode > videoModes;
         GraphicsSettings GfxSettings;
     };
 

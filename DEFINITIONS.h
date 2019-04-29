@@ -99,6 +99,7 @@ enum ButtonState
 #define MAIN_MENU_KEY_BIND_FILEPATH "../Resources/KeyBindings/MainMenuKeyBinds.ini"
 #define SETTINGS_STATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/SettingsStateKeyBinds.ini"
 #define PAUSE_STATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/PauseStateKeyBinds.ini"
+#define EDITOR_STATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/EditorStateKeyBinds.ini"
 
 
 enum MovementStates

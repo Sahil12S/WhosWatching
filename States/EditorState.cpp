@@ -3,11 +3,6 @@
 namespace SSEngine
 {
 // Initializers
-void EditorState::InitKeyBinds()
-{
-
-}
-
 void EditorState::InitTextures()
 {
     // Use sprites for background
@@ -28,22 +23,25 @@ void EditorState::InitSounds()
 
 }
 
-void EditorState::InitComponents()
+void EditorState::InitKeyBinds()
 {
-    m_Buttons["Cancel"] = new Button(m_Data);
-    m_Buttons["Cancel"]->CreateButton(m_Data->window.getSize().x / 13.f - BUTTON_WIDTH / 2.f,
-                                            m_Data->window.getSize().y / 15.f - BUTTON_HEIGHT / 2.f,
-                                            BUTTON_WIDTH, BUTTON_HEIGHT);
+    Debug( "Editor State: Initializing key bindings..." )
 
-    std::vector<sf::Color> textColor = {sf::Color(TEXT_IDLE_FILL_COLOR),
-                                        sf::Color(TEXT_HOVER_FILL_COLOR),
-                                        sf::Color(TEXT_ACTIVE_FILL_COLOR)};
+    // Read Key Bindings from file
+    std::ifstream ifs ( EDITOR_STATE_KEY_BIND_FILEPATH );
 
-    std::vector<sf::Color> buttonColor = {sf::Color(BUTTON_IDLE_FILL_COLOR),
-                                          sf::Color(BUTTON_HOVER_FILL_COLOR),
-                                          sf::Color(BUTTON_ACTIVE_FILL_COLOR)};
+    if ( ifs.is_open() )
+    {
+        std::string keyAction;
+        std::string key;
+        while ( ifs >> keyAction >> key )
+        {
+            std::cout << keyAction << key << std::endl;
+            m_KeyBinds[keyAction] = m_Data->input.getSupportedKeys().at( key );
+        }
+    }
 
-    m_Buttons["Cancel"]->SetButtonProperties("Button Font", "Cancel", BUTTON_TEXT_SIZE, textColor, buttonColor);
+    ifs.close();
 
 }
 
@@ -52,11 +50,42 @@ void EditorState::InitVariables()
     m_Hud = new HUD(m_Data);
     m_Hud->SetText("Title Font", "Editor", TITLE_SIZE, ( m_Data->GfxSettings.resolution.width / 2.0f ), 
                         m_Data->GfxSettings.resolution.height / 6.0f );
+
+    m_Map = new TileMap( m_Data );
+
+    m_Paused = false;
 }
+
+void EditorState::InitComponents()
+{
+    // m_Buttons["Cancel"] = new Button(m_Data);
+    // m_Buttons["Cancel"]->CreateButton(m_Data->window.getSize().x / 13.f - BUTTON_WIDTH / 2.f,
+    //                                         m_Data->window.getSize().y / 15.f - BUTTON_HEIGHT / 2.f,
+    //                                         BUTTON_WIDTH, BUTTON_HEIGHT);
+
+    // std::vector<sf::Color> textColor = {sf::Color(TEXT_IDLE_FILL_COLOR),
+    //                                     sf::Color(TEXT_HOVER_FILL_COLOR),
+    //                                     sf::Color(TEXT_ACTIVE_FILL_COLOR)};
+
+    // std::vector<sf::Color> buttonColor = {sf::Color(BUTTON_IDLE_FILL_COLOR),
+    //                                       sf::Color(BUTTON_HOVER_FILL_COLOR),
+    //                                       sf::Color(BUTTON_ACTIVE_FILL_COLOR)};
+
+    // m_Buttons["Cancel"]->SetButtonProperties("Button Font", "Cancel", BUTTON_TEXT_SIZE, textColor, buttonColor);
+
+}
+
+
 
 void EditorState::InitTexts()
 {
 
+}
+
+void EditorState::InitPauseMenu()
+{
+    m_PauseMenu = new PauseMenu( m_Data );
+    m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
 }
 
 EditorState::EditorState( GameDataRef data ) : m_Data( std::move( data ) )
@@ -71,6 +100,7 @@ EditorState::~EditorState()
     {
         delete button.second;
     }
+    delete m_PauseMenu;
 }
 
 void EditorState::Init()
@@ -79,9 +109,11 @@ void EditorState::Init()
     InitTextures();
     InitFonts();
     InitSounds();
-    InitVariables();
     InitKeyBinds();
+    InitVariables();
     InitComponents();
+    InitTexts();
+    InitPauseMenu();
 
 }
 
@@ -99,10 +131,20 @@ void EditorState::HandleInput( float dt )
             m_Data->window.close();
         }
     }
-    if (m_Buttons["Cancel"]->isPressed())
+
+    if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
+                    m_Data->input.GetKeyTime() )
     {
-        m_Data->machine.AddState(StateRef(new MainMenuState(m_Data)), true);
+        Debug( "Editor State: Game Paused" )
+        if ( !m_Paused )
+            m_Paused = true;
+        else
+            m_Paused = false;
     }
+    // if (m_Buttons["Cancel"]->isPressed())
+    // {
+    //     m_Data->machine.AddState(StateRef(new MainMenuState(m_Data)), true);
+    // }
 
 }
 
@@ -115,10 +157,28 @@ void EditorState::UpdateComponents( const float& dt )
 
 }
 
+void EditorState::UpdatePauseMenuButtons( )
+{
+    if ( m_PauseMenu->IsButtonPressed("Quit") && m_Data->input.GetKeyTime() )
+    {
+        m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
+    }
+}
+
 void EditorState::Update( float dt )
 {
     m_Data->input.UpdateMousePosition(m_Data->window);
-    UpdateComponents( dt );
+    m_Data->input.UpdateKeyTime( dt );
+
+    if ( !m_Paused )
+    {
+        UpdateComponents( dt );
+    }
+    else
+    {
+        this->m_PauseMenu->Update( m_Data->input.GetWindowMousePosition() );
+		this->UpdatePauseMenuButtons();
+    }
 }
 
 void EditorState::Draw()
@@ -126,12 +186,22 @@ void EditorState::Draw()
     m_Data->window.clear();
     m_Data->window.draw(m_Background);
 
-    m_Hud->Draw(true);
+    m_Map->Draw();
 
-    for (auto button : m_Buttons)
+    if ( !m_Paused )
     {
-        button.second->Draw();
+        m_Hud->Draw(true);
     }
+    else
+    {
+        m_PauseMenu->Draw();
+    }
+    
+
+    // for (auto button : m_Buttons)
+    // {
+    //     button.second->Draw();
+    // }
     // Draw coordinates on mouse pointer for debugging
     sf::Text mouseText;
     mouseText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );

@@ -7,7 +7,7 @@ InputManager::InputManager()
     Debug( "Input Manager Initialized" )
     InitKeys();
     m_KeyTime = 0.f;
-    m_KeyTimeMax = 10.f;
+    m_KeyTimeMax = 20.f;
 }
 
 InputManager::~InputManager() = default;

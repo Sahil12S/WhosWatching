@@ -5,10 +5,10 @@
 #include "../DEFINITIONS.h"
 
 #include "State.h"
+#include "PauseMenu.h"
 #include "../Game.h"
 #include "../Entities/Player.h"
 #include "../Map/TileMap.h"
-#include "PauseMenu.h"
 
 namespace SSEngine
 {
@@ -34,10 +34,10 @@ private:
     void InitTextures();
     void InitFonts();
     void InitSounds();
+    void InitVariables();
     void InitPauseMenu();
     void InitComponents();
 
-    void InitVariables();
 
 
 public:

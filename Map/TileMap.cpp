@@ -8,8 +8,8 @@ namespace SSEngine
         m_GridSizeF = GRID_SIZE;
         m_GridSizeU = static_cast<unsigned>( m_GridSizeF );
         m_Layers = LAYERS;
-        m_MapSize.x = 30;
-        m_MapSize.y = 18;
+        m_MapSize.x = 10;
+        m_MapSize.y = 10;
 
         // Initialize map
         m_Map.resize( m_MapSize.x, std::vector< std::vector< Tile* > >() );

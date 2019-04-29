@@ -8,10 +8,10 @@ void PauseMenu::InitTextures()
 {
     // Set Background
     m_Background.setSize( sf::Vector2f( m_Data->GfxSettings.resolution.width, m_Data->GfxSettings.resolution.height ) );
-    m_Background.setFillColor( sf::Color(97, 143, 216, 100) );
+    m_Background.setFillColor( sf::Color(5, 53, 130, 100) );
 
     m_Container.setSize( sf::Vector2f( m_Data->GfxSettings.resolution.width / 4.f, m_Data->GfxSettings.resolution.height ));
-    m_Container.setFillColor( sf::Color(97, 143, 216, 200) );
+    m_Container.setFillColor( sf::Color(5, 53, 130, 200) );
     m_Container.setPosition( sf::Vector2f( m_Data->GfxSettings.resolution.width / 2.f - m_Container.getSize().x / 2.f,
                                     20.f ));
 }
