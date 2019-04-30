@@ -4,21 +4,25 @@
 #include "../pch.cpp"
 #include "../Game.h"
 
+
 namespace gui
 {
+    class Game;
+
     class TextureSelector
     {
         private:
             GameDataRef m_Data;
 
-            sf::RectangleShape m_Bouns;
-            sf::Sprite m_Sprite;
+            sf::RectangleShape m_Bounds;
+            sf::Sprite m_Sheet;
 
         public:
-            TextureSelector( GameDataRef m_Data, float x, float y, float width, float height, const std::string& texture_sheet );
-            virtual ~TextureSelector();
+            TextureSelector( GameDataRef data, float x, float y, float width, float height, const std::string& texture_sheet );
+            ~TextureSelector();
 
-
+            void Update();
+            void Draw();
     };
 }
 #endif // TEXTURE_SELECTOR_H

@@ -9,6 +9,7 @@
 #include "../Game.h"
 #include "../Game_Components/HUD.h"
 #include "../Game_Components/Button.h"
+#include "../Game_Components/TextureSelector.h"
 #include "../Map/TileMap.h"
 
 class EditorState : public State
@@ -17,6 +18,8 @@ private:
     GameDataRef m_Data;
 
     gui::HUD* m_Hud;
+    gui::TextureSelector* m_TS;
+
     PauseMenu* m_PauseMenu;
     TileMap* m_TileMap;
 
@@ -33,15 +36,16 @@ private:
     sf::Text m_CursorText;
 
     // Initializers
-    void InitKeyBinds();
+    void InitVariables();
     void InitTextures();
     void InitFonts();
     void InitSounds();
-    void InitVariables();
+    void InitKeyBinds();
     void InitTexts();
     void InitPauseMenu();
+    void InitButtons();
     void InitTileMap();
-    void InitComponents();
+    void InitGui();
 
 public:
     EditorState( GameDataRef data );
@@ -52,8 +56,9 @@ public:
 
     void Init() override;
     void HandleInput( float dt ) override;
-    void UpdateComponents( const float& dt );
+
     void UpdateButtons();
+    void UpdateGui();
     void UpdatePauseMenuButtons();
     void Update( float dt ) override;
     void Draw() override;

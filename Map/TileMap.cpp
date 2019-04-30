@@ -23,7 +23,7 @@ TileMap::TileMap( GameDataRef data, unsigned width, unsigned height ) : m_Data( 
         }
     }
 
-    m_Data->assets.LoadTexture( "tiles", TILES_TEXTURE_FILEPATH );
+    m_Data->assets.LoadTexture( "Tiles", TILES_TEXTURE_FILEPATH );
 
 }
 
@@ -45,9 +45,9 @@ TileMap::~TileMap()
     }
 }
 
-const sf::Texture* TileMap::GetTileSheet() const
+const std::string TileMap::GetTileSheet() const
 {
-    return &m_Data->assets.GetTexture("tiles");
+    return "Tiles";
 }
 
 void TileMap::AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect )
@@ -64,7 +64,7 @@ void TileMap::AddTile( const unsigned& x, const unsigned& y, const unsigned& z, 
         if ( m_Map[x][y][z] == nullptr )
         {
             /* No tile at this location. Okay to add. */
-            m_Map[x][y][z] = new Tile( m_Data, x, y, m_GridSizeF, "tiles", texture_rect );
+            m_Map[x][y][z] = new Tile( m_Data, x, y, m_GridSizeF, "Tiles", texture_rect );
         }
     }
 }
