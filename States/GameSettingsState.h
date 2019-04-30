@@ -10,54 +10,51 @@
 #include "../Game_Components/Button.h"
 #include "../Game_Components/DropDownList.h"
 
-namespace SSEngine
+class GameSettingsState : public State
 {
-    class GameSettingsState : public State
-    {
-    private:
-        /* Variables */
-        GameDataRef m_Data;
+private:
+    /* Variables */
+    GameDataRef m_Data;
 
-        HUD* m_Hud;
+    gui::HUD* m_Hud;
 
-        std::map<std::string, int> m_KeyBinds;
+    std::map<std::string, int> m_KeyBinds;
 
-        sf::RectangleShape m_Background;
-        sf::Text m_OptionsText;
+    sf::RectangleShape m_Background;
+    sf::Text m_OptionsText;
 
-        std::map<std::string, Button*> m_Buttons;
-        std::map<std::string, DropDownList*> m_DropdownList;
+    std::map<std::string, gui::Button*> m_Buttons;
+    std::map<std::string, gui::DropDownList*> m_DropdownList;
 
-        std::vector< sf::VideoMode > m_Modes;
+    std::vector< sf::VideoMode > m_Modes;
 
-        // Handle title animation
-        sf::Clock clock;
-        bool movedLeft;
+    // Handle title animation
+    sf::Clock clock;
+    bool movedLeft;
 
-        /* Functions */
-        // Initializers
-        void InitKeyBinds();
-        void InitTextures();
-        void InitFonts();
-        void InitSounds();
-        void InitComponents();
-        void InitVariables();
-        void InitTexts();
+    /* Functions */
+    // Initializers
+    void InitKeyBinds();
+    void InitTextures();
+    void InitFonts();
+    void InitSounds();
+    void InitComponents();
+    void InitVariables();
+    void InitTexts();
 
 
 
-    public:
-        GameSettingsState( GameDataRef data );
-        ~GameSettingsState();
+public:
+    GameSettingsState( GameDataRef data );
+    ~GameSettingsState();
 
-        // Initializes the state
-        void Init() override;
+    // Initializes the state
+    void Init() override;
 
-        void HandleInput( float dt ) override;
-        void UpdateComponents( const float& dt );
-        void Update( float dt ) override;
-        void Draw() override;
-    };
-}
+    void HandleInput( float dt ) override;
+    void UpdateComponents( const float& dt );
+    void Update( float dt ) override;
+    void Draw() override;
+};
 
 #endif // GAME_SETTINGS_STATE_H

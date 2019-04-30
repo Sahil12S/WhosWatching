@@ -1,7 +1,5 @@
 #include "InputManager.h"
 
-namespace SSEngine
-{
 InputManager::InputManager()
 {
     Debug( "Input Manager Initialized" )
@@ -107,6 +105,4 @@ const bool InputManager::GetKeyTime()
 	}
 
 	return false;
-}
-
 }

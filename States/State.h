@@ -12,8 +12,6 @@
 #ifndef STATE_H
 #define STATE_H
 
-namespace SSEngine
-{
 class State
 {
 public:
@@ -47,6 +45,5 @@ public:
         */
     virtual void Resume() {};
 };
-}
 
 #endif // STATE_H

@@ -6,66 +6,63 @@
 
 #include "../States/State.h"
 
-namespace SSEngine
+/*
+* Pointer reference to our game state
+*/
+typedef std::unique_ptr<State> StateRef;
+
+class StateMachine
 {
+private:
+    std::stack<StateRef> m_States;
+
+    StateRef m_NewState;
+
     /*
-     * Pointer reference to our game state
-     */
-    typedef std::unique_ptr<State> StateRef;
+        * Check for action with state
+        */
+    bool m_IsAdding;
+    bool m_IsRemoving;
+    bool m_IsReplacing;
 
-    class StateMachine
-    {
-    private:
-        std::stack<StateRef> m_States;
+public:
+    StateMachine();
+    ~StateMachine();
 
-        StateRef m_NewState;
+    /*
+        * Add a new state to stack
+        * by default, remove existing one.
+        * We need to preserve existing state when we go to Pause state
+        */
+    void AddState( StateRef newState, bool isReplacing = true );
 
-        /*
-         * Check for action with state
-         */
-        bool m_IsAdding;
-        bool m_IsRemoving;
-        bool m_IsReplacing;
+    /*
+        * Remove state from stack
+        */
+    void RemoveState();
 
-    public:
-        StateMachine();
-        ~StateMachine();
+    /*
+        * Processes the state change (weather add new or update existing)
+        */
+    void ProcessStateChange();
 
-        /*
-         * Add a new state to stack
-         * by default, remove existing one.
-         * We need to preserve existing state when we go to Pause state
-         */
-        void AddState( StateRef newState, bool isReplacing = true );
+    // void DeleteMachine();
 
-        /*
-         * Remove state from stack
-         */
-        void RemoveState();
+    /*
+        * Return top level state which we have to run
+        */
+    StateRef& GetActiveState();
 
-        /*
-         * Processes the state change (weather add new or update existing)
-         */
-        void ProcessStateChange();
+    /*
+        * Return number of states in stack
+        */
+    int GetStatesCount();
 
-        // void DeleteMachine();
+    /*
+        * Removes all states from stack except the top one
+        */
+    void ClearStates();
 
-        /*
-         * Return top level state which we have to run
-         */
-        StateRef& GetActiveState();
-
-        /*
-         * Return number of states in stack
-         */
-        int GetStatesCount();
-
-        /*
-         * Removes all states from stack except the top one
-         */
-        void ClearStates();
-
-    };
-}
+};
 
 #endif  // STATE_MACHINE_H

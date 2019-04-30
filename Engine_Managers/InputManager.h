@@ -4,8 +4,6 @@
 #include "../pch.cpp"
 #include "../DEFINITIONS.h"
 
-namespace SSEngine
-{
 class InputManager
 {
 private:
@@ -41,6 +39,5 @@ public:
 
     std::map<std::string, int>& getSupportedKeys();
 };
-}
 
 #endif // INPUT_MANAGER_H

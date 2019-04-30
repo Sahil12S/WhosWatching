@@ -3,7 +3,7 @@
 
 int main()
 {
-    SSEngine::Game game;
+    Game game;
     game.Run();
     
     return EXIT_SUCCESS;

@@ -1,9 +1,6 @@
 #include "PauseMenu.h"
 #include "MainMenuState.h"
 
-namespace SSEngine
-{
-
 void PauseMenu::InitTextures()
 {
     // Set Background
@@ -24,13 +21,13 @@ void PauseMenu::InitFonts()
 
 void PauseMenu::InitVariables()
 {
-    m_Hud = new HUD( m_Data );
+    m_Hud = new gui::HUD( m_Data );
     m_Hud->SetText( "Title Font", "PAUSED" , TITLE_SIZE, ( m_Container.getPosition().x + m_Container.getSize().x / 2.f ),
                 m_Data->window.getSize().y / 6.0f );
 
 }
 
-PauseMenu::PauseMenu(SSEngine::GameDataRef data) : m_Data( std::move( data ) )
+PauseMenu::PauseMenu(GameDataRef data) : m_Data( std::move( data ) )
 {
     Debug( "Pause Menu: Initializing...")
     InitTextures();
@@ -56,7 +53,7 @@ void PauseMenu::AddButton( const std::string key,
                 const float y, 
                 const std::string text)
 {
-    m_Buttons[key] = new Button( m_Data );
+    m_Buttons[key] = new gui::Button( m_Data );
     m_Buttons[key]->CreateButton(  m_Container.getPosition().x + m_Container.getSize().x / 2.f - BUTTON_WIDTH / 2.f,
                                 y, BUTTON_WIDTH, BUTTON_HEIGHT );
 
@@ -91,5 +88,4 @@ void PauseMenu::Draw()
         button.second->Draw();
     }
     // m_Data->window.display();
-}
 }

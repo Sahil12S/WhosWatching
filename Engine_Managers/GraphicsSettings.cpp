@@ -1,8 +1,5 @@
 #include "GraphicsSettings.h"
 
-namespace SSEngine
-{
-
 GraphicsSettings::GraphicsSettings()
 {
     title = "DEFAULT";
@@ -49,5 +46,4 @@ void GraphicsSettings::LoadFromFile( const std::string& path )
     }
 
     ifs.close();
-}
 }

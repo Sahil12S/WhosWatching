@@ -1,7 +1,5 @@
 #include "EditorState.h"
 
-namespace SSEngine
-{
 // Initializers
 void EditorState::InitTextures()
 {
@@ -47,7 +45,7 @@ void EditorState::InitKeyBinds()
 
 void EditorState::InitVariables()
 {
-    m_Hud = new HUD(m_Data);
+    m_Hud = new gui::HUD(m_Data);
     m_Hud->SetText("Title Font", "Editor", TITLE_SIZE, ( m_Data->GfxSettings.resolution.width / 2.0f ), 
                         m_Data->GfxSettings.resolution.height / 6.0f );
 
@@ -236,5 +234,4 @@ void EditorState::Draw()
 
     m_Data->window.display();
 
-}
 }

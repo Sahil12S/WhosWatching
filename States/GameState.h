@@ -10,8 +10,6 @@
 #include "../Entities/Player.h"
 #include "../Map/TileMap.h"
 
-namespace SSEngine
-{
 class GameState : public State
 {
 private:
@@ -56,5 +54,4 @@ public:
     void Update( float dt ) override;
     void Draw() override;
 };
-}
 #endif // GAME_STATE_H

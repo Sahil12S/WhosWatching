@@ -7,9 +7,8 @@
 #include "../Game.h"
 #include "Button.h"
 
-namespace SSEngine
+namespace gui
 {
-
     class DropDownList
     {
         private:
@@ -34,14 +33,14 @@ namespace SSEngine
 
         // Functions
         /*
-         * Key time will prevent spamming of one button
-         */
+        * Key time will prevent spamming of one button
+        */
         const bool GetKeyTime();
         void UpdateKeyTime(  const float& dt );
 
         void Update(  const float& dt, const sf::Vector2f& mousePosition );
         void Draw();
     };
-};
+}
 
 #endif // DROPDOWN_LIST_H

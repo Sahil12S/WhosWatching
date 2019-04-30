@@ -4,7 +4,7 @@
 
 #include "../Game.h"
 
-namespace SSEngine
+namespace gui
 {
     class HUD
     {

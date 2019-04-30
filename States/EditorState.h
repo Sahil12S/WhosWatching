@@ -11,19 +11,17 @@
 #include "../Game_Components/Button.h"
 #include "../Map/TileMap.h"
 
-namespace SSEngine
-{
 class EditorState : public State
 {
 private:
     GameDataRef m_Data;
 
-    HUD* m_Hud;
+    gui::HUD* m_Hud;
     PauseMenu* m_PauseMenu;
     TileMap* m_TileMap;
 
     std::map<std::string, int> m_KeyBinds;
-    std::map<std::string, Button*> m_Buttons;
+    std::map<std::string, gui::Button*> m_Buttons;
 
     bool m_Paused;
 
@@ -60,6 +58,5 @@ public:
     void Update( float dt ) override;
     void Draw() override;
 };
-}
 
 #endif

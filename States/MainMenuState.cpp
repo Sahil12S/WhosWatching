@@ -3,8 +3,6 @@
 #include "GameSettingsState.h"
 #include "EditorState.h"
 
-namespace SSEngine
-{
 MainMenuState::MainMenuState(GameDataRef data) : m_Data(std::move(data))
 {
 }
@@ -40,10 +38,10 @@ void MainMenuState::InitSounds()
 void MainMenuState::InitComponents()
 {
     //Draw Buttons
-    m_Buttons["Play"] = new Button(m_Data);
-    m_Buttons["Exit"] = new Button(m_Data);
-    m_Buttons["Settings"] = new Button(m_Data);
-    m_Buttons["Editor"] = new Button(m_Data);
+    m_Buttons["Play"] = new gui::Button(m_Data);
+    m_Buttons["Exit"] = new gui::Button(m_Data);
+    m_Buttons["Settings"] = new gui::Button(m_Data);
+    m_Buttons["Editor"] = new gui::Button(m_Data);
 
     // Set Button Properties
     m_Buttons["Exit"]->CreateButton(m_Data->GfxSettings.resolution.width / 2.0f - BUTTON_WIDTH / 2.0f,
@@ -80,7 +78,7 @@ void MainMenuState::InitComponents()
 
 void MainMenuState::InitVariables()
 {
-    m_Hud = new HUD(m_Data);
+    m_Hud = new gui::HUD( m_Data );
     m_Hud->SetText("Title Font", "WHO'S WATCHING??", TITLE_SIZE, ( m_Data->GfxSettings.resolution.width / 2.0f ), m_Data->GfxSettings.resolution.height / 6.0f );
     clock.restart().asSeconds();
     movedLeft = false;
@@ -217,5 +215,3 @@ void MainMenuState::Draw()
 
     m_Data->window.display();
 }
-
-} // namespace SSEngine

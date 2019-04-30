@@ -1,8 +1,9 @@
 #include "Button.h"
 
-namespace SSEngine
+namespace gui
 {
-    Button::Button(SSEngine::GameDataRef data) : m_Data( std::move ( data ) )
+
+    Button::Button(GameDataRef data) : m_Data( std::move ( data ) )
     {
         m_ButtonState = eBtnIdle;
     }
@@ -16,10 +17,10 @@ namespace SSEngine
     }
 
     void Button::SetButtonProperties(const std::string &fontName, const std::string &text,
-                                     unsigned int characterSize,
-                                     const std::vector<sf::Color>& textColors,
-                                     const std::vector<sf::Color>& buttonColors,
-                                     const std::vector< sf::Color >& outlineColors, unsigned short id )
+                                        unsigned int characterSize,
+                                        const std::vector<sf::Color>& textColors,
+                                        const std::vector<sf::Color>& buttonColors,
+                                        const std::vector< sf::Color >& outlineColors, unsigned short id )
     {
         m_ButtonState = eBtnIdle;
         m_Id = id;
@@ -143,4 +144,5 @@ namespace SSEngine
         m_Data->window.draw( m_Shape );
         m_Data->window.draw( m_Text );
     }
-}
+
+} // namespace gui

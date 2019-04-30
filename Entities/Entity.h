@@ -9,46 +9,43 @@
 #include "../Game_Components/AnimationComponent.h"
 #include "../Game_Components/HitboxComponent.h"
 
-namespace SSEngine
+/* Forward declaration */
+struct GameData;
+typedef std::shared_ptr<GameData> GameDataRef;
+
+class AnimationComponent;
+class MovementComponent;
+class HitboxComponent;
+
+class Entity
 {
-    /* Forward declaration */
-    struct GameData;
-    typedef std::shared_ptr<GameData> GameDataRef;
+protected:
+    GameDataRef m_Data;
 
-    class AnimationComponent;
-    class MovementComponent;
-    class HitboxComponent;
+    sf::Sprite m_Sprite;
 
-    class Entity
-    {
-    protected:
-        GameDataRef m_Data;
+    MovementComponent* m_MC;
+    AnimationComponent* m_AC;
+    HitboxComponent* m_HC;
 
-        sf::Sprite m_Sprite;
+public:
+    /* Constructors and Destructors*/
+    Entity( GameDataRef data );
+    virtual ~Entity();
 
-        MovementComponent* m_MC;
-        AnimationComponent* m_AC;
-        HitboxComponent* m_HC;
+    /* Component functions */
+    void SetTexture( sf::Texture& tex );
+    void CreateHitboxComponent( const float& offset_x, const float& offset_y,
+                                const float& width, const float& height );
+    void CreateMovementComponent( const float& maxVelocity, const float& acceleration, const float& deceleration );
+    void CreateAnimationComponent( const std::string& texture );
 
-    public:
-        /* Constructors and Destructors*/
-        Entity( GameDataRef data );
-        virtual ~Entity();
+    /* Functions */
+    virtual void SetPosition(sf::Vector2f position );
 
-        /* Component functions */
-        void SetTexture( sf::Texture& tex );
-        void CreateHitboxComponent( const float& offset_x, const float& offset_y,
-                                    const float& width, const float& height );
-        void CreateMovementComponent( const float& maxVelocity, const float& acceleration, const float& deceleration );
-        void CreateAnimationComponent( const std::string& texture );
-
-        /* Functions */
-        virtual void SetPosition(sf::Vector2f position );
-
-        virtual void Move( const float& dt, const float& dir_x, const float& dir_y );
-        virtual void Update( float dt );
-        virtual void Draw();
-    };
-}
+    virtual void Move( const float& dt, const float& dir_x, const float& dir_y );
+    virtual void Update( float dt );
+    virtual void Draw();
+};
 
 #endif // ENTITY_H

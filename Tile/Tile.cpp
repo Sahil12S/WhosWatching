@@ -1,7 +1,5 @@
 #include "Tile.h"
 
-namespace SSEngine
-{
 Tile::Tile( GameDataRef data, float x, float y, float gridSizeF, const std::string& texture_name, const sf::IntRect& texture_rect ) :
     m_Data( std::move( data ) )
 {
@@ -27,5 +25,4 @@ void Tile::Update()
 void Tile::Draw()
 {
     m_Data->window.draw( m_Shape );
-}
 }

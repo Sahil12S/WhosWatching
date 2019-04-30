@@ -1,9 +1,6 @@
 #include "GameState.h"
 #include "MainMenuState.h"
 
-namespace SSEngine
-{
-
 
 void GameState::InitTextures()
 {
@@ -208,5 +205,4 @@ void GameState::Draw()
     m_Data->window.draw( mouseText );
 
     m_Data->window.display();
-}
 }

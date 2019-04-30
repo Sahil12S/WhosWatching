@@ -3,8 +3,6 @@
 
 #include "../pch.cpp"
 
-namespace SSEngine
-{
 class GraphicsSettings
 {
     private:
@@ -25,6 +23,5 @@ class GraphicsSettings
     void LoadFromFile( const std::string& path );
             
 };
-}
 
 #endif // GRAPHICS_SETTINGS_H

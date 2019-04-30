@@ -6,8 +6,9 @@
 
 #include "../Game.h"
 
-namespace SSEngine
+namespace gui
 {
+
     class Button
     {
     private:
@@ -38,11 +39,11 @@ namespace SSEngine
         ~Button();
 
         /*
-         * Set properties of button you want to draw
-         * Position x, y
-         * Width and Height
-         * Text, font type
-         * Vector of colors ( or we can set them same for all buttons )
+        * Set properties of button you want to draw
+        * Position x, y
+        * Width and Height
+        * Text, font type
+        * Vector of colors ( or we can set them same for all buttons )
         */
         void CreateButton( float x, float y, float width, float height );
         void SetButtonProperties( const std::string& fontName, const std::string& text,
@@ -70,6 +71,6 @@ namespace SSEngine
 
 
     };
-}
 
+}
 #endif // BUTTON_H
