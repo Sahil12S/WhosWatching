@@ -138,6 +138,10 @@ void EditorState::HandleInput( float dt )
         {
             m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
         }
+        else if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) && m_Data->input.GetKeyTime() )
+        {
+            m_TileMap->RemoveTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
+        }
 
     }
 }
@@ -170,8 +174,6 @@ void EditorState::UpdatePauseMenuButtons( )
 void EditorState::Update( float dt )
 {
     m_Data->input.UpdateMousePosition( m_Data->window );
-    // Debug( m_Data->input.GetViewMousePosition().y )
-    // Debug( m_Data->input.GetGridMousePosition().x )
     m_Data->input.UpdateKeyTime( dt );
 
     if ( !m_Paused )
@@ -195,7 +197,7 @@ void EditorState::Draw()
 
     if ( !m_Paused )
     {
-        m_Hud->Draw(true);
+        // m_Hud->Draw(true);   
         m_Data->window.draw( m_SelectorRect );
     }
     else

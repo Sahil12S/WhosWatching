@@ -24,6 +24,7 @@ namespace SSEngine
             }
         }
 
+        m_Data->assets.LoadTexture( "grass", GRASS_TEXTURE_FILEPATH );
 
     }
 
@@ -59,13 +60,29 @@ namespace SSEngine
             if ( m_Map[x][y][z] == nullptr )
             {
                 /* No tile at this location. Okay to add. */
-                m_Map[x][y][z] = new Tile( m_Data, x, y, m_GridSizeF );
+                m_Map[x][y][z] = new Tile( m_Data, x, y, m_GridSizeF, "grass" );
             }
         }
     }
 
-    void TileMap::RemoveTile()
+    void TileMap::RemoveTile( const unsigned& x, const unsigned& y, const unsigned& z )
     {
+        /*
+         * Take 2 indices of mouse position and remove a tile from that position
+         * ignore if mouse's position is outside the limits of our map
+         */
+        
+        if ( x < m_MapSize.x && x >= 0 &&
+            y < m_MapSize.y && y >= 0 &&
+            z < m_Layers && z >= 0 )
+        {
+            if ( m_Map[x][y][z] != nullptr )
+            {
+                /* Found tile at this location, remove it. */
+                delete m_Map[x][y][z];
+                m_Map[x][y][z] = nullptr;
+            }
+        }
         
     }
 

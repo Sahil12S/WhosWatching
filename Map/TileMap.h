@@ -30,7 +30,7 @@ namespace SSEngine
         virtual ~TileMap();
         
         void AddTile( const unsigned& x, const unsigned& y, const unsigned& z );
-        void RemoveTile();
+        void RemoveTile( const unsigned& x, const unsigned& y, const unsigned& z );
 
         void Update();
         void Draw();
