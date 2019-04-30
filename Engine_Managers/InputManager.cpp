@@ -63,6 +63,11 @@ void InputManager::UpdateMousePosition(sf::RenderWindow &window)
     m_MousePosScreen = sf::Mouse::getPosition();
     m_MousePosWindow = sf::Mouse::getPosition( window );
     m_MousePosView = window.mapPixelToCoords( sf::Mouse::getPosition( window ) );
+    m_MousePosGrid = sf::Vector2u (
+        static_cast<unsigned>( m_MousePosView.x ) / static_cast<unsigned>( GRID_SIZE ),
+        static_cast<unsigned>( m_MousePosView.y ) / static_cast<unsigned>( GRID_SIZE )
+    );
+
 }
 
 void InputManager::UpdateKeyTime( const float& dt )
@@ -86,6 +91,11 @@ sf::Vector2i InputManager::GetWindowMousePosition()
 sf::Vector2f InputManager::GetViewMousePosition()
 {
     return m_MousePosView;
+}
+
+sf::Vector2u InputManager::GetGridMousePosition()
+{
+    return m_MousePosGrid;
 }
 
 const bool InputManager::GetKeyTime()

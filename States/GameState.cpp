@@ -51,7 +51,7 @@ void GameState::InitVariables()
     m_Player = new Player( m_Data );
     m_Player->SetPosition(sf::Vector2f(100, SCREEN_HEIGHT - 100));
 
-    m_Map = new TileMap( m_Data );
+    m_Map = new TileMap( m_Data, 10, 10 );
 
     m_Paused = false;
 }
@@ -105,22 +105,6 @@ void GameState::HandleInput( float dt )
             m_Data->window.close();
         }
 
-        if ( sf::Event::KeyPressed == event.type )
-        {
-            // // Go to Pause Screen if game is paused
-            // if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["PAUSE"] ) ) && 
-            //         m_Data->input.GetKeyTime() )
-            // {
-            //     Debug( "Game State: Game Paused" )
-            //     if ( !m_Paused )
-            //         m_Paused = true;
-            //     else
-            //         m_Paused = false;
-            // }
-
-            // Go to Main Menu on pressing of Escape
-            
-        }
     }
 
     if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 

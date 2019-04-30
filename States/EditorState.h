@@ -18,15 +18,16 @@ class EditorState : public State
 private:
     GameDataRef m_Data;
 
-    sf::RectangleShape m_Background;
     HUD* m_Hud;
     PauseMenu* m_PauseMenu;
-    TileMap* m_Map;
+    TileMap* m_TileMap;
 
     std::map<std::string, int> m_KeyBinds;
     std::map<std::string, Button*> m_Buttons;
 
     bool m_Paused;
+
+    sf::RectangleShape m_SelectorRect;
 
     // Initializers
     void InitKeyBinds();
@@ -48,6 +49,7 @@ public:
     void Init() override;
     void HandleInput( float dt ) override;
     void UpdateComponents( const float& dt );
+    void UpdateButtons();
     void UpdatePauseMenuButtons();
     void Update( float dt ) override;
     void Draw() override;

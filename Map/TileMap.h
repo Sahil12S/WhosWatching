@@ -9,6 +9,9 @@
 
 namespace SSEngine
 {
+    class Game;
+
+
     class TileMap
     {
     private:
@@ -23,11 +26,15 @@ namespace SSEngine
         std::vector< std::vector< std::vector< Tile* > > > m_Map;
 
     public:
-        TileMap( GameDataRef data );
+        TileMap( GameDataRef data, unsigned int width, unsigned int height );
         virtual ~TileMap();
+        
+        void AddTile( const unsigned& x, const unsigned& y, const unsigned& z );
+        void RemoveTile();
 
         void Update();
         void Draw();
+
     };
 }
 

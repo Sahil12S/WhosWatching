@@ -6,8 +6,8 @@ namespace SSEngine
 void EditorState::InitTextures()
 {
     // Use sprites for background
-    m_Background.setSize(sf::Vector2f(m_Data->window.getSize()));
-    m_Background.setFillColor(sf::Color(97, 143, 216));
+    // m_Background.setSize(sf::Vector2f(m_Data->window.getSize()));
+    // m_Background.setFillColor(sf::Color(97, 143, 216));
 }
 
 void EditorState::InitFonts()
@@ -51,27 +51,17 @@ void EditorState::InitVariables()
     m_Hud->SetText("Title Font", "Editor", TITLE_SIZE, ( m_Data->GfxSettings.resolution.width / 2.0f ), 
                         m_Data->GfxSettings.resolution.height / 6.0f );
 
-    m_Map = new TileMap( m_Data );
+    m_TileMap = new TileMap( m_Data, 10, 10 );
 
     m_Paused = false;
 }
 
 void EditorState::InitComponents()
 {
-    // m_Buttons["Cancel"] = new Button(m_Data);
-    // m_Buttons["Cancel"]->CreateButton(m_Data->window.getSize().x / 13.f - BUTTON_WIDTH / 2.f,
-    //                                         m_Data->window.getSize().y / 15.f - BUTTON_HEIGHT / 2.f,
-    //                                         BUTTON_WIDTH, BUTTON_HEIGHT);
-
-    // std::vector<sf::Color> textColor = {sf::Color(TEXT_IDLE_FILL_COLOR),
-    //                                     sf::Color(TEXT_HOVER_FILL_COLOR),
-    //                                     sf::Color(TEXT_ACTIVE_FILL_COLOR)};
-
-    // std::vector<sf::Color> buttonColor = {sf::Color(BUTTON_IDLE_FILL_COLOR),
-    //                                       sf::Color(BUTTON_HOVER_FILL_COLOR),
-    //                                       sf::Color(BUTTON_ACTIVE_FILL_COLOR)};
-
-    // m_Buttons["Cancel"]->SetButtonProperties("Button Font", "Cancel", BUTTON_TEXT_SIZE, textColor, buttonColor);
+    m_SelectorRect.setSize( sf::Vector2f (GRID_SIZE, GRID_SIZE) );
+    m_SelectorRect.setFillColor( sf::Color::Transparent );
+    m_SelectorRect.setOutlineThickness( 1.f );
+    m_SelectorRect.setOutlineColor( sf::Color::Green );
 
 }
 
@@ -101,6 +91,7 @@ EditorState::~EditorState()
         delete button.second;
     }
     delete m_PauseMenu;
+    delete m_TileMap;
 }
 
 void EditorState::Init()
@@ -141,19 +132,30 @@ void EditorState::HandleInput( float dt )
         else
             m_Paused = false;
     }
-    // if (m_Buttons["Cancel"]->isPressed())
-    // {
-    //     m_Data->machine.AddState(StateRef(new MainMenuState(m_Data)), true);
-    // }
+    if ( !m_Paused )
+    {
+        if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) && m_Data->input.GetKeyTime() )
+        {
+            m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
+        }
 
+    }
 }
 
 void EditorState::UpdateComponents( const float& dt )
 {
+    m_SelectorRect.setPosition( m_Data->input.GetGridMousePosition().x * GRID_SIZE, 
+        m_Data->input.GetGridMousePosition().y * GRID_SIZE );
+
     for (auto button : m_Buttons)
     {
         button.second->Update(m_Data->input.GetViewMousePosition());
     }
+
+}
+
+void EditorState::UpdateButtons()
+{
 
 }
 
@@ -167,12 +169,15 @@ void EditorState::UpdatePauseMenuButtons( )
 
 void EditorState::Update( float dt )
 {
-    m_Data->input.UpdateMousePosition(m_Data->window);
+    m_Data->input.UpdateMousePosition( m_Data->window );
+    // Debug( m_Data->input.GetViewMousePosition().y )
+    // Debug( m_Data->input.GetGridMousePosition().x )
     m_Data->input.UpdateKeyTime( dt );
 
     if ( !m_Paused )
     {
         UpdateComponents( dt );
+        UpdateButtons();
     }
     else
     {
@@ -184,13 +189,14 @@ void EditorState::Update( float dt )
 void EditorState::Draw()
 {
     m_Data->window.clear();
-    m_Data->window.draw(m_Background);
+    // m_Data->window.draw(m_Background);
 
-    m_Map->Draw();
+    m_TileMap->Draw();
 
     if ( !m_Paused )
     {
         m_Hud->Draw(true);
+        m_Data->window.draw( m_SelectorRect );
     }
     else
     {

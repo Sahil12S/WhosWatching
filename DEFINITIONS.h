@@ -134,9 +134,9 @@ enum PlayerTypes
 
 // Tile Map
 
-#define GRID_SIZE 50.f
-#define MAP_WIDTH 50
-#define MAP_HEIGHT 50
+#define GRID_SIZE 100.f
+#define MAP_WIDTH 1000
+#define MAP_HEIGHT 1000
 #define LAYERS 1
 
 #endif // DEFINITIONS_H

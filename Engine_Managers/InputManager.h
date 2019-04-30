@@ -17,6 +17,7 @@ private:
     sf::Vector2i m_MousePosScreen;
     sf::Vector2i m_MousePosWindow;
     sf::Vector2f m_MousePosView;
+    sf::Vector2u m_MousePosGrid;
 
     float m_KeyTime;
     float m_KeyTimeMax;
@@ -35,6 +36,7 @@ public:
     sf::Vector2i GetScreenMousePosition();
     sf::Vector2i GetWindowMousePosition();
     sf::Vector2f GetViewMousePosition();
+    sf::Vector2u GetGridMousePosition();
     const bool GetKeyTime();
 
     std::map<std::string, int>& getSupportedKeys();
