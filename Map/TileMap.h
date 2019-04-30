@@ -29,7 +29,9 @@ namespace SSEngine
         TileMap( GameDataRef data, unsigned int width, unsigned int height );
         virtual ~TileMap();
         
-        void AddTile( const unsigned& x, const unsigned& y, const unsigned& z );
+        const sf::Texture* GetTileSheet() const;
+
+        void AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect );
         void RemoveTile( const unsigned& x, const unsigned& y, const unsigned& z );
 
         void Update();

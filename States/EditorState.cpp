@@ -51,31 +51,40 @@ void EditorState::InitVariables()
     m_Hud->SetText("Title Font", "Editor", TITLE_SIZE, ( m_Data->GfxSettings.resolution.width / 2.0f ), 
                         m_Data->GfxSettings.resolution.height / 6.0f );
 
-    m_TileMap = new TileMap( m_Data, 10, 10 );
+    
 
     m_Paused = false;
+
+    m_textureRect = sf::IntRect( 0, 0, static_cast<int>( GRID_SIZE ), static_cast<int>( GRID_SIZE ) );
 }
 
 void EditorState::InitComponents()
 {
     m_SelectorRect.setSize( sf::Vector2f (GRID_SIZE, GRID_SIZE) );
-    m_SelectorRect.setFillColor( sf::Color::Transparent );
+    m_SelectorRect.setFillColor( sf::Color(255, 255, 255, 150) );
     m_SelectorRect.setOutlineThickness( 1.f );
     m_SelectorRect.setOutlineColor( sf::Color::Green );
-
+    m_SelectorRect.setTexture( m_TileMap->GetTileSheet() );
+    m_SelectorRect.setTextureRect( m_textureRect );
 }
-
-
 
 void EditorState::InitTexts()
 {
-
+    m_CursorText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
+    m_CursorText.setCharacterSize( 20 );
+    m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
+    
 }
 
 void EditorState::InitPauseMenu()
 {
     m_PauseMenu = new PauseMenu( m_Data );
     m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
+}
+
+void EditorState::InitTileMap()
+{
+    m_TileMap = new TileMap( m_Data, 10, 10 );
 }
 
 EditorState::EditorState( GameDataRef data ) : m_Data( std::move( data ) )
@@ -99,13 +108,13 @@ void EditorState::Init()
     Debug("Editor State: Initializing...")
     InitTextures();
     InitFonts();
-    InitSounds();
+    InitSounds();   
     InitKeyBinds();
     InitVariables();
-    InitComponents();
-    InitTexts();
     InitPauseMenu();
-
+    InitTexts();
+    InitTileMap();
+    InitComponents();
 }
 
 void EditorState::HandleInput( float dt )
@@ -134,33 +143,48 @@ void EditorState::HandleInput( float dt )
     }
     if ( !m_Paused )
     {
+        // Add texture
         if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) && m_Data->input.GetKeyTime() )
         {
-            m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
+            m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_textureRect );
         }
+        // Remove texture
         else if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) && m_Data->input.GetKeyTime() )
         {
             m_TileMap->RemoveTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
         }
 
+        // Change texture
+        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Right ) && m_Data->input.GetKeyTime() )
+        {
+            if ( m_textureRect.left < 400 )
+            {
+                m_textureRect.left += 100;
+            }
+        }
     }
 }
 
 void EditorState::UpdateComponents( const float& dt )
 {
+    m_SelectorRect.setTextureRect( m_textureRect );
     m_SelectorRect.setPosition( m_Data->input.GetGridMousePosition().x * GRID_SIZE, 
         m_Data->input.GetGridMousePosition().y * GRID_SIZE );
 
-    for (auto button : m_Buttons)
-    {
-        button.second->Update(m_Data->input.GetViewMousePosition());
-    }
-
+    std::stringstream ss;
+    ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y << '\n' << 
+        m_Data->input.GetGridMousePosition().x << ", " << m_Data->input.GetGridMousePosition().y << '\n' << 
+        m_textureRect.left << " " << m_textureRect.top;
+    m_CursorText.setString( ss.str() );
+    m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
 }
 
 void EditorState::UpdateButtons()
 {
-
+    for (auto button : m_Buttons)
+    {
+        button.second->Update(m_Data->input.GetViewMousePosition());
+    }
 }
 
 void EditorState::UpdatePauseMenuButtons( )
@@ -195,32 +219,21 @@ void EditorState::Draw()
 
     m_TileMap->Draw();
 
-    if ( !m_Paused )
-    {
-        // m_Hud->Draw(true);   
-        m_Data->window.draw( m_SelectorRect );
-    }
-    else
+    m_Data->window.draw( m_SelectorRect );
+    m_Data->window.draw( m_CursorText );
+    
+    if ( m_Paused )
     {
         m_PauseMenu->Draw();
     }
-    
 
     // for (auto button : m_Buttons)
     // {
     //     button.second->Draw();
     // }
     // Draw coordinates on mouse pointer for debugging
-    sf::Text mouseText;
-    mouseText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
-    mouseText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
-    mouseText.setCharacterSize( 20 );
-    std::stringstream ss;
-    ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y;
-    mouseText.setString( ss.str() );
-    m_Data->window.draw( mouseText );
     
-    
+
     m_Data->window.display();
 
 }

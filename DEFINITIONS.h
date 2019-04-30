@@ -101,7 +101,7 @@ enum ButtonState
 #define PAUSE_STATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/PauseStateKeyBinds.ini"
 #define EDITOR_STATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/EditorStateKeyBinds.ini"
 
-#define GRASS_TEXTURE_FILEPATH "../Resources/img/grass100x100.png"
+#define TILES_TEXTURE_FILEPATH "../Resources/img/tiles.png"
 
 
 enum MovementStates

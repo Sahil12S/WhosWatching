@@ -29,15 +29,21 @@ private:
 
     sf::RectangleShape m_SelectorRect;
 
+    // Places a rectangle on tile sheet which decides which texture we are using.
+    sf::IntRect m_textureRect;
+
+    sf::Text m_CursorText;
+
     // Initializers
     void InitKeyBinds();
     void InitTextures();
     void InitFonts();
     void InitSounds();
     void InitVariables();
-    void InitComponents();
     void InitTexts();
     void InitPauseMenu();
+    void InitTileMap();
+    void InitComponents();
 
 public:
     EditorState( GameDataRef data );

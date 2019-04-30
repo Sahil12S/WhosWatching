@@ -16,7 +16,7 @@ namespace SSEngine
 
     public:
         // Tile( GameDataRef data );
-        Tile( GameDataRef data, float x, float y, float gridSizeF, const std::string& texture_name  );
+        Tile( GameDataRef data, float x, float y, float gridSizeF, const std::string& texture_name, const sf::IntRect& texture_rect );
         virtual ~Tile();
 
         void Update();

@@ -24,7 +24,7 @@ namespace SSEngine
             }
         }
 
-        m_Data->assets.LoadTexture( "grass", GRASS_TEXTURE_FILEPATH );
+        m_Data->assets.LoadTexture( "tiles", TILES_TEXTURE_FILEPATH );
 
     }
 
@@ -46,7 +46,12 @@ namespace SSEngine
         }
     }
 
-    void TileMap::AddTile( const unsigned& x, const unsigned& y, const unsigned& z )
+    const sf::Texture* TileMap::GetTileSheet() const
+    {
+        return &m_Data->assets.GetTexture("tiles");
+    }
+
+    void TileMap::AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect )
     {
         /*
          * Take 2 indices of mouse position and add a tile to that position
@@ -60,7 +65,7 @@ namespace SSEngine
             if ( m_Map[x][y][z] == nullptr )
             {
                 /* No tile at this location. Okay to add. */
-                m_Map[x][y][z] = new Tile( m_Data, x, y, m_GridSizeF, "grass" );
+                m_Map[x][y][z] = new Tile( m_Data, x, y, m_GridSizeF, "tiles", texture_rect );
             }
         }
     }
