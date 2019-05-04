@@ -190,7 +190,7 @@ void EditorState::UpdateGui()
     m_CursorText.setString( ss.str() );
     m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
 
-    m_TS->Update();
+    m_TS->Update( m_Data->input.GetWindowMousePosition() );
 
 }
 

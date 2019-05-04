@@ -16,6 +16,7 @@ void Game::InitWindow()
 {
     if ( m_Data->GfxSettings.fullscreen )
     {
+        std::cout << "FULLSCREEN" << std::endl;
         m_Data->window.create(
                             m_Data->GfxSettings.resolution,
                             m_Data->GfxSettings.title,
@@ -24,6 +25,7 @@ void Game::InitWindow()
     }
     else
     {
+        std::cout << "NOT FULLSCREEN" << std::endl;
         m_Data->window.create(
                             m_Data->GfxSettings.resolution,
                             m_Data->GfxSettings.title,
