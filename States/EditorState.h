@@ -31,7 +31,7 @@ private:
     sf::RectangleShape m_SelectorRect;
 
     // Places a rectangle on tile sheet which decides which texture we are using.
-    sf::IntRect m_textureRect;
+    sf::IntRect m_TextureRect;
 
     sf::Text m_CursorText;
 

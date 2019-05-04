@@ -5,7 +5,7 @@ void EditorState::InitVariables()
 {
     m_Paused = false;
 
-    m_textureRect = sf::IntRect( 0, 0, static_cast<int>( GRID_SIZE ), static_cast<int>( GRID_SIZE ) );
+    m_TextureRect = sf::IntRect( 0, 0, static_cast<int>( GRID_SIZE ), static_cast<int>( GRID_SIZE ) );
 }
 
 void EditorState::InitTextures()
@@ -84,7 +84,7 @@ void EditorState::InitGui()
     m_SelectorRect.setOutlineThickness( 1.f );
     m_SelectorRect.setOutlineColor( sf::Color::Green );
     m_SelectorRect.setTexture( &m_Data->assets.GetTexture( m_TileMap->GetTileSheet() ) );
-    m_SelectorRect.setTextureRect( m_textureRect );
+    m_SelectorRect.setTextureRect( m_TextureRect );
 
     m_TS = new gui::TextureSelector( m_Data, 20.f, 20.f, 500.f, 500.f, m_TileMap->GetTileSheet() );
 }
@@ -150,22 +150,33 @@ void EditorState::HandleInput( float dt )
         // Add texture
         if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) && m_Data->input.GetKeyTime() )
         {
-            m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_textureRect );
+            if ( !m_TS->GetActive() )
+            {
+                m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_TextureRect );
+            }
+            else
+            {
+                m_TextureRect = m_TS->GetTextureRect();
+            }
+            
         }
         // Remove texture
         else if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) && m_Data->input.GetKeyTime() )
         {
-            m_TileMap->RemoveTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
+            if ( !m_TS->GetActive() )
+            {
+                m_TileMap->RemoveTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
+            }
         }
 
         // Change texture
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Right ) && m_Data->input.GetKeyTime() )
-        {
-            if ( m_textureRect.left < 400 )
-            {
-                m_textureRect.left += 100;
-            }
-        }
+        // if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Right ) && m_Data->input.GetKeyTime() )
+        // {
+        //     if ( m_TextureRect.left < 400 )
+        //     {
+        //         m_TextureRect.left += 100;
+        //     }
+        // }
     }
 }
 
@@ -179,18 +190,23 @@ void EditorState::UpdateButtons()
 
 void EditorState::UpdateGui()
 {
-    m_SelectorRect.setTextureRect( m_textureRect );
-    m_SelectorRect.setPosition( m_Data->input.GetGridMousePosition().x * GRID_SIZE, 
-        m_Data->input.GetGridMousePosition().y * GRID_SIZE );
+    m_TS->Update( m_Data->input.GetWindowMousePosition() );
+
+    if ( !m_TS->GetActive() )
+    {
+        m_SelectorRect.setTextureRect( m_TextureRect );
+        m_SelectorRect.setPosition( m_Data->input.GetGridMousePosition().x * GRID_SIZE, 
+            m_Data->input.GetGridMousePosition().y * GRID_SIZE );
+
+    }
 
     std::stringstream ss;
     ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y << '\n' << 
         m_Data->input.GetGridMousePosition().x << ", " << m_Data->input.GetGridMousePosition().y << '\n' << 
-        m_textureRect.left << " " << m_textureRect.top;
+        m_TextureRect.left << " " << m_TextureRect.top;
     m_CursorText.setString( ss.str() );
     m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
 
-    m_TS->Update( m_Data->input.GetWindowMousePosition() );
 
 }
 
@@ -227,7 +243,10 @@ void EditorState::Draw()
     m_TileMap->Draw();
 
     // Render GUI
-    m_Data->window.draw( m_SelectorRect );
+    if ( !m_TS->GetActive() )
+    {
+        m_Data->window.draw( m_SelectorRect );
+    }
     m_TS->Draw();
     m_Data->window.draw( m_CursorText );
     

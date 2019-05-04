@@ -31,6 +31,7 @@ namespace gui
 
             // Accessors
             const bool& GetActive() const;
+            const sf::IntRect& GetTextureRect() const;
 
             void Update( const sf::Vector2i& mousePostion );
             void Draw();

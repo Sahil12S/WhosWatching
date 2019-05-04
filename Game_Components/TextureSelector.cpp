@@ -40,6 +40,9 @@ namespace gui
         m_Selector.setOutlineThickness( 1.f );
         m_Selector.setOutlineColor( sf::Color::Red );
 
+        m_TextuerRect.width = static_cast<int>( GRID_SIZE );
+        m_TextuerRect.height = static_cast<int>( GRID_SIZE );
+
     }
     
     TextureSelector::~TextureSelector()
@@ -50,6 +53,11 @@ namespace gui
     const bool& TextureSelector::GetActive( ) const
     {
         return m_Active;
+    }
+
+    const sf::IntRect& TextureSelector::GetTextureRect() const
+    {
+        return m_TextuerRect;
     }
 
     void TextureSelector::Update( const sf::Vector2i& mousePostion )
@@ -73,6 +81,9 @@ namespace gui
                 m_Bounds.getPosition().x + m_MousePosGrid.x * GRID_SIZE,
                 m_Bounds.getPosition().y + m_MousePosGrid.y * GRID_SIZE
             );
+
+            m_TextuerRect.left = static_cast<int>( m_Selector.getPosition().x - static_cast<int>( m_Bounds.getPosition().x ) );
+            m_TextuerRect.top = static_cast<int>( m_Selector.getPosition().y - static_cast<int>( m_Bounds.getPosition().y ) );
         }
     }
 
@@ -80,6 +91,9 @@ namespace gui
     {
         m_Data->window.draw( m_Bounds );
         m_Data->window.draw( m_Sheet );
-        m_Data->window.draw( m_Selector );
+        if( m_Active )
+        {
+            m_Data->window.draw( m_Selector );
+        }
     }
 }
