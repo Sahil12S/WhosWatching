@@ -28,7 +28,7 @@ public:
 
     void InitKeys();
 
-    void UpdateMousePosition(sf::RenderWindow &window);
+    void UpdateMousePosition(sf::RenderWindow &window, sf::View* view = nullptr);
     void UpdateKeyTime( const float& dt );
 
     sf::Vector2i GetScreenMousePosition();

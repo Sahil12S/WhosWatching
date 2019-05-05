@@ -17,6 +17,8 @@ class EditorState : public State
 private:
     GameDataRef m_Data;
 
+    sf::View m_MainView;
+
     gui::HUD* m_Hud;
     gui::TextureSelector* m_TS;
 
@@ -40,6 +42,7 @@ private:
 
     // Initializers
     void InitVariables();
+    void InitView();
     void InitTextures();
     void InitFonts();
     void InitSounds();

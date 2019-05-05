@@ -11,6 +11,14 @@ void EditorState::InitVariables()
     m_Type = TileType::eDefault;
 }
 
+void EditorState::InitView()
+{
+    m_MainView.setSize( sf::Vector2f( m_Data->GfxSettings.resolution.width, m_Data->GfxSettings.resolution.height ) );
+    m_MainView.setCenter( sf::Vector2f( 
+        m_Data->GfxSettings.resolution.width / 2.f, 
+        m_Data->GfxSettings.resolution.height / 2.f ) );
+}
+
 void EditorState::InitTextures()
 {
     // m_Data->assets.LoadTexture( )
@@ -99,7 +107,6 @@ void EditorState::InitGui()
 
 EditorState::EditorState( GameDataRef data ) : m_Data( std::move( data ) )
 {
-
 }
 
 EditorState::~EditorState()
@@ -115,6 +122,7 @@ void EditorState::Init()
 {
     Debug("Editor State: Initializing...")
     InitVariables();
+    InitView();
     InitTextures();
     InitFonts();
     InitSounds();
@@ -138,6 +146,23 @@ void EditorState::HandleInput( float dt )
             m_Data->machine.RemoveState();
             m_Data->window.close();
         }
+    }
+
+    if( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["MOVE_CAMERA_UP"] ) ) ) )
+    {
+        m_MainView.move( 0.f, -CAMERA_SPEED * dt );
+    }
+    else if( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["MOVE_CAMERA_DOWN"] ) ) ) )
+    {
+        m_MainView.move( 0.f, CAMERA_SPEED * dt );
+    }
+    else if( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["MOVE_CAMERA_LEFT"] ) ) ) )
+    {
+        m_MainView.move( -CAMERA_SPEED * dt, 0.f );
+    }
+    else if( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["MOVE_CAMERA_RIGHT"] ) ) ) )
+    {
+        m_MainView.move( CAMERA_SPEED * dt, 0.f );
     }
 
     if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && m_Data->input.GetKeyTime() )
@@ -241,7 +266,7 @@ void EditorState::UpdatePauseMenuButtons( )
 
 void EditorState::Update( float dt )
 {
-    m_Data->input.UpdateMousePosition( m_Data->window );
+    m_Data->input.UpdateMousePosition( m_Data->window, &m_MainView );
     m_Data->input.UpdateKeyTime( dt );
 
     if ( !m_Paused )
@@ -258,9 +283,11 @@ void EditorState::Update( float dt )
 void EditorState::Draw()
 {
     m_Data->window.clear();
-    // m_Data->window.draw(m_Background);
-
+    
+    m_Data->window.setView( m_MainView );
     m_TileMap->Draw();
+
+    m_Data->window.setView( m_Data->window.getDefaultView() );
 
     // Render GUI
     if ( !m_TS->GetActive() )

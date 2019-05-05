@@ -56,15 +56,23 @@ std::map<std::string, int>& InputManager::getSupportedKeys()
     return m_SupportedKeys;
 }
 
-void InputManager::UpdateMousePosition(sf::RenderWindow &window)
+void InputManager::UpdateMousePosition(sf::RenderWindow &window,sf::View* view )
 {
     m_MousePosScreen = sf::Mouse::getPosition();
     m_MousePosWindow = sf::Mouse::getPosition( window );
+
+    if( view )
+    {
+        window.setView( *view );
+    }
+
     m_MousePosView = window.mapPixelToCoords( sf::Mouse::getPosition( window ) );
     m_MousePosGrid = sf::Vector2u (
         static_cast<unsigned>( m_MousePosView.x ) / static_cast<unsigned>( GRID_SIZE ),
         static_cast<unsigned>( m_MousePosView.y ) / static_cast<unsigned>( GRID_SIZE )
     );
+
+    window.setView( window.getDefaultView() );
 
 }
 
