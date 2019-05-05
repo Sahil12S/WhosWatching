@@ -64,9 +64,6 @@ void EditorState::InitPauseMenu()
     m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
 }
 
-void EditorState::InitButtons()
-{
-}
 
 void EditorState::InitTileMap()
 {
@@ -74,7 +71,12 @@ void EditorState::InitTileMap()
 }
 
 void EditorState::InitGui()
-{
+{   
+    m_SideBar.setSize( sf::Vector2f( 80.f, static_cast<float>( m_Data->GfxSettings.resolution.height ) ) );
+    m_SideBar.setFillColor( sf::Color( 50, 50, 50, 100) );
+    m_SideBar.setOutlineColor( sf::Color( 200, 200, 200, 150 ) );
+    m_SideBar.setOutlineThickness( 1.f );
+
     m_Hud = new gui::HUD(m_Data);
     m_Hud->SetText("Title Font", "Editor", TITLE_SIZE, ( m_Data->GfxSettings.resolution.width / 2.0f ), 
                         m_Data->GfxSettings.resolution.height / 6.0f );
@@ -88,6 +90,7 @@ void EditorState::InitGui()
 
     // Area of texture selector
     m_TS = new gui::TextureSelector( m_Data, 20.f, 20.f, 500.f, 500.f, m_TileMap->GetTileSheet() );
+
 }
 
 EditorState::EditorState( GameDataRef data ) : m_Data( std::move( data ) )
@@ -98,10 +101,6 @@ EditorState::EditorState( GameDataRef data ) : m_Data( std::move( data ) )
 EditorState::~EditorState()
 {
     delete m_Hud;
-    for (const auto &button : m_Buttons)
-    {
-        delete button.second;
-    }
     delete m_PauseMenu;
     delete m_TileMap;
     delete m_TS;
@@ -117,7 +116,6 @@ void EditorState::Init()
     InitKeyBinds();
     InitTexts();
     InitPauseMenu();
-    InitButtons();
     InitTileMap();
     InitGui();
 }
@@ -151,24 +149,30 @@ void EditorState::HandleInput( float dt )
         // Add texture
         if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) && m_Data->input.GetKeyTime() )
         {
-            if ( !m_TS->GetActive() )
+            if ( !m_SideBar.getGlobalBounds().contains( sf::Vector2f( m_Data->input.GetWindowMousePosition() ) ) )
             {
-                m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_TextureRect );
+                if ( !m_TS->GetActive() )
+                {
+                    m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_TextureRect );
+                }
+                else
+                {
+                    m_TextureRect = m_TS->GetTextureRect();
+                }
             }
-            else
-            {
-                m_TextureRect = m_TS->GetTextureRect();
-            }
-            
         }
         // Remove texture
         else if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) && m_Data->input.GetKeyTime() )
         {
-            if ( !m_TS->GetActive() )
+            if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) && m_Data->input.GetKeyTime() )
             {
-                m_TileMap->RemoveTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
+                if ( !m_TS->GetActive() )
+                {
+                    m_TileMap->RemoveTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 );
+                }
             }
         }
+
 
         // Change texture
         // if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Right ) && m_Data->input.GetKeyTime() )
@@ -181,17 +185,9 @@ void EditorState::HandleInput( float dt )
     }
 }
 
-void EditorState::UpdateButtons()
+void EditorState::UpdateGui( const float& dt )
 {
-    for (auto button : m_Buttons)
-    {
-        button.second->Update(m_Data->input.GetViewMousePosition());
-    }
-}
-
-void EditorState::UpdateGui()
-{
-    m_TS->Update( m_Data->input.GetWindowMousePosition() );
+    m_TS->Update( dt, m_Data->input.GetWindowMousePosition() );
 
     if ( !m_TS->GetActive() )
     {
@@ -226,8 +222,7 @@ void EditorState::Update( float dt )
 
     if ( !m_Paused )
     {
-        UpdateButtons();
-        UpdateGui();
+        UpdateGui( dt );
     }
     else
     {
@@ -250,6 +245,8 @@ void EditorState::Draw()
     }
     m_TS->Draw();
     m_Data->window.draw( m_CursorText );
+
+    m_Data->window.draw( m_SideBar );
     
     if ( m_Paused )
     {

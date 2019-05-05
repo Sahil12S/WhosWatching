@@ -61,7 +61,7 @@ namespace gui
 
         m_Data->assets.LoadFont( "Button Font", BUTTON_FONT_FILEPATH );
 
-        m_HideBtn->SetButtonProperties( "Button Font", "TS", BUTTON_TEXT_SIZE, textColor, buttonColor );
+        m_HideBtn->SetButtonProperties( "Button Font", "TS", 30.f, textColor, buttonColor );
     }
 
     TextureSelector::~TextureSelector()
@@ -79,11 +79,13 @@ namespace gui
         return m_TextuerRect;
     }
 
-    void TextureSelector::Update( const sf::Vector2i& mousePostion )
+    void TextureSelector::Update( const float& dt, const sf::Vector2i& mousePostion )
     {
+        m_Data->input.UpdateKeyTime( dt );
         m_HideBtn->Update( static_cast<sf::Vector2f>( mousePostion ) );
 
-        if ( m_HideBtn->isPressed() )
+        // Button should be in editor state controlling texture selector.
+        if ( m_HideBtn->isPressed() && m_Data->input.GetKeyTime() )
         {
             m_Hidden = !m_Hidden;
         }

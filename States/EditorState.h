@@ -24,11 +24,11 @@ private:
     TileMap* m_TileMap;
 
     std::map<std::string, int> m_KeyBinds;
-    std::map<std::string, gui::Button*> m_Buttons;
 
     bool m_Paused;
 
     sf::RectangleShape m_SelectorRect;
+    sf::RectangleShape m_SideBar;
 
     // Places a rectangle on tile sheet which decides which texture we are using.
     sf::IntRect m_TextureRect;
@@ -43,7 +43,6 @@ private:
     void InitKeyBinds();
     void InitTexts();
     void InitPauseMenu();
-    void InitButtons();
     void InitTileMap();
     void InitGui();
 
@@ -57,8 +56,7 @@ public:
     void Init() override;
     void HandleInput( float dt ) override;
 
-    void UpdateButtons();
-    void UpdateGui();
+    void UpdateGui( const float& dt );
     void UpdatePauseMenuButtons();
     void Update( float dt ) override;
     void Draw() override;
