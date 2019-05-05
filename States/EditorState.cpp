@@ -86,6 +86,7 @@ void EditorState::InitGui()
     m_SelectorRect.setTexture( &m_Data->assets.GetTexture( m_TileMap->GetTileSheet() ) );
     m_SelectorRect.setTextureRect( m_TextureRect );
 
+    // Area of texture selector
     m_TS = new gui::TextureSelector( m_Data, 20.f, 20.f, 500.f, 500.f, m_TileMap->GetTileSheet() );
 }
 

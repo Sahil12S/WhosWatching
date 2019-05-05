@@ -3,7 +3,7 @@
 
 #include "../pch.cpp"
 #include "../Game.h"
-
+#include "Button.h"
 
 namespace gui
 {
@@ -14,13 +14,26 @@ namespace gui
         private:
             GameDataRef m_Data;
 
+            // Size of each tile
             float m_GridSize;
+            // Check if texture selector is active ( mouse pointer is over it )
             bool m_Active;
+            // Check if texture selector is hidden
+            bool m_Hidden;
 
+            // Button to toggle texture selector window
+            gui::Button* m_HideBtn;
+
+            // Bounds of texture selector area
             sf::RectangleShape m_Bounds;
+            
+            // To hold the sprite
             sf::Sprite m_Sheet;
 
+            // Rectangle to select each tile
             sf::RectangleShape m_Selector;
+            
+            // Mouse position in grid
             sf::Vector2u m_MousePosGrid;
             sf::IntRect m_TextuerRect;
             

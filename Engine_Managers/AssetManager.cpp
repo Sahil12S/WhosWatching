@@ -39,7 +39,7 @@ void AssetManager::LoadFont(const std::string& name, const std::string& fileName
     if ( font.loadFromFile( fileName ) )
     {
         m_Fonts[name] = font;
-        Debug( "Loaded font " + name )
+        // Debug( "Loaded font " + name )
     }
     else
     {

@@ -7,15 +7,17 @@ namespace gui
     {
         m_GridSize = GRID_SIZE;
         m_Active = false;
+        m_Hidden = false;
+        float offset = 60.f;
         
-        m_Bounds.setPosition( x, y );
+        m_Bounds.setPosition( x + offset, y );
         m_Bounds.setSize( sf::Vector2f( width, height ) );
         m_Bounds.setFillColor( sf::Color( 50, 50, 50, 100 ) );
         m_Bounds.setOutlineThickness( 1.f );
         m_Bounds.setOutlineColor( sf::Color( 255, 255, 255, 200 ) );
 
         m_Sheet.setTexture( m_Data->assets.GetTexture( texture_sheet ) );
-        m_Sheet.setPosition( x, y );
+        m_Sheet.setPosition( x + offset, y );
 
         /*
          * Check if our bounds is well within available size of sheet
@@ -32,7 +34,7 @@ namespace gui
             m_Sheet.setTextureRect( sf::IntRect( 0, 0, m_Sheet.getGlobalBounds().width, m_Bounds.getGlobalBounds().height ) );
         }
 
-        m_Selector.setPosition( x, y );
+        m_Selector.setPosition( x + offset, y );
         
         // Do we need to pass this value from parameter?
         m_Selector.setSize( sf::Vector2f ( m_GridSize, m_GridSize ) );
@@ -40,14 +42,31 @@ namespace gui
         m_Selector.setOutlineThickness( 1.f );
         m_Selector.setOutlineColor( sf::Color::Red );
 
-        m_TextuerRect.width = static_cast<int>( GRID_SIZE );
-        m_TextuerRect.height = static_cast<int>( GRID_SIZE );
+        m_TextuerRect.width = static_cast<int>( m_GridSize );
+        m_TextuerRect.height = static_cast<int>( m_GridSize );
 
+
+        // Drawing the button
+        m_HideBtn = new gui::Button( m_Data );
+
+        m_HideBtn->CreateButton(  20.f, 20.f, 30.f, 30.f );
+
+        std::vector<sf::Color> textColor = { sf::Color( TEXT_IDLE_FILL_COLOR ),
+                                                sf::Color( TEXT_HOVER_FILL_COLOR ),
+                                                sf::Color( TEXT_ACTIVE_FILL_COLOR ) };
+
+        std::vector<sf::Color> buttonColor = { sf::Color( BUTTON_IDLE_FILL_COLOR ),
+                                                sf::Color( BUTTON_HOVER_FILL_COLOR ),
+                                                sf::Color( BUTTON_ACTIVE_FILL_COLOR ) };
+
+        m_Data->assets.LoadFont( "Button Font", BUTTON_FONT_FILEPATH );
+
+        m_HideBtn->SetButtonProperties( "Button Font", "TS", BUTTON_TEXT_SIZE, textColor, buttonColor );
     }
-    
+
     TextureSelector::~TextureSelector()
     {
-        
+        delete m_HideBtn;
     }
 
     const bool& TextureSelector::GetActive( ) const
@@ -62,38 +81,52 @@ namespace gui
 
     void TextureSelector::Update( const sf::Vector2i& mousePostion )
     {
-        if( m_Bounds.getGlobalBounds().contains( static_cast<sf::Vector2f>( mousePostion ) ) )
+        m_HideBtn->Update( static_cast<sf::Vector2f>( mousePostion ) );
+
+        if ( m_HideBtn->isPressed() )
         {
-            m_Active = true;
+            m_Hidden = !m_Hidden;
         }
-        else
+
+        if ( !m_Hidden )
         {
-            m_Active = false;
-        }
-        
+            if( m_Bounds.getGlobalBounds().contains( static_cast<sf::Vector2f>( mousePostion ) ) )
+            {
+                m_Active = true;
+            }
+            else
+            {
+                m_Active = false;
+            }
+            
+            if ( m_Active )
+            {
+                m_MousePosGrid.x = ( mousePostion.x - static_cast<int>( m_Bounds.getPosition().x ) ) / static_cast<unsigned>( m_GridSize );
+                m_MousePosGrid.y = ( mousePostion.y - static_cast<int>( m_Bounds.getPosition().y ) ) / static_cast<unsigned>( m_GridSize );
 
-        if ( m_Active )
-        {
-            m_MousePosGrid.x = ( mousePostion.x - static_cast<int>( m_Bounds.getPosition().x ) ) / static_cast<unsigned>( GRID_SIZE );
-            m_MousePosGrid.y = ( mousePostion.y - static_cast<int>( m_Bounds.getPosition().y ) ) / static_cast<unsigned>( GRID_SIZE );
+                m_Selector.setPosition( 
+                    m_Bounds.getPosition().x + m_MousePosGrid.x * m_GridSize,
+                    m_Bounds.getPosition().y + m_MousePosGrid.y * m_GridSize
+                );
 
-            m_Selector.setPosition( 
-                m_Bounds.getPosition().x + m_MousePosGrid.x * GRID_SIZE,
-                m_Bounds.getPosition().y + m_MousePosGrid.y * GRID_SIZE
-            );
-
-            m_TextuerRect.left = static_cast<int>( m_Selector.getPosition().x - static_cast<int>( m_Bounds.getPosition().x ) );
-            m_TextuerRect.top = static_cast<int>( m_Selector.getPosition().y - static_cast<int>( m_Bounds.getPosition().y ) );
+                m_TextuerRect.left = static_cast<int>( m_Selector.getPosition().x - static_cast<int>( m_Bounds.getPosition().x ) );
+                m_TextuerRect.top = static_cast<int>( m_Selector.getPosition().y - static_cast<int>( m_Bounds.getPosition().y ) );
+            }
         }
     }
 
     void TextureSelector::Draw()
     {
-        m_Data->window.draw( m_Bounds );
-        m_Data->window.draw( m_Sheet );
-        if( m_Active )
+        m_HideBtn->Draw();
+
+        if ( !m_Hidden )
         {
-            m_Data->window.draw( m_Selector );
+            m_Data->window.draw( m_Bounds );
+            m_Data->window.draw( m_Sheet );
+            if( m_Active )
+            {
+                m_Data->window.draw( m_Selector );
+            }
         }
     }
 }
