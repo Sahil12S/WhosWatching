@@ -49,15 +49,15 @@ namespace gui
         // Drawing the button
         m_HideBtn = new gui::Button( m_Data );
 
-        m_HideBtn->CreateButton(  20.f, 20.f, 30.f, 30.f );
+        m_HideBtn->CreateButton(  20.f, 20.f, 50.f, 50.f );
 
         std::vector<sf::Color> textColor = { sf::Color( TEXT_IDLE_FILL_COLOR ),
                                                 sf::Color( TEXT_HOVER_FILL_COLOR ),
                                                 sf::Color( TEXT_ACTIVE_FILL_COLOR ) };
 
-        std::vector<sf::Color> buttonColor = { sf::Color( BUTTON_IDLE_FILL_COLOR ),
-                                                sf::Color( BUTTON_HOVER_FILL_COLOR ),
-                                                sf::Color( BUTTON_ACTIVE_FILL_COLOR ) };
+        std::vector<sf::Color> buttonColor = { sf::Color( 70, 70, 70, 200 ),
+                                                sf::Color( 150, 150, 150, 200 ),
+                                                sf::Color( 20, 20, 20, 200 ) };
 
         m_Data->assets.LoadFont( "Button Font", BUTTON_FONT_FILEPATH );
 

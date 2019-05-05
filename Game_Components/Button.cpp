@@ -53,9 +53,11 @@ namespace gui
                 m_Shape.getPosition().x +
                 m_Shape.getGlobalBounds().width / 2.0f -
                 m_Text.getGlobalBounds().width / 2.0f,
-                m_Shape.getPosition().y +
-                m_Shape.getGlobalBounds().height / 2.0f -
-                m_Text.getGlobalBounds().height / 2.0f );
+                m_Shape.getPosition().y );
+        // Correct text position
+        // +
+        //         m_Shape.getGlobalBounds().height / 2.0f -
+        //         m_Text.getGlobalBounds().height / 2.0f
 
 
     }

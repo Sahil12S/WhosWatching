@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_COMPILER  /usr/bin/g++)
 set(CMAKE_C_COMPILER /usr/bin/gcc)
 
+
 set( SOURCE_FILES main.cpp pch.cpp Game.cpp 
 Engine_Managers/StateMachine.cpp Engine_Managers/InputManager.cpp 
 Engine_Managers/AssetManager.cpp Engine_Managers/GraphicsSettings.cpp 

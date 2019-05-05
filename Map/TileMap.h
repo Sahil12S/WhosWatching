@@ -20,6 +20,8 @@ private:
     unsigned m_Layers;
     sf::Vector2f m_MapSize;
 
+    std::string m_TextureFile;
+
     // 3D vector to store tiles and layers
     std::vector< std::vector< std::vector< Tile* > > > m_Map;
 
@@ -30,7 +32,13 @@ public:
     const std::string GetTileSheet() const;
 
     void AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect );
+    // Remove tile from map
     void RemoveTile( const unsigned& x, const unsigned& y, const unsigned& z );
+
+    // Save complete tilemap to a text file
+    void SaveToFile( const std::string file_name );
+    // Load map from a text file
+    void LoadFromFile( const std::string file_name );
 
     void Update();
     void Draw();

@@ -79,8 +79,6 @@ enum ButtonState
 #define OUTLINE_COLOR_HOVER 255, 255, 255, 255
 #define OUTLINE_COLOR_ACTIVE 20, 20, 20, 50
 
-
-
 #define POWER_UP_TILE_FACTOR 2.f
 
 #define GRAVITY 250.0f
@@ -103,6 +101,12 @@ enum ButtonState
 
 #define TILES_TEXTURE_FILEPATH "../Resources/img/tiles.png"
 
+// Tile Map
+
+#define GRID_SIZE 100.f
+#define MAP_WIDTH 1000
+#define MAP_HEIGHT 1000
+#define LAYERS 1
 
 enum MovementStates
 {
@@ -134,11 +138,10 @@ enum PlayerTypes
     ePowered
 };
 
-// Tile Map
-
-#define GRID_SIZE 100.f
-#define MAP_WIDTH 1000
-#define MAP_HEIGHT 1000
-#define LAYERS 1
+enum TileType
+{
+    eDefault = 0,
+    eDamaging
+};
 
 #endif // DEFINITIONS_H

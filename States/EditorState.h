@@ -24,6 +24,7 @@ private:
     TileMap* m_TileMap;
 
     std::map<std::string, int> m_KeyBinds;
+    std::map<std::string, gui::Button*> m_Buttons;
 
     bool m_Paused;
 

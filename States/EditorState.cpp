@@ -62,6 +62,7 @@ void EditorState::InitPauseMenu()
 {
     m_PauseMenu = new PauseMenu( m_Data );
     m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
+    m_PauseMenu->AddButton("Save", m_Data->GfxSettings.resolution.height / 1.5f , "Save");
 }
 
 
@@ -138,12 +139,13 @@ void EditorState::HandleInput( float dt )
     if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
                     m_Data->input.GetKeyTime() )
     {
-        Debug( "Editor State: Game Paused" )
+        // Debug( "Editor State: Game Paused" )
         if ( !m_Paused )
             m_Paused = true;
         else
             m_Paused = false;
     }
+
     if ( !m_Paused )
     {
         // Add texture
@@ -164,7 +166,7 @@ void EditorState::HandleInput( float dt )
         // Remove texture
         else if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) && m_Data->input.GetKeyTime() )
         {
-            if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) && m_Data->input.GetKeyTime() )
+            if ( !m_SideBar.getGlobalBounds().contains( sf::Vector2f( m_Data->input.GetWindowMousePosition() ) ) )
             {
                 if ( !m_TS->GetActive() )
                 {
@@ -213,6 +215,12 @@ void EditorState::UpdatePauseMenuButtons( )
     {
         m_Data->machine.AddState( StateRef ( new MainMenuState ( m_Data ) ), true );
     }
+
+    if ( m_PauseMenu->IsButtonPressed("Save") && m_Data->input.GetKeyTime() )
+    {
+        m_TileMap->SaveToFile("myMap.txt");
+    }
+
 }
 
 void EditorState::Update( float dt )

@@ -10,11 +10,24 @@ Tile::Tile( GameDataRef data, float x, float y, float gridSizeF, const std::stri
     m_Shape.setPosition( x * gridSizeF, y * gridSizeF );
     m_Shape.setTexture( &m_Data->assets.GetTexture( texture_name ));
     m_Shape.setTextureRect( texture_rect );
+
+    m_Type = 0;
+    m_Collision = false;
 }
 
 Tile::~Tile()
 {
+    std::cout <<"Destructor called" << std::endl;
+    // delete m_Shape;
 
+}
+
+const std::string Tile::getAsString() const
+{
+    std::stringstream ss;
+    ss << m_Shape.getTextureRect().left << " " << m_Shape.getTextureRect().top << " " << m_Collision << " " << m_Type;
+    
+    return ss.str();
 }
 
 void Tile::Update()

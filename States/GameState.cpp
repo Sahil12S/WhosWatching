@@ -107,7 +107,7 @@ void GameState::HandleInput( float dt )
     if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
                     m_Data->input.GetKeyTime() )
     {
-        Debug( "Game State: Game Paused" )
+        // Debug( "Game State: Game Paused" )
         if ( !m_Paused )
             m_Paused = true;
         else
