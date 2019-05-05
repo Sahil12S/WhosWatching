@@ -61,7 +61,8 @@ void EditorState::InitPauseMenu()
 {
     m_PauseMenu = new PauseMenu( m_Data );
     m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
-    m_PauseMenu->AddButton("Save", m_Data->GfxSettings.resolution.height / 1.5f , "Save");
+    m_PauseMenu->AddButton("Save", m_Data->GfxSettings.resolution.height / 1.3f , "Save");
+    m_PauseMenu->AddButton("Load", m_Data->GfxSettings.resolution.height / 1.4f , "Load");
 }
 
 
@@ -219,6 +220,11 @@ void EditorState::UpdatePauseMenuButtons( )
     if ( m_PauseMenu->IsButtonPressed("Save") && m_Data->input.GetKeyTime() )
     {
         m_TileMap->SaveToFile("myMap.txt");
+    }
+
+    if ( m_PauseMenu->IsButtonPressed("Load") && m_Data->input.GetKeyTime() )
+    {
+        m_TileMap->LoadFromFile("myMap.txt");
     }
 
 }
