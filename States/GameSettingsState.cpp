@@ -60,8 +60,8 @@ void GameSettingsState::InitVariables()
 }
 
 /*
-    * Initialize Buttons and Dropdown list
-    */
+* Initialize Buttons and Dropdown list
+*/
 void GameSettingsState::InitComponents()
 {
     Debug( "Settings State: Initializing components...")
@@ -103,7 +103,6 @@ void GameSettingsState::InitComponents()
     m_DropdownList["Resolution"] = new gui::DropDownList( m_Data, "DDList Font",  m_Data->window.getSize().x / 2.f - LIST_WIDTH / 2.f, 400.f, modes_str.data(), modes_str.size() );
 }
 
-
 void GameSettingsState::InitTexts()
 {
     m_OptionsText.setFont( m_Data->assets.GetFont( "Text Font" ) );
@@ -120,6 +119,7 @@ GameSettingsState::GameSettingsState( GameDataRef data) : m_Data ( move( data ) 
 
 GameSettingsState::~GameSettingsState()
 {
+    Debug( "[DEBUG] Destructor of Game Settings state")
     delete m_Hud;
     for ( const auto& button : m_Buttons )
     {
@@ -193,10 +193,9 @@ void GameSettingsState::HandleInput( float dt )
     }
 }
 
-
-    void GameSettingsState::UpdateComponents( const float& dt )
-    {
-        for ( auto button : m_Buttons )
+void GameSettingsState::UpdateComponents( const float& dt )
+{
+    for ( auto button : m_Buttons )
     {
         button.second->Update(m_Data->input.GetViewMousePosition());
     }
@@ -206,7 +205,7 @@ void GameSettingsState::HandleInput( float dt )
     {
         dl.second->Update(dt, m_Data->input.GetViewMousePosition());
     }
-    }
+}
 
 void GameSettingsState::Update(float dt)
 {

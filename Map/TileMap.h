@@ -25,6 +25,9 @@ private:
     // 3D vector to store tiles and layers
     std::vector< std::vector< std::vector< Tile* > > > m_Map;
 
+    // Clear: clears all the tiles from map
+    void Clear();
+
 public:
     TileMap( GameDataRef data, unsigned int width, unsigned int height );
     virtual ~TileMap();

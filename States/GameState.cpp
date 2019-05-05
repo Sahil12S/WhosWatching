@@ -71,6 +71,7 @@ GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
 
 GameState::~GameState()
 {
+    Debug( "[DEBUG] Destructor of Game state")
     delete m_Player;
     delete m_Map;
     delete m_PauseMenu;

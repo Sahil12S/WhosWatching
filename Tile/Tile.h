@@ -19,6 +19,7 @@ public:
     Tile( GameDataRef data, float x, float y, float gridSizeF, const std::string& texture_name, const sf::IntRect& texture_rect );
     virtual ~Tile();
 
+    // Return tile properties as string
     const std::string getAsString() const;
 
     void Update();

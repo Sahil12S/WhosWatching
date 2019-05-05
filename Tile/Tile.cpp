@@ -17,9 +17,6 @@ Tile::Tile( GameDataRef data, float x, float y, float gridSizeF, const std::stri
 
 Tile::~Tile()
 {
-    std::cout <<"Destructor called" << std::endl;
-    // delete m_Shape;
-
 }
 
 const std::string Tile::getAsString() const

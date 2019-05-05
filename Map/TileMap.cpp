@@ -1,6 +1,28 @@
 #include "TileMap.h"
 
 
+void TileMap::Clear()
+{
+    /*
+    * Delete all the tiles
+    */
+    for ( size_t x = 0; x < m_MapSize.x; x++ )
+    {
+        for ( size_t y = 0; y < m_MapSize.y; y++ )
+        {
+            for ( size_t z = 0; z < m_Layers; z++ )
+            {
+                delete m_Map[x][y][z];
+                m_Map[x][y][z] = nullptr;
+            }
+            m_Map[x][y].clear();
+        }
+        m_Map[x].clear();
+    }
+    m_Map.clear();
+    std::cout << m_Map.size() << std::endl;
+}
+
 TileMap::TileMap( GameDataRef data, unsigned width, unsigned height ) : m_Data( std::move( data ) )
 {
     m_GridSizeF = GRID_SIZE;
@@ -31,22 +53,7 @@ TileMap::TileMap( GameDataRef data, unsigned width, unsigned height ) : m_Data( 
 
 TileMap::~TileMap()
 {
-    /*
-    * Delete all the tiles
-    */
-
-   std::cout << "descturctor called map" << std::endl;
-
-    for ( size_t x = 0; x < m_MapSize.x; x++ )
-    {
-        for ( size_t y = 0; y < m_MapSize.y; y++ )
-        {
-            for ( size_t z = 0; x < m_Layers; z++ )
-            {
-                delete m_Map[x][y][z];
-            }
-        }
-    }
+    Clear();
 }
 
 const std::string TileMap::GetTileSheet() const
@@ -129,8 +136,7 @@ void TileMap::SaveToFile( const std::string file_name )
                 {
                     if ( m_Map[x][y][z] != nullptr )
                     {
-                        // MAKE SURE TO REMOVE LAST SPACE
-                        out_file << m_Map[x][y][z]->getAsString() << " ";
+                        out_file << x << " " << y << " " << z << " " << m_Map[x][y][z]->getAsString() << " ";
                     }
                 }
             }
@@ -145,9 +151,68 @@ void TileMap::SaveToFile( const std::string file_name )
    
 }
 
-void LoadFromFile( const std::string file_name )
+void TileMap::LoadFromFile( const std::string file_name )
 {
+    std::ifstream in_file;
+   in_file.open( file_name );
 
+    if( in_file.is_open() )
+    {
+        sf::Vector2u size;
+        unsigned gridSize = 0;
+        unsigned layers = 0;
+        std::string texture_file = "";
+        unsigned x = 0;
+        unsigned y = 0;
+        unsigned z = 0;
+        unsigned texRectX = 0;
+        unsigned texRectY = 0; 
+        bool collision = false;
+        short type = 0;
+
+        // Load basic variables
+        in_file >> size.x >> size.y >> gridSize >> layers >> texture_file;
+
+        // Load tiles
+        m_GridSizeF = static_cast<float>( gridSize );
+        m_GridSizeU = gridSize;
+        m_Layers = layers;
+        m_MapSize.x = size.x;
+        m_MapSize.y = size.y;
+        m_TextureFile = texture_file;
+
+        Clear();
+        
+        // Initialize map
+        m_Map.resize( m_MapSize.x, std::vector< std::vector< Tile* > >() );
+
+        for ( int x = 0; x < m_MapSize.x; x++ )
+        {
+            m_Map[x].resize( m_MapSize.y, std::vector< Tile* >() );
+
+            for ( int y = 0; y < m_MapSize.y; y++ )
+            {
+                // m_Map[x][y].resize( m_Layers, new Tile( m_Data, x * m_GridSizeF, y * m_GridSizeF, m_GridSizeF ) );
+                m_Map[x][y].resize( m_Layers, nullptr );
+            }
+        }
+
+        m_Data->assets.LoadTexture( "Tiles", m_TextureFile );
+
+        // Load all tiles
+        // while ( in_file >> x >> y >> z >> texRectX >> texRectY >> collision >> type )
+        // {
+            // m_Map[x][y][z] = new Tile( m_Data, x, y, gridSize, "Tiles", sf::IntRect( texRectX, texRectY ) );
+        // }
+
+    }
+    else
+    {
+        Error( "ERROR: Tilemap couldn't be loaded from file: ", file_name )
+    }
+
+    in_file.close();
+ 
 }
 
 void TileMap::Update()

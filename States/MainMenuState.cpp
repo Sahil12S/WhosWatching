@@ -9,6 +9,7 @@ MainMenuState::MainMenuState(GameDataRef data) : m_Data(std::move(data))
 
 MainMenuState::~MainMenuState()
 {
+    Debug( "[DEBUG] Destructor of Main Menu state")
     delete m_Hud;
     for (const auto &button : m_Buttons)
     {

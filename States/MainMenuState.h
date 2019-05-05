@@ -40,7 +40,7 @@ private:
 
 public:
     explicit MainMenuState( GameDataRef data );
-    ~MainMenuState();
+    virtual ~MainMenuState();
 
     void Init() override;
     void HandleInput(float dt) override;

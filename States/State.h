@@ -15,6 +15,7 @@
 class State
 {
 public:
+    virtual ~State() {}
     /*
         * Initialize the game state
         */

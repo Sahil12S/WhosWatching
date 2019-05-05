@@ -37,6 +37,7 @@ PauseMenu::PauseMenu(GameDataRef data) : m_Data( std::move( data ) )
 
 PauseMenu::~PauseMenu()
 {
+    Debug( "[DEBUG] Destructor of Pause Menu")
     delete m_Hud;
     for ( const auto& button : m_Buttons )
     {

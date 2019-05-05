@@ -41,7 +41,6 @@ void EditorState::InitKeyBinds()
         std::string key;
         while ( ifs >> keyAction >> key )
         {
-            std::cout << keyAction << key << std::endl;
             m_KeyBinds[keyAction] = m_Data->input.getSupportedKeys().at( key );
         }
     }
@@ -101,6 +100,7 @@ EditorState::EditorState( GameDataRef data ) : m_Data( std::move( data ) )
 
 EditorState::~EditorState()
 {
+    Debug( "[DEBUG] Destructor of Editor state")
     delete m_Hud;
     delete m_PauseMenu;
     delete m_TileMap;
