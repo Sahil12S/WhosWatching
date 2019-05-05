@@ -140,14 +140,14 @@ void EditorState::HandleInput( float dt )
         }
     }
 
-    if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
-                    m_Data->input.GetKeyTime() )
+    if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && m_Data->input.GetKeyTime() )
     {
         // Debug( "Editor State: Game Paused" )
-        if ( !m_Paused )
-            m_Paused = true;
-        else
-            m_Paused = false;
+        m_Paused = !m_Paused;
+        // if ( !m_Paused )
+        //     m_Paused = true;
+        // else
+        //     m_Paused = false;
     }
 
     if ( !m_Paused )
@@ -159,7 +159,7 @@ void EditorState::HandleInput( float dt )
             {
                 if ( !m_TS->GetActive() )
                 {
-                    m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_TextureRect );
+                    m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_TextureRect, m_Collision, m_Type );
                 }
                 else
                 {
@@ -179,15 +179,20 @@ void EditorState::HandleInput( float dt )
             }
         }
 
+        if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["TOGGLE_COLLISION"] ) ) ) && m_Data->input.GetKeyTime() )
+        {
+            m_Collision = !m_Collision;
+        }
+        else if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["INCREASE_TYPE"] ) ) ) && m_Data->input.GetKeyTime() )
+        {
+            ++m_Type;
+        }
+        else if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["DECREASE_TYPE"] ) ) ) && m_Data->input.GetKeyTime() )
+        {
+            --m_Type;
+        }
 
-        // Change texture
-        // if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Right ) && m_Data->input.GetKeyTime() )
-        // {
-        //     if ( m_TextureRect.left < 400 )
-        //     {
-        //         m_TextureRect.left += 100;
-        //     }
-        // }
+
     }
 }
 

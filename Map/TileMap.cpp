@@ -60,7 +60,7 @@ const std::string TileMap::GetTileSheet() const
     return "Tiles";
 }
 
-void TileMap::AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect )
+void TileMap::AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect, const bool& collision, const short& type )
 {
     /*
         * Take 2 indices of mouse position and add a tile to that position
@@ -74,7 +74,7 @@ void TileMap::AddTile( const unsigned& x, const unsigned& y, const unsigned& z, 
         if ( m_Map[x][y][z] == nullptr )
         {
             /* No tile at this location. Okay to add. */
-            m_Map[x][y][z] = new Tile( m_Data, x, y, m_GridSizeF, "Tiles", texture_rect );
+            m_Map[x][y][z] = new Tile( m_Data, x, y, m_GridSizeF, "Tiles", texture_rect, collision, type );
         }
     }
 }

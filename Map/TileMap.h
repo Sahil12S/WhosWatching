@@ -34,7 +34,7 @@ public:
     
     const std::string GetTileSheet() const;
 
-    void AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect );
+    void AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect, const bool& collision, const short& type );
     // Remove tile from map
     void RemoveTile( const unsigned& x, const unsigned& y, const unsigned& z );
 
