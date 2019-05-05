@@ -16,7 +16,9 @@ protected:
 
 public:
     // Tile( GameDataRef data );
-    Tile( GameDataRef data, float x, float y, float gridSizeF, const std::string& texture_name, const sf::IntRect& texture_rect );
+    Tile( GameDataRef data, unsigned grid_x, unsigned grid_y, float gridSizeF, 
+        const std::string& texture_name, const sf::IntRect& texture_rect,
+        bool collision = false, short type = 0 );
     virtual ~Tile();
 
     // Return tile properties as string

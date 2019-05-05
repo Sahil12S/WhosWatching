@@ -20,7 +20,6 @@ void TileMap::Clear()
         m_Map[x].clear();
     }
     m_Map.clear();
-    std::cout << m_Map.size() << std::endl;
 }
 
 TileMap::TileMap( GameDataRef data, unsigned width, unsigned height ) : m_Data( std::move( data ) )
@@ -192,7 +191,6 @@ void TileMap::LoadFromFile( const std::string file_name )
 
             for ( int y = 0; y < m_MapSize.y; y++ )
             {
-                // m_Map[x][y].resize( m_Layers, new Tile( m_Data, x * m_GridSizeF, y * m_GridSizeF, m_GridSizeF ) );
                 m_Map[x][y].resize( m_Layers, nullptr );
             }
         }
@@ -200,10 +198,10 @@ void TileMap::LoadFromFile( const std::string file_name )
         m_Data->assets.LoadTexture( "Tiles", m_TextureFile );
 
         // Load all tiles
-        // while ( in_file >> x >> y >> z >> texRectX >> texRectY >> collision >> type )
-        // {
-            // m_Map[x][y][z] = new Tile( m_Data, x, y, gridSize, "Tiles", sf::IntRect( texRectX, texRectY ) );
-        // }
+        while ( in_file >> x >> y >> z >> texRectX >> texRectY >> collision >> type )
+        {
+            m_Map[x][y][z] = new Tile( m_Data, x , y , m_GridSizeF, "Tiles", sf::IntRect( texRectX, texRectY, m_GridSizeU, m_GridSizeU ), collision, type );
+        }
 
     }
     else
