@@ -27,6 +27,8 @@ private:
     std::map<std::string, gui::Button*> m_Buttons;
 
     bool m_Paused;
+    bool m_Collision;
+    short m_Type;
 
     sf::RectangleShape m_SelectorRect;
     sf::RectangleShape m_SideBar;

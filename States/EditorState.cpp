@@ -6,6 +6,9 @@ void EditorState::InitVariables()
     m_Paused = false;
 
     m_TextureRect = sf::IntRect( 0, 0, static_cast<int>( GRID_SIZE ), static_cast<int>( GRID_SIZE ) );
+
+    m_Collision = false;
+    m_Type = TileType::eDefault;
 }
 
 void EditorState::InitTextures()
@@ -61,8 +64,8 @@ void EditorState::InitPauseMenu()
 {
     m_PauseMenu = new PauseMenu( m_Data );
     m_PauseMenu->AddButton("Quit", m_Data->GfxSettings.resolution.height / 1.2f , "Quit");
-    m_PauseMenu->AddButton("Save", m_Data->GfxSettings.resolution.height / 1.3f , "Save");
-    m_PauseMenu->AddButton("Load", m_Data->GfxSettings.resolution.height / 1.4f , "Load");
+    m_PauseMenu->AddButton("Save", m_Data->GfxSettings.resolution.height / 1.4f , "Save");
+    m_PauseMenu->AddButton("Load", m_Data->GfxSettings.resolution.height / 1.6f , "Load");
 }
 
 
@@ -201,9 +204,11 @@ void EditorState::UpdateGui( const float& dt )
     }
 
     std::stringstream ss;
-    ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y << '\n' << 
-        m_Data->input.GetGridMousePosition().x << ", " << m_Data->input.GetGridMousePosition().y << '\n' << 
-        m_TextureRect.left << " " << m_TextureRect.top;
+    ss << "View Pos: " << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y << '\n' << 
+        "Grid Pos: " << m_Data->input.GetGridMousePosition().x << ", " << m_Data->input.GetGridMousePosition().y << '\n' << 
+        "TexRect: " << m_TextureRect.left << " " << m_TextureRect.top << '\n' << 
+        "Collision: " << m_Collision << '\n' <<
+        "Type: " << m_Type << '\n';
     m_CursorText.setString( ss.str() );
     m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
 

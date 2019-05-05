@@ -17,18 +17,22 @@
 #define SCREEN_HEIGHT 768
 
 
+// Textures
 #define GAME_BACKGROUND_FILEPATH "../Resources/img/background.png"
-
 #define PLAYER_SHEET_FILEPATH "../Resources/img/player2.png"
+#define TILES_TEXTURE_FILEPATH "../Resources/img/tiles.png"
+
+
 #define SCALE_X 2.f
 #define SCALE_Y 2.f
 #define TILE_WIDTH 50
 #define TILE_HEIGHT 40
 
-/* Define box sizes */
-
-
-#define MARIO_TURN_FILEPATH "../Resources/img/Mario_Turn.png"
+// Tile Map variables
+#define GRID_SIZE 100.f
+#define MAP_WIDTH 1000
+#define MAP_HEIGHT 1000
+#define LAYERS 1
 
 // Fonts
 #define SCREEN_FONT_FILEPATH "../Resources/font/multivac-interference.ttf"
@@ -41,13 +45,6 @@
 
 #define TITLE_SIZE 80
 
-
-enum ButtonState
-{
-    eBtnIdle = 0,
-    eBtnHover,
-    eBtnActive
-};
 
 // For Buttons
 #define BUTTON_WIDTH 200
@@ -92,21 +89,19 @@ enum ButtonState
 #define SPLASH_STATE_SHOW_TIME 0.5f
 
 // Key binds
-#define GENERAL_KEY_BIND_FILEPATH "../Resources/KeyBindings/KeyBinds.ini"
-#define GAMESTATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/GameStateKeyBinds.ini"
-#define MAIN_MENU_KEY_BIND_FILEPATH "../Resources/KeyBindings/MainMenuKeyBinds.ini"
-#define SETTINGS_STATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/SettingsStateKeyBinds.ini"
-#define PAUSE_STATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/PauseStateKeyBinds.ini"
-#define EDITOR_STATE_KEY_BIND_FILEPATH "../Resources/KeyBindings/EditorStateKeyBinds.ini"
+#define GENERAL_KEY_BIND_FILEPATH "../Config/KeyBindings/KeyBinds.ini"
+#define GAMESTATE_KEY_BIND_FILEPATH "../Config/KeyBindings/GameStateKeyBinds.ini"
+#define MAIN_MENU_KEY_BIND_FILEPATH "../Config/KeyBindings/MainMenuKeyBinds.ini"
+#define SETTINGS_STATE_KEY_BIND_FILEPATH "../Config/KeyBindings/SettingsStateKeyBinds.ini"
+#define PAUSE_STATE_KEY_BIND_FILEPATH "../Config/KeyBindings/PauseStateKeyBinds.ini"
+#define EDITOR_STATE_KEY_BIND_FILEPATH "../Config/KeyBindings/EditorStateKeyBinds.ini"
 
-#define TILES_TEXTURE_FILEPATH "../Resources/img/tiles.png"
-
-// Tile Map
-
-#define GRID_SIZE 100.f
-#define MAP_WIDTH 1000
-#define MAP_HEIGHT 1000
-#define LAYERS 1
+enum ButtonState
+{
+    eBtnIdle = 0,
+    eBtnHover,
+    eBtnActive
+};
 
 enum MovementStates
 {
