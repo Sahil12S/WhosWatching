@@ -287,20 +287,24 @@ void EditorState::Draw()
     m_Data->window.setView( m_MainView );
     m_TileMap->Draw();
 
-    m_Data->window.setView( m_Data->window.getDefaultView() );
-
     // Render GUI
     if ( !m_TS->GetActive() )
     {
         m_Data->window.draw( m_SelectorRect );
     }
+
+    m_Data->window.setView( m_Data->window.getDefaultView() );
     m_TS->Draw();
+    m_Data->window.draw( m_SideBar );
+
+    m_Data->window.setView( m_MainView );
     m_Data->window.draw( m_CursorText );
 
-    m_Data->window.draw( m_SideBar );
+    // m_Data->window.setView( m_Data->window.getDefaultView() );
     
     if ( m_Paused )
-    {
+    {   
+        m_Data->window.setView( m_Data->window.getDefaultView() );
         m_PauseMenu->Draw();
     }
 
