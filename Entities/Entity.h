@@ -39,10 +39,14 @@ public:
                                 const float& width, const float& height );
     void CreateMovementComponent( const float& maxVelocity, const float& acceleration, const float& deceleration );
     void CreateAnimationComponent( const std::string& texture );
+    
+    // Getters
+    virtual const sf::Vector2f& GetPosition() const;
+
+    // Setters
+    virtual void SetPosition( sf::Vector2f position );
 
     /* Functions */
-    virtual void SetPosition(sf::Vector2f position );
-
     virtual void Move( const float& dt, const float& dir_x, const float& dir_y );
     virtual void Update( float dt );
     virtual void Draw();

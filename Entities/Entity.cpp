@@ -40,6 +40,11 @@ void Entity::CreateAnimationComponent(const std::string& texture)
 }
 
 /* Functions */
+const sf::Vector2f& Entity::GetPosition() const
+{
+    return m_Sprite.getPosition();
+}
+
 void Entity::SetPosition(sf::Vector2f position )
 {
     m_Sprite.setPosition( position .x - m_Sprite.getGlobalBounds().width / 2,

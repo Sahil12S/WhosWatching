@@ -1,6 +1,15 @@
 #include "GameState.h"
 #include "MainMenuState.h"
 
+void GameState::InitView()
+{
+    m_View.setSize( sf::Vector2f( m_Data->GfxSettings.resolution.width, m_Data->GfxSettings.resolution.height ) );
+    m_View.setCenter( sf::Vector2f( 
+        m_Data->GfxSettings.resolution.width / 2.f, 
+        m_Data->GfxSettings.resolution.height / 2.f ) );
+    
+}
+
 void GameState::InitVariables()
 {
     m_Paused = false;
@@ -46,7 +55,6 @@ void GameState::InitKeyBinds()
     Debug( "Game State: Initializing key bindings..." )
 }
 
-
 void GameState::InitPauseMenu()
 {
     m_PauseMenu = new PauseMenu( m_Data );
@@ -86,6 +94,7 @@ void GameState::Init()
 {
     Debug( "Game State: Initializing..." )
 
+    InitView();
     InitVariables();
     InitTextures();
     InitFonts();
@@ -96,6 +105,12 @@ void GameState::Init()
     InitComponents();
     InitTileMap();
     InitPlayers();
+}
+
+void GameState::UpdateView( const float& dt )
+{
+    m_View.setCenter( m_Player->GetPosition() );
+
 }
 
 void GameState::HandleInput( float dt )
@@ -117,11 +132,11 @@ void GameState::HandleInput( float dt )
     if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
                     m_Data->input.GetKeyTime() )
     {
-        // Debug( "Game State: Game Paused" )
-        if ( !m_Paused )
-            m_Paused = true;
-        else
-            m_Paused = false;
+        m_Paused = !m_Paused;
+        // if ( !m_Paused )
+        //     m_Paused = true;
+        // else
+        //     m_Paused = false;
     }
 
     /*
@@ -175,11 +190,12 @@ void GameState::UpdatePauseMenuButtons( )
 
 void GameState::Update(float dt)
 {
-    m_Data->input.UpdateMousePosition( m_Data->window );
+    m_Data->input.UpdateMousePosition( m_Data->window, &m_View );
     m_Data->input.UpdateKeyTime( dt );
 
     if ( !m_Paused )
     {
+        UpdateView( dt );
         m_Player->Update( dt );
     }
     else
@@ -194,25 +210,27 @@ void GameState::Draw()
 {
     m_Data->window.clear();
     // m_Data->window.draw( m_BackgroundSprite );
-
+    
+    m_Data->window.setView( m_View );
     m_Map->Draw();
 
     m_Player->Draw();
 
     if ( m_Paused )
     {
+        m_Data->window.setView( m_Data->window.getDefaultView() );
         m_PauseMenu->Draw();
     }
 
     // Draw coordinates on mouse pointer for debugging
-    sf::Text mouseText;
-    mouseText.setPosition( m_Data->input.GetViewMousePosition().x + 5, m_Data->input.GetViewMousePosition().y );
-    mouseText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
-    mouseText.setCharacterSize( 20 );
-    std::stringstream ss;
-    ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y;
-    mouseText.setString( ss.str() );
-    m_Data->window.draw( mouseText );
+    // sf::Text mouseText;
+    // mouseText.setPosition( m_Data->input.GetViewMousePosition().x + 5, m_Data->input.GetViewMousePosition().y );
+    // mouseText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
+    // mouseText.setCharacterSize( 20 );
+    // std::stringstream ss;
+    // ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y;
+    // mouseText.setString( ss.str() );
+    // m_Data->window.draw( mouseText );
 
     m_Data->window.display();
 }

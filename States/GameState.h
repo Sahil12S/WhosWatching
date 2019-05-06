@@ -16,6 +16,11 @@ private:
     /* Variables */
     GameDataRef m_Data;
 
+    sf::View m_View;
+    // We will load whole texture at one go
+    sf::RenderTexture m_RenderTexture;
+    sf::Sprite m_RenderSprite;
+
     std::map<std::string, int> m_KeyBinds;
 
     Player* m_Player;
@@ -28,6 +33,7 @@ private:
 
     /* Functions */
     // Initializers
+    void InitView();
     void InitVariables();
     void InitTextures();
     void InitFonts();
@@ -50,6 +56,8 @@ public:
 
 
     void Init() override;
+    
+    void UpdateView( const float& dt );
     void HandleInput( float dt ) override;
 
     void UpdatePauseMenuButtons();
