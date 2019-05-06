@@ -56,20 +56,35 @@ const bool MovementComponent::GetState(const unsigned short& state) const
     return false;
 }
 
+const float &MovementComponent::GetMaxVelocity() const
+{
+    return m_MaxVelocity;
+}
+
+void MovementComponent::StopVelocity()
+{
+    m_Velocity.x = 0.f;
+    m_Velocity.y = 0.f;
+}
+
+void MovementComponent::StopVelocityX()
+{
+    m_Velocity.x = 0.f;
+}
+
+void MovementComponent::StopVelocityY()
+{
+    m_Velocity.y = 0.f;
+}
+
 void MovementComponent::Move( const float& dt, const float& dir_x, const float& dir_y )
 {
     m_Velocity.x += dir_x * m_Acceleration * dt;
     m_Velocity.y += dir_y * m_Acceleration * dt;
-    // m_Velocity.x = dir_x * m_MaxVelocity;
-
-    // We are considering jump as dir_y
-    // m_Velocity.y = dir_y * m_MaxVelocity;
-    // m_Sprite.move( m_Velocity * dt );
 }
 
 void MovementComponent::Update(const float &dt)
 {
-    // m_Sprite.move( m_Velocity * dt );
     // When using acceleration and deceleration
     // which we are not using this time
 
@@ -120,15 +135,4 @@ void MovementComponent::Update(const float &dt)
     }
 
     m_Sprite.move( m_Velocity * dt );
-}
-
-const float &MovementComponent::GetMaxVelocity() const
-{
-    return m_MaxVelocity;
-}
-
-void MovementComponent::StopVelocity()
-{
-    m_Velocity.x = 0.f;
-    m_Velocity.y = 0.f;
 }

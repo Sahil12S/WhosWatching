@@ -76,7 +76,6 @@ void EditorState::InitPauseMenu()
     m_PauseMenu->AddButton("Load", m_Data->GfxSettings.resolution.height / 1.6f , "Load");
 }
 
-
 void EditorState::InitTileMap()
 {
     m_TileMap = new TileMap( m_Data, 10, 10, TILES_TEXTURE_FILEPATH );
@@ -167,12 +166,7 @@ void EditorState::HandleInput( float dt )
 
     if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && m_Data->input.GetKeyTime() )
     {
-        // Debug( "Editor State: Game Paused" )
         m_Paused = !m_Paused;
-        // if ( !m_Paused )
-        //     m_Paused = true;
-        // else
-        //     m_Paused = false;
     }
 
     if ( !m_Paused )

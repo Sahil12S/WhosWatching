@@ -18,7 +18,8 @@ private:
     float m_GridSizeF;
     unsigned m_GridSizeU;
     unsigned m_Layers;
-    sf::Vector2f m_MapSize;
+    sf::Vector2u m_MaxSizeWorldGrid;
+    sf::Vector2f m_MaxSizeWorldF;
 
     std::string m_TextureFile;
     sf::RectangleShape m_CollisionBox;

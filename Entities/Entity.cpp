@@ -42,16 +42,36 @@ void Entity::CreateAnimationComponent(const std::string& texture)
 /* Functions */
 const sf::Vector2f& Entity::GetPosition() const
 {
+    if( m_HC )
+    {
+        return m_HC->GetPosition();
+    }
+
     return m_Sprite.getPosition();
 }
 
-void Entity::SetPosition(sf::Vector2f position )
+const sf::FloatRect Entity::GetGlobalBounds() const
 {
-    m_Sprite.setPosition( position .x - m_Sprite.getGlobalBounds().width / 2,
-                            position .y );
-                            // position .y - m_Sprite.getGlobalBounds().height / 2 );
-    m_Sprite.setScale( SCALE_X, SCALE_Y ); // Todo: use definition
+    if( m_HC )
+    {
+        m_HC->GetGlobalBounds();
+    }
+    return m_Sprite.getGlobalBounds();
 }
+
+
+void Entity::SetPosition( const float& x, const float& y )
+{
+    if ( m_HC )
+    {
+        m_HC->SetPosition( x, y );
+    }
+    else
+    {
+        m_Sprite.setPosition( x, y );
+    }
+}
+
 
 void Entity::Move(const float &dt, const float &dir_x, const float &dir_y)
 {
@@ -59,9 +79,31 @@ void Entity::Move(const float &dt, const float &dir_x, const float &dir_y)
     {
         m_MC->Move( dt, dir_x, dir_y);
     }
-    // m_Sprite.move( m_MC->GetVelocity() * dt );
 }
 
+void Entity::StopVelocity()
+{
+    if( m_MC )
+    {
+        m_MC->StopVelocity();
+    }
+}
+
+void Entity::StopVelocityX()
+{
+    if( m_MC )
+    {
+        m_MC->StopVelocityX();
+    }
+}
+
+void Entity::StopVelocityY()
+{
+    if( m_MC )
+    {
+        m_MC->StopVelocityY();
+    }
+}
 void Entity::Update(const float& dt)
 {
 

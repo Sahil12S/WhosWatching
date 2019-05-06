@@ -26,7 +26,6 @@ AnimationComponent::AddAnimation(const std::string& key, float animation_timer, 
 {
     m_Animations[key] = new Animation( m_Sprite, m_TextureSheet, animation_timer,
             start_frame_x, start_frame_y, frames_x, frames_y, width, height );
-    Debug( "Animation component created" )
 }
 
 const bool &AnimationComponent::Play(const std::string &key, const float &dt, const bool &priority, float new_timer )

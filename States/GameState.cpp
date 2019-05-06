@@ -88,7 +88,7 @@ void GameState::InitPlayers()
 {
     // Initialize player & spawn it
     m_Player = new Player( m_Data );
-    m_Player->SetPosition(sf::Vector2f( m_Data->GfxSettings.resolution.width / 2.f, m_Data->GfxSettings.resolution.height / 2.f ) );
+    m_Player->SetPosition( m_Data->GfxSettings.resolution.width / 2.f, m_Data->GfxSettings.resolution.height / 2.f );
 }
 
 GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
@@ -117,11 +117,19 @@ void GameState::Init()
     InitComponents();
     InitTileMap();
     InitPlayers();
+    m_CursorText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
+    m_CursorText.setFillColor( sf::Color::White );
+    m_CursorText.setCharacterSize( 20 );
+    m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
 }
 
 void GameState::UpdateView( const float& dt )
 {
-    m_View.setCenter( m_Player->GetPosition() );
+    // To control large number of decimals, we floor it down
+    m_View.setCenter( 
+        std::floor( m_Player->GetPosition().x ),
+        std::floor( m_Player->GetPosition().y ) 
+    );
 
 }
 
@@ -145,10 +153,6 @@ void GameState::HandleInput( float dt )
                     m_Data->input.GetKeyTime() )
     {
         m_Paused = !m_Paused;
-        // if ( !m_Paused )
-        //     m_Paused = true;
-        // else
-        //     m_Paused = false;
     }
 
     /*
@@ -192,6 +196,12 @@ void GameState::HandleInput( float dt )
 
 }
 
+void GameState::UpdateTileMap( const float& dt )
+{
+    m_Map->Update();
+    m_Map->UpdateCollision( m_Player );
+}
+
 void GameState::UpdatePauseMenuButtons( )
 {
     if ( m_PauseMenu->IsButtonPressed("Quit") && m_Data->input.GetKeyTime() )
@@ -200,15 +210,26 @@ void GameState::UpdatePauseMenuButtons( )
     }
 }
 
+void GameState::UpdateGui()
+{
+    std::stringstream ss;
+    ss << "View Pos: " << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y << '\n' << 
+        "Grid Pos: " << m_Data->input.GetGridMousePosition().x << ", " << m_Data->input.GetGridMousePosition().y << '\n';
+    m_CursorText.setString( ss.str() );
+    m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
+}
+
 void GameState::Update(float dt)
 {
     m_Data->input.UpdateMousePosition( m_Data->window, &m_View );
     m_Data->input.UpdateKeyTime( dt );
+    UpdateGui();
 
     if ( !m_Paused )
     {
         UpdateView( dt );
         m_Player->Update( dt );
+        UpdateTileMap( dt );
     }
     else
     {
@@ -232,7 +253,10 @@ void GameState::Draw()
     {
         m_Data->window.setView( m_Data->window.getDefaultView() );
         m_PauseMenu->Draw( m_Data->window );
-    } 
+    }
+
+    m_Data->window.draw( m_CursorText );
+
     m_Data->window.display();
 
     /*

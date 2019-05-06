@@ -29,6 +29,8 @@ private:
 
     sf::Sprite m_BackgroundSprite;
 
+    sf::Text m_CursorText;
+
     bool m_Paused;
 
     /* Functions */
@@ -60,7 +62,9 @@ public:
     void UpdateView( const float& dt );
     void HandleInput( float dt ) override;
 
+    void UpdateTileMap( const float& dt );
     void UpdatePauseMenuButtons();
+    void UpdateGui();
 
     void Update( float dt ) override;
     void Draw() override;

@@ -27,12 +27,18 @@ private:
 
 public:
     HitboxComponent( GameDataRef data, sf::Sprite& sprite,
-            const float& offset_x, const float& offset_y,
-            const float& width, const float& height );
+        const float& offset_x, const float& offset_y,
+        const float& width, const float& height );
     virtual ~HitboxComponent();
 
     /* Functions */
-    bool CheckIntersects( const sf::FloatRect& rect );
+    const sf::Vector2f& GetPosition() const;
+    const sf::FloatRect GetGlobalBounds() const;
+
+    void SetPosition( const sf::Vector2f& position );
+    void SetPosition( const float& x, const float& y );
+
+    bool Intersects( const sf::FloatRect& rect );
 
     void UpdatePosition( const float& offset_x, const float& offset_y,
             const float& width, const float& height );

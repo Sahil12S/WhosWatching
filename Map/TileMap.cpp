@@ -6,9 +6,9 @@ void TileMap::Clear()
     /*
     * Delete all the tiles
     */
-    for ( size_t x = 0; x < m_MapSize.x; x++ )
+    for ( size_t x = 0; x < m_MaxSizeWorldGrid.x; x++ )
     {
-        for ( size_t y = 0; y < m_MapSize.y; y++ )
+        for ( size_t y = 0; y < m_MaxSizeWorldGrid.y; y++ )
         {
             for ( size_t z = 0; z < m_Layers; z++ )
             {
@@ -27,17 +27,19 @@ TileMap::TileMap( GameDataRef data, unsigned width, unsigned height, const std::
     m_GridSizeF = GRID_SIZE;
     m_GridSizeU = static_cast<unsigned>( m_GridSizeF );
     m_Layers = LAYERS;
-    m_MapSize.x = width;
-    m_MapSize.y = height;
+    m_MaxSizeWorldGrid.x = width;
+    m_MaxSizeWorldGrid.y = height;
+    m_MaxSizeWorldF.x = static_cast<float>( width ) * GRID_SIZE;
+    m_MaxSizeWorldF.y =  static_cast<float>( height ) * GRID_SIZE;
 
     // Initialize map
-    m_Map.resize( m_MapSize.x, std::vector< std::vector< Tile* > >() );
+    m_Map.resize( m_MaxSizeWorldGrid.x, std::vector< std::vector< Tile* > >() );
 
-    for ( int x = 0; x < m_MapSize.x; x++ )
+    for ( int x = 0; x < m_MaxSizeWorldGrid.x; x++ )
     {
-        m_Map[x].resize( m_MapSize.y, std::vector< Tile* >() );
+        m_Map[x].resize( m_MaxSizeWorldGrid.y, std::vector< Tile* >() );
 
-        for ( int y = 0; y < m_MapSize.y; y++ )
+        for ( int y = 0; y < m_MaxSizeWorldGrid.y; y++ )
         {
             // m_Map[x][y].resize( m_Layers, new Tile( m_Data, x * m_GridSizeF, y * m_GridSizeF, m_GridSizeF ) );
             m_Map[x][y].resize( m_Layers, nullptr );
@@ -71,8 +73,8 @@ void TileMap::AddTile( const unsigned& x, const unsigned& y, const unsigned& z, 
         * ignore if mouse's position is outside the limits of our map
         */
     
-    if ( x < m_MapSize.x && x >= 0 &&
-        y < m_MapSize.y && y >= 0 &&
+    if ( x < m_MaxSizeWorldGrid.x && x >= 0 &&
+        y < m_MaxSizeWorldGrid.y && y >= 0 &&
         z < m_Layers && z >= 0 )
     {
         if ( m_Map[x][y][z] == nullptr )
@@ -90,8 +92,8 @@ void TileMap::RemoveTile( const unsigned& x, const unsigned& y, const unsigned& 
         * ignore if mouse's position is outside the limits of our map
         */
     
-    if ( x < m_MapSize.x && x >= 0 &&
-        y < m_MapSize.y && y >= 0 &&
+    if ( x < m_MaxSizeWorldGrid.x && x >= 0 &&
+        y < m_MaxSizeWorldGrid.y && y >= 0 &&
         z < m_Layers && z >= 0 )
     {
         if ( m_Map[x][y][z] != nullptr )
@@ -126,14 +128,14 @@ void TileMap::SaveToFile( const std::string file_name )
     if( out_file.is_open() )
     {
         // std::cout << "saving to file" << std::endl;
-        out_file << m_MapSize.x << " " << m_MapSize.y << '\n'
+        out_file << m_MaxSizeWorldGrid.x << " " << m_MaxSizeWorldGrid.y << '\n'
             << m_GridSizeU << '\n'
             << m_Layers << '\n'
             << m_TextureFile << '\n';
 
-        for ( size_t x = 0; x < m_MapSize.x; x++ )
+        for ( size_t x = 0; x < m_MaxSizeWorldGrid.x; x++ )
         {
-            for ( size_t y = 0; y < m_MapSize.y; y++ )
+            for ( size_t y = 0; y < m_MaxSizeWorldGrid.y; y++ )
             {
                 for ( size_t z = 0; z < m_Layers; z++ )
                 {
@@ -180,20 +182,20 @@ void TileMap::LoadFromFile( const std::string file_name )
         m_GridSizeF = static_cast<float>( gridSize );
         m_GridSizeU = gridSize;
         m_Layers = layers;
-        m_MapSize.x = size.x;
-        m_MapSize.y = size.y;
+        m_MaxSizeWorldGrid.x = size.x;
+        m_MaxSizeWorldGrid.y = size.y;
         m_TextureFile = texture_file;
 
         Clear();
         
         // Initialize map
-        m_Map.resize( m_MapSize.x, std::vector< std::vector< Tile* > >() );
+        m_Map.resize( m_MaxSizeWorldGrid.x, std::vector< std::vector< Tile* > >() );
 
-        for ( int x = 0; x < m_MapSize.x; x++ )
+        for ( int x = 0; x < m_MaxSizeWorldGrid.x; x++ )
         {
-            m_Map[x].resize( m_MapSize.y, std::vector< Tile* >() );
+            m_Map[x].resize( m_MaxSizeWorldGrid.y, std::vector< Tile* >() );
 
-            for ( int y = 0; y < m_MapSize.y; y++ )
+            for ( int y = 0; y < m_MaxSizeWorldGrid.y; y++ )
             {
                 m_Map[x][y].resize( m_Layers, nullptr );
             }
@@ -219,7 +221,28 @@ void TileMap::LoadFromFile( const std::string file_name )
 
 void TileMap::UpdateCollision( Entity* entity )
 {
-
+    if( entity->GetPosition().x < 0.f )
+    {
+        entity->SetPosition( 0.f, entity->GetPosition().y );
+        entity->StopVelocityX();
+    }
+    else if( entity->GetPosition().x + entity->GetGlobalBounds().width > m_MaxSizeWorldF.x )
+    {
+        std::cout << entity->GetGlobalBounds().width << std::endl;
+        entity->SetPosition( m_MaxSizeWorldF.x - entity->GetGlobalBounds().width, entity->GetPosition().y );
+        entity->StopVelocityX();
+    }
+    
+    if( entity->GetPosition().y < 0.f )
+    {
+        entity->SetPosition( entity->GetPosition().x, 0.f );
+        entity->StopVelocityY();
+    }
+    else if( entity->GetPosition().y + entity->GetGlobalBounds().height > m_MaxSizeWorldF.y )
+    {
+        entity->SetPosition( entity->GetPosition().x, m_MaxSizeWorldF.y - entity->GetGlobalBounds().height );
+        entity->StopVelocityY();
+    }
 }
 
 void TileMap::Update()
@@ -229,9 +252,9 @@ void TileMap::Update()
 
 void TileMap::Draw( sf::RenderTarget& target, Entity* entity )
 {
-    for ( size_t x = 0; x < m_MapSize.x; x++ )
+    for ( size_t x = 0; x < m_MaxSizeWorldGrid.x; x++ )
     {
-        for ( size_t y = 0; y < m_MapSize.y; y++ )
+        for ( size_t y = 0; y < m_MaxSizeWorldGrid.y; y++ )
         {
             for ( size_t z = 0; z < m_Layers; z++ )
             {
@@ -240,7 +263,6 @@ void TileMap::Draw( sf::RenderTarget& target, Entity* entity )
                     m_Map[x][y][z]->Draw( target );
                     if( m_Map[x][y][z]->GetCollision() )
                     {
-                        std::cout << "Drawing collision box" << std::endl;
                         m_CollisionBox.setPosition( m_Map[x][y][z]->GetPosition() );
                         target.draw( m_CollisionBox );
                     }

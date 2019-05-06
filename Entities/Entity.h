@@ -42,12 +42,20 @@ public:
     
     // Getters
     virtual const sf::Vector2f& GetPosition() const;
+    virtual const sf::FloatRect GetGlobalBounds() const;
 
     // Setters
-    virtual void SetPosition( sf::Vector2f position );
+    // virtual void SetPosition( sf::Vector2f position );
+    virtual void SetPosition( const float& x, const float& y );
+
 
     /* Functions */
     virtual void Move( const float& dt, const float& dir_x, const float& dir_y );
+    virtual void StopVelocity();
+    virtual void StopVelocityX();
+    virtual void StopVelocityY();
+
+
     virtual void Update( const float& dt );
     virtual void Draw( sf::RenderTarget& target );
 };
