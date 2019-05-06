@@ -13,13 +13,10 @@
 #define Error(err)
 #endif
 
-#define SCREEN_WIDTH 1920.f
-#define SCREEN_HEIGHT 1080.f
-
 // Textures
 #define GAME_BACKGROUND_FILEPATH "../Resources/img/background.png"
 #define PLAYER_SHEET_FILEPATH "../Resources/img/player2.png"
-#define TILES_TEXTURE_FILEPATH "../Resources/img/tiles.png"
+#define TILES_TEXTURE_FILEPATH "../Resources/img/tilesheet.png"
 
 // Fonts
 #define SCREEN_FONT_FILEPATH "../Resources/font/multivac-interference.ttf"

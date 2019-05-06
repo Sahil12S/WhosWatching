@@ -79,7 +79,7 @@ void EditorState::InitPauseMenu()
 
 void EditorState::InitTileMap()
 {
-    m_TileMap = new TileMap( m_Data, 10, 10 );
+    m_TileMap = new TileMap( m_Data, 10, 10, TILES_TEXTURE_FILEPATH );
 }
 
 void EditorState::InitGui()
@@ -101,7 +101,7 @@ void EditorState::InitGui()
     m_SelectorRect.setTextureRect( m_TextureRect );
 
     // Area of texture selector
-    m_TS = new gui::TextureSelector( m_Data, 20.f, 20.f, 500.f, 500.f, m_TileMap->GetTileSheet() );
+    m_TS = new gui::TextureSelector( m_Data, 20.f, 20.f, 500.f, 400.f, m_TileMap->GetTileSheet() );
 
 }
 

@@ -1,6 +1,10 @@
 #include "GameState.h"
 #include "MainMenuState.h"
 
+void GameState::InitVariables()
+{
+    m_Paused = false;
+}
 
 void GameState::InitTextures()
 {
@@ -42,16 +46,6 @@ void GameState::InitKeyBinds()
     Debug( "Game State: Initializing key bindings..." )
 }
 
-void GameState::InitVariables()
-{
-    // Initialize player & spawn it
-    m_Player = new Player( m_Data );
-    m_Player->SetPosition(sf::Vector2f(100, SCREEN_HEIGHT - 100));
-
-    m_Map = new TileMap( m_Data, 10, 10 );
-
-    m_Paused = false;
-}
 
 void GameState::InitPauseMenu()
 {
@@ -64,6 +58,18 @@ void GameState::InitComponents()
     // Nothing for now
 }
 
+void GameState::InitTileMap()
+{
+    m_Map = new TileMap( m_Data, 10, 10, TILES_TEXTURE_FILEPATH );
+    m_Map->LoadFromFile("myMap.txt");
+}
+
+void GameState::InitPlayers()
+{
+    // Initialize player & spawn it
+    m_Player = new Player( m_Data );
+    m_Player->SetPosition(sf::Vector2f( m_Data->GfxSettings.resolution.width / 2.f, m_Data->GfxSettings.resolution.height / 2.f ) );
+}
 
 GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
 {
@@ -80,13 +86,16 @@ void GameState::Init()
 {
     Debug( "Game State: Initializing..." )
 
-    InitKeyBinds();
+    InitVariables();
     InitTextures();
     InitFonts();
     InitSounds();
-    InitVariables();
-    InitComponents();
+
+    InitKeyBinds();
     InitPauseMenu();
+    InitComponents();
+    InitTileMap();
+    InitPlayers();
 }
 
 void GameState::HandleInput( float dt )

@@ -22,7 +22,7 @@ void TileMap::Clear()
     m_Map.clear();
 }
 
-TileMap::TileMap( GameDataRef data, unsigned width, unsigned height ) : m_Data( std::move( data ) )
+TileMap::TileMap( GameDataRef data, unsigned width, unsigned height, const std::string& texture_file ) : m_Data( std::move( data ) )
 {
     m_GridSizeF = GRID_SIZE;
     m_GridSizeU = static_cast<unsigned>( m_GridSizeF );
@@ -44,7 +44,7 @@ TileMap::TileMap( GameDataRef data, unsigned width, unsigned height ) : m_Data( 
         }
     }
 
-    m_TextureFile = TILES_TEXTURE_FILEPATH;
+    m_TextureFile = texture_file;
 
     m_Data->assets.LoadTexture( "Tiles", m_TextureFile );
 

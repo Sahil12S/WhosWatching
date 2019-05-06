@@ -28,13 +28,16 @@ private:
 
     /* Functions */
     // Initializers
-    void InitKeyBinds();
+    void InitVariables();
     void InitTextures();
     void InitFonts();
     void InitSounds();
-    void InitVariables();
+
+    void InitKeyBinds();
     void InitPauseMenu();
     void InitComponents();
+    void InitTileMap();
+    void InitPlayers();
 
 
 

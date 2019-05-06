@@ -29,7 +29,7 @@ private:
     void Clear();
 
 public:
-    TileMap( GameDataRef data, unsigned int width, unsigned int height );
+    TileMap( GameDataRef data, unsigned int width, unsigned int height, const std::string& texture_file );
     virtual ~TileMap();
     
     const std::string GetTileSheet() const;
