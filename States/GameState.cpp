@@ -4,9 +4,22 @@
 void GameState::InitView()
 {
     m_View.setSize( sf::Vector2f( m_Data->GfxSettings.resolution.width, m_Data->GfxSettings.resolution.height ) );
-    m_View.setCenter( sf::Vector2f( 
-        m_Data->GfxSettings.resolution.width / 2.f, 
-        m_Data->GfxSettings.resolution.height / 2.f ) );
+    m_View.setCenter(
+        sf::Vector2f( 
+            m_Data->GfxSettings.resolution.width / 2.f, 
+            m_Data->GfxSettings.resolution.height / 2.f
+        )
+    );
+
+    m_RenderSprite.setTexture( m_RenderTexture.getTexture() );
+    m_RenderSprite.setTextureRect( 
+        sf::IntRect(
+            0,
+            0,
+            m_Data->GfxSettings.resolution.width,
+            m_Data->GfxSettings.resolution.height
+        )
+    );
     
 }
 
@@ -211,14 +224,14 @@ void GameState::Draw()
     m_Data->window.clear();
     // m_Data->window.draw( m_BackgroundSprite );
     
-    m_Data->window.setView( m_View );
+    m_RenderTexture.setView( m_View );
     m_Map->Draw();
 
     m_Player->Draw();
 
     if ( m_Paused )
     {
-        m_Data->window.setView( m_Data->window.getDefaultView() );
+        m_RenderTexture.setView( m_RenderTexture.getDefaultView() );
         m_PauseMenu->Draw();
     }
 
@@ -231,6 +244,6 @@ void GameState::Draw()
     // ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y;
     // mouseText.setString( ss.str() );
     // m_Data->window.draw( mouseText );
-
+    m_Data->window.draw( m_RenderSprite );
     m_Data->window.display();
 }
