@@ -177,6 +177,19 @@ void EditorState::HandleInput( float dt )
 
     if ( !m_Paused )
     {
+        if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["TOGGLE_COLLISION"] ) ) ) && m_Data->input.GetKeyTime() )
+        {
+            m_Collision = !m_Collision;
+        }
+        else if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["INCREASE_TYPE"] ) ) ) && m_Data->input.GetKeyTime() )
+        {
+            ++m_Type;
+        }
+        else if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["DECREASE_TYPE"] ) ) ) && m_Data->input.GetKeyTime() )
+        {
+            --m_Type;
+        }
+
         // Add texture
         if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) && m_Data->input.GetKeyTime() )
         {
@@ -203,21 +216,6 @@ void EditorState::HandleInput( float dt )
                 }
             }
         }
-
-        if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["TOGGLE_COLLISION"] ) ) ) && m_Data->input.GetKeyTime() )
-        {
-            m_Collision = !m_Collision;
-        }
-        else if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["INCREASE_TYPE"] ) ) ) && m_Data->input.GetKeyTime() )
-        {
-            ++m_Type;
-        }
-        else if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["DECREASE_TYPE"] ) ) ) && m_Data->input.GetKeyTime() )
-        {
-            --m_Type;
-        }
-
-
     }
 }
 

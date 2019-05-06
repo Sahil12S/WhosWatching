@@ -13,15 +13,25 @@ Tile::Tile( GameDataRef data, unsigned grid_x, unsigned grid_y, float gridSizeF,
     m_Shape.setTexture( &m_Data->assets.GetTexture( texture_name ));
     m_Shape.setTextureRect( texture_rect );
 
-    m_Type = 0;
-    m_Collision = false;
+    m_Type = type;
+    m_Collision = collision;
 }
 
 Tile::~Tile()
 {
 }
 
-const std::string Tile::getAsString() const
+const bool Tile::GetCollision() const
+{
+    return m_Collision;
+}
+
+const sf::Vector2f& Tile::GetPosition() const
+{
+    return m_Shape.getPosition();
+}
+
+const std::string Tile::GetAsString() const
 {
     std::stringstream ss;
     ss << m_Shape.getTextureRect().left << " " << m_Shape.getTextureRect().top << " " << m_Collision << " " << m_Type;

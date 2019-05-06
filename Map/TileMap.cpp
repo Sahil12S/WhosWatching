@@ -48,6 +48,10 @@ TileMap::TileMap( GameDataRef data, unsigned width, unsigned height, const std::
 
     m_Data->assets.LoadTexture( "Tiles", m_TextureFile );
 
+    m_CollisionBox.setSize( sf::Vector2f( GRID_SIZE, GRID_SIZE ) );
+    m_CollisionBox.setFillColor( sf::Color( 255, 0, 0, 50 ) );
+    m_CollisionBox.setOutlineColor( sf::Color::Red );
+    m_CollisionBox.setOutlineThickness( 1.f );
 }
 
 TileMap::~TileMap()
@@ -135,7 +139,7 @@ void TileMap::SaveToFile( const std::string file_name )
                 {
                     if ( m_Map[x][y][z] != nullptr )
                     {
-                        out_file << x << " " << y << " " << z << " " << m_Map[x][y][z]->getAsString() << " ";
+                        out_file << x << " " << y << " " << z << " " << m_Map[x][y][z]->GetAsString() << " ";
                     }
                 }
             }
@@ -213,12 +217,17 @@ void TileMap::LoadFromFile( const std::string file_name )
  
 }
 
+void TileMap::UpdateCollision( Entity* entity )
+{
+
+}
+
 void TileMap::Update()
 {
 
 }
 
-void TileMap::Draw( sf::RenderTarget& target )
+void TileMap::Draw( sf::RenderTarget& target, Entity* entity )
 {
     for ( size_t x = 0; x < m_MapSize.x; x++ )
     {
@@ -229,6 +238,12 @@ void TileMap::Draw( sf::RenderTarget& target )
                 if ( m_Map[x][y][z] != nullptr )
                 {
                     m_Map[x][y][z]->Draw( target );
+                    if( m_Map[x][y][z]->GetCollision() )
+                    {
+                        std::cout << "Drawing collision box" << std::endl;
+                        m_CollisionBox.setPosition( m_Map[x][y][z]->GetPosition() );
+                        target.draw( m_CollisionBox );
+                    }
                 }
             }
         }

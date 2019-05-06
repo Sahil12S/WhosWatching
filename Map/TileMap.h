@@ -21,6 +21,7 @@ private:
     sf::Vector2f m_MapSize;
 
     std::string m_TextureFile;
+    sf::RectangleShape m_CollisionBox;
 
     // 3D vector to store tiles and layers
     std::vector< std::vector< std::vector< Tile* > > > m_Map;
@@ -37,14 +38,15 @@ public:
     void AddTile( const unsigned& x, const unsigned& y, const unsigned& z, const sf::IntRect& texture_rect, const bool& collision, const short& type );
     // Remove tile from map
     void RemoveTile( const unsigned& x, const unsigned& y, const unsigned& z );
-
     // Save complete tilemap to a text file
     void SaveToFile( const std::string file_name );
     // Load map from a text file
     void LoadFromFile( const std::string file_name );
 
+    void UpdateCollision( Entity* entity );
+
     void Update();
-    void Draw( sf::RenderTarget& target );
+    void Draw( sf::RenderTarget& target, Entity* entity = nullptr );
 
 };
 

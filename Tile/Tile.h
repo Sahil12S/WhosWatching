@@ -22,7 +22,9 @@ public:
     virtual ~Tile();
 
     // Return tile properties as string
-    const std::string getAsString() const;
+    const bool GetCollision() const;
+    const sf::Vector2f& GetPosition() const;
+    const std::string GetAsString() const;
 
     void Update();
     void Draw( sf::RenderTarget& target );
