@@ -67,7 +67,7 @@ namespace gui
         void Update( const sf::Vector2f& mousePosition );
 
         // Draw the button
-        void Draw();
+        void Draw( sf::RenderTarget& target );
 
 
     };

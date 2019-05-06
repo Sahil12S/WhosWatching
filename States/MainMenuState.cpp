@@ -195,13 +195,13 @@ void MainMenuState::Draw()
         m_Data->window.draw( m_ExitButton );
         m_Data->window.draw( m_SettingsButton );*/
 
-    m_Hud->Draw(true);
+    m_Hud->Draw(m_Data->window, true);
 
     // m_Buttons["Settings"]->Draw();
 
     for (auto button : m_Buttons)
     {
-        button.second->Draw();
+        button.second->Draw( m_Data->window );
     }
 
     /* Remove later */

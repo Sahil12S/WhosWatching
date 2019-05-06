@@ -19,8 +19,7 @@ void GameState::InitView()
             m_Data->GfxSettings.resolution.width,
             m_Data->GfxSettings.resolution.height
         )
-    );
-    
+    );  
 }
 
 void GameState::InitVariables()
@@ -221,29 +220,38 @@ void GameState::Update(float dt)
 
 void GameState::Draw()
 {
+    // TODO: WORK WITH RENDER TEXTURE TO DISPLAY ALL AT ONCE
     m_Data->window.clear();
-    // m_Data->window.draw( m_BackgroundSprite );
-    
-    m_RenderTexture.setView( m_View );
-    m_Map->Draw();
 
-    m_Player->Draw();
+    m_Data->window.setView( m_View );
+    m_Map->Draw( m_Data->window );
+
+    m_Player->Draw( m_Data->window );
+
+    if ( m_Paused )
+    {
+        m_Data->window.setView( m_Data->window.getDefaultView() );
+        m_PauseMenu->Draw( m_Data->window );
+    } 
+    m_Data->window.display();
+
+    /*
+    m_RenderTexture.clear();
+    m_RenderTexture.setView( m_View );
+    m_Map->Draw( m_RenderTexture );
+
+    m_Player->Draw( m_RenderTexture );
 
     if ( m_Paused )
     {
         m_RenderTexture.setView( m_RenderTexture.getDefaultView() );
-        m_PauseMenu->Draw();
-    }
+        m_PauseMenu->Draw( m_RenderTexture );
+    } 
+    m_RenderTexture.display();
 
-    // Draw coordinates on mouse pointer for debugging
-    // sf::Text mouseText;
-    // mouseText.setPosition( m_Data->input.GetViewMousePosition().x + 5, m_Data->input.GetViewMousePosition().y );
-    // mouseText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
-    // mouseText.setCharacterSize( 20 );
-    // std::stringstream ss;
-    // ss << m_Data->input.GetViewMousePosition().x << ", " << m_Data->input.GetViewMousePosition().y;
-    // mouseText.setString( ss.str() );
-    // m_Data->window.draw( mouseText );
+    m_Data->window.clear();
+    m_RenderSprite.setTexture( m_RenderTexture.getTexture() );
     m_Data->window.draw( m_RenderSprite );
     m_Data->window.display();
+    */
 }

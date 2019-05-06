@@ -34,7 +34,7 @@ void Tile::Update()
 
 }
 
-void Tile::Draw()
+void Tile::Draw( sf::RenderTarget& target )
 {
-    m_Data->window.draw( m_Shape );
+    target.draw( m_Shape );
 }

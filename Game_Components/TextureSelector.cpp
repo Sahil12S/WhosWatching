@@ -117,17 +117,17 @@ namespace gui
         }
     }
 
-    void TextureSelector::Draw()
+    void TextureSelector::Draw( sf::RenderTarget& target )
     {
-        m_HideBtn->Draw();
+        m_HideBtn->Draw( target );
 
         if ( !m_Hidden )
         {
-            m_Data->window.draw( m_Bounds );
-            m_Data->window.draw( m_Sheet );
+            target.draw( m_Bounds );
+            target.draw( m_Sheet );
             if( m_Active )
             {
-                m_Data->window.draw( m_Selector );
+                target.draw( m_Selector );
             }
         }
     }

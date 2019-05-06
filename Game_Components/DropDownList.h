@@ -39,7 +39,7 @@ namespace gui
         void UpdateKeyTime(  const float& dt );
 
         void Update(  const float& dt, const sf::Vector2f& mousePosition );
-        void Draw();
+        void Draw( sf::RenderTarget& target );
     };
 }
 

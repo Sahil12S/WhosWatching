@@ -201,7 +201,7 @@ void Player::UpdateAnimation(const float &dt)
 
 }
 
-void Player::Update(float dt)
+void Player::Update(const float& dt)
 {
     /*if ( m_IsMovingLeft )
     {
@@ -256,9 +256,9 @@ void Player::Update(float dt)
 
 }
 
-void Player::Draw()
+void Player::Draw( sf::RenderTarget& target )
 {
-    m_Data->window.draw( m_Sprite );
+    target.draw( m_Sprite );
 
-    m_HC->Draw();
+    m_HC->Draw( target );
 }

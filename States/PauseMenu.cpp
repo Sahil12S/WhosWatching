@@ -78,15 +78,23 @@ void PauseMenu::Update( const sf::Vector2i& mousePosWindow )
     }
 }
 
-void PauseMenu::Draw()
+void PauseMenu::Draw( sf::RenderTarget& target )
 {
-    m_Data->window.draw( m_Background );
-    m_Data->window.draw( m_Container );
-    m_Hud->Draw( true );
+    // m_Data->window.draw( m_Background );
+    // m_Data->window.draw( m_Container );
+    // m_Hud->Draw( true );
+
+    // for ( auto button : m_Buttons )
+    // {
+    //     button.second->Draw();
+    // }
+    target.draw( m_Background );
+    target.draw( m_Container );
+    m_Hud->Draw( target, true );
 
     for ( auto button : m_Buttons )
     {
-        button.second->Draw();
+        button.second->Draw( target );
     }
     // m_Data->window.display();
 }

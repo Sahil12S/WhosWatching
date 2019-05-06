@@ -44,7 +44,7 @@ public:
 
     void Update( const sf::Vector2i& mousePosWindow );
 
-    void Draw();
+    void Draw( sf::RenderTarget& target );
 };
 
 #endif // PAUSE_MENU_H

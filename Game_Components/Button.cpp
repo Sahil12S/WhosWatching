@@ -141,10 +141,10 @@ namespace gui
 
     }
 
-    void Button::Draw()
+    void Button::Draw( sf::RenderTarget& target )
     {
-        m_Data->window.draw( m_Shape );
-        m_Data->window.draw( m_Text );
+        target.draw( m_Shape );
+        target.draw( m_Text );
     }
 
 } // namespace gui

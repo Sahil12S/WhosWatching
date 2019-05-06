@@ -45,7 +45,7 @@ void HitboxComponent::Update()
             m_Sprite.getPosition().y + m_OffsetY );
 }
 
-void HitboxComponent::Draw()
+void HitboxComponent::Draw( sf::RenderTarget& target )
 {
-    m_Data->window.draw( m_Hitbox );
+    target.draw( m_Hitbox );
 }

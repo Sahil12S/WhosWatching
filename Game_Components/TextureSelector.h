@@ -47,7 +47,7 @@ namespace gui
             const sf::IntRect& GetTextureRect() const;
 
             void Update( const float& dt, const sf::Vector2i& mousePostion );
-            void Draw();
+            void Draw( sf::RenderTarget& target );
     };
 }
 #endif // TEXTURE_SELECTOR_H

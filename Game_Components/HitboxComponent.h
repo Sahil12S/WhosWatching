@@ -38,7 +38,7 @@ public:
             const float& width, const float& height );
 
     void Update ( );
-    void Draw();
+    void Draw( sf::RenderTarget& target );
 };
 
 #endif //HITBOX_COMPONENT_H

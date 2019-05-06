@@ -25,7 +25,7 @@ public:
     const std::string getAsString() const;
 
     void Update();
-    void Draw();
+    void Draw( sf::RenderTarget& target );
 };
 
 #endif // TILE_H

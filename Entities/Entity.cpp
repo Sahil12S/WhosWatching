@@ -62,11 +62,11 @@ void Entity::Move(const float &dt, const float &dir_x, const float &dir_y)
     // m_Sprite.move( m_MC->GetVelocity() * dt );
 }
 
-void Entity::Update(float dt)
+void Entity::Update(const float& dt)
 {
 
 }
 
-void Entity::Draw()
+void Entity::Draw( sf::RenderTarget& target )
 {
 }

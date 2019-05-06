@@ -236,16 +236,16 @@ void GameSettingsState::Draw()
 
     m_Data->window.draw( m_Background );
 
-    m_Hud->Draw( true );
+    m_Hud->Draw( m_Data->window, true );
 
     for ( auto button : m_Buttons )
     {
-        button.second->Draw();
+        button.second->Draw( m_Data->window );
     }
     
     for ( auto dl : m_DropdownList )
     {
-        dl.second->Draw();
+        dl.second->Draw( m_Data->window );
     }
 
     m_Data->window.draw( m_OptionsText );

@@ -48,8 +48,8 @@ public:
 
     /* Functions */
     virtual void Move( const float& dt, const float& dir_x, const float& dir_y );
-    virtual void Update( float dt );
-    virtual void Draw();
+    virtual void Update( const float& dt );
+    virtual void Draw( sf::RenderTarget& target );
 };
 
 #endif // ENTITY_H

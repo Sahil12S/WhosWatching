@@ -44,7 +44,7 @@ public:
     void LoadFromFile( const std::string file_name );
 
     void Update();
-    void Draw();
+    void Draw( sf::RenderTarget& target );
 
 };
 

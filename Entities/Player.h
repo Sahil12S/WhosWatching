@@ -40,8 +40,8 @@ public:
 
     void UpdateAnimation( const float& dt );
 
-    void Update( float dt ) override;
-    void Draw() override;
+    void Update( const float& dt ) override;
+    void Draw( sf::RenderTarget& target ) override;
 };
 
 #endif // PLAYER_H

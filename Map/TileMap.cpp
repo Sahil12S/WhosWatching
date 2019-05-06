@@ -218,7 +218,7 @@ void TileMap::Update()
 
 }
 
-void TileMap::Draw()
+void TileMap::Draw( sf::RenderTarget& target )
 {
     for ( size_t x = 0; x < m_MapSize.x; x++ )
     {
@@ -228,7 +228,7 @@ void TileMap::Draw()
             {
                 if ( m_Map[x][y][z] != nullptr )
                 {
-                    m_Map[x][y][z]->Draw();
+                    m_Map[x][y][z]->Draw( target );
                 }
             }
         }

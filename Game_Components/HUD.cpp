@@ -36,17 +36,18 @@ namespace gui
         m_Text.setPosition( offset );
         // offset = sf::Vector2f( 0.f, 0.f );
     }
-
-    void HUD::Draw( bool isTitle )
-    {
-        if ( isTitle )
-        {
-            m_Data->window.draw( m_Text );
-        }
-    }
-
+    
     void HUD::UpdateText(std::string& text)
     {
         m_Text.setString( text );
     }
+
+    void HUD::Draw( sf::RenderTarget& target, bool isTitle )
+    {
+        if ( isTitle )
+        {
+            target.draw( m_Text );
+        }
+    }
+
 }

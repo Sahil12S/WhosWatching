@@ -96,15 +96,15 @@ namespace gui
         }
     }
 
-    void DropDownList::Draw()
+    void DropDownList::Draw( sf::RenderTarget& target )
     {
-        m_ActiveElement->Draw();
+        m_ActiveElement->Draw( target );
 
         if (m_ShowList)
         {
             for (auto &i : m_List)
             {
-                i->Draw();
+                i->Draw( target );
             }
         }
     }

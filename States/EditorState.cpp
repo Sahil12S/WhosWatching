@@ -285,7 +285,7 @@ void EditorState::Draw()
     m_Data->window.clear();
     
     m_Data->window.setView( m_MainView );
-    m_TileMap->Draw();
+    m_TileMap->Draw( m_Data->window );
 
     // Render GUI
     if ( !m_TS->GetActive() )
@@ -294,7 +294,7 @@ void EditorState::Draw()
     }
 
     m_Data->window.setView( m_Data->window.getDefaultView() );
-    m_TS->Draw();
+    m_TS->Draw( m_Data->window );
     m_Data->window.draw( m_SideBar );
 
     m_Data->window.setView( m_MainView );
@@ -305,7 +305,7 @@ void EditorState::Draw()
     if ( m_Paused )
     {   
         m_Data->window.setView( m_Data->window.getDefaultView() );
-        m_PauseMenu->Draw();
+        m_PauseMenu->Draw( m_Data->window );
     }
 
     // for (auto button : m_Buttons)
