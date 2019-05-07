@@ -82,7 +82,8 @@ void GameState::InitPlayers()
 {
     // Initialize player & spawn it
     m_Player = new Player( m_Data );
-    m_Player->SetPosition( m_Data->GfxSettings.resolution.width / 2.f, m_Data->GfxSettings.resolution.height / 2.f );
+    // m_Player->SetPosition( m_Data->GfxSettings.resolution.width / 2.f, m_Data->GfxSettings.resolution.height / 2.f );
+    m_Player->SetPosition( 200.f, 200.f );
 }
 
 GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
@@ -222,8 +223,8 @@ void GameState::Update(float dt)
     if ( !m_Paused )
     {
         UpdateView( dt );
-        m_Player->Update( dt );
         UpdateTileMap( dt );
+        m_Player->Update( dt );
     }
     else
     {

@@ -59,7 +59,7 @@ TileMap::TileMap( GameDataRef data, unsigned width, unsigned height, const std::
     m_CollisionBox.setSize( sf::Vector2f( GRID_SIZE, GRID_SIZE ) );
     m_CollisionBox.setFillColor( sf::Color( 255, 0, 0, 50 ) );
     m_CollisionBox.setOutlineColor( sf::Color::Red );
-    m_CollisionBox.setOutlineThickness( 1.f );
+    m_CollisionBox.setOutlineThickness( -1.f );
 }
 
 TileMap::~TileMap()
@@ -303,7 +303,6 @@ void TileMap::UpdateCollision( Entity* entity, const float& dt  )
 
             if(  m_Map[x][y][layer]->GetCollision() && m_Map[x][y][layer]->Intersects( nextPositionBounds ) )
             {
-                // std::cout << "COLLISION!" << std::endl;
                 // Bottom Collision
                 if ( 
                     playerBounds.top < wallBounds.top &&
@@ -313,7 +312,7 @@ void TileMap::UpdateCollision( Entity* entity, const float& dt  )
                 )
                 {
                     entity->StopVelocityY();
-                    entity->SetPosition( entity->GetPosition().x, wallBounds.top - playerBounds.height - 2.f );
+                    entity->SetPosition( playerBounds.left, wallBounds.top - playerBounds.height );
                 }
                 // Top collision
                 else if ( 
@@ -324,10 +323,11 @@ void TileMap::UpdateCollision( Entity* entity, const float& dt  )
                 )
                 {
                     entity->StopVelocityY();
-                    entity->SetPosition( entity->GetPosition().x, wallBounds.top + wallBounds.height + 2.f );
+                    entity->SetPosition( playerBounds.left, wallBounds.top + wallBounds.height );
                 }
+
                 // Right Collision
-                else if ( 
+                if ( 
                     playerBounds.left < wallBounds.left &&
                     playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width && 
                     playerBounds.top < wallBounds.top + wallBounds.height &&
@@ -335,7 +335,7 @@ void TileMap::UpdateCollision( Entity* entity, const float& dt  )
                 )
                 {
                     entity->StopVelocityX();
-                    entity->SetPosition( wallBounds.left - playerBounds.width - 2.f, entity->GetPosition().y );
+                    entity->SetPosition( wallBounds.left - playerBounds.width, playerBounds.top );
                 }
                 // Left collision
                 else if ( 
@@ -346,7 +346,7 @@ void TileMap::UpdateCollision( Entity* entity, const float& dt  )
                 )
                 {
                     entity->StopVelocityX();
-                    entity->SetPosition (wallBounds.left + wallBounds.width + 2.f, entity->GetPosition().y );
+                    entity->SetPosition (wallBounds.left + wallBounds.width, playerBounds.top );
                 }
             }
         }
