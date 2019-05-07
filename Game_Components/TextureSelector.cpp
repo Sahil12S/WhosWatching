@@ -61,7 +61,7 @@ namespace gui
 
         m_Data->assets.LoadFont( "Button Font", BUTTON_FONT_FILEPATH );
 
-        m_HideBtn->SetButtonProperties( "Button Font", "TS", 30.f, textColor, buttonColor );
+        m_HideBtn->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), "TS", 30.f, textColor, buttonColor );
     }
 
     TextureSelector::~TextureSelector()

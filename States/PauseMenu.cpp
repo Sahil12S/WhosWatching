@@ -66,7 +66,7 @@ void PauseMenu::AddButton( const std::string key,
                                         sf::Color( BUTTON_HOVER_FILL_COLOR ),
                                         sf::Color( BUTTON_ACTIVE_FILL_COLOR ) };
     
-    m_Buttons[key]->SetButtonProperties( "Button Font", text, BUTTON_TEXT_SIZE, textColor, buttonColor );
+    m_Buttons[key]->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), text, BUTTON_TEXT_SIZE, textColor, buttonColor );
 }
 
 void PauseMenu::Update( const sf::Vector2i& mousePosWindow )

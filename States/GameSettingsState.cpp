@@ -88,9 +88,9 @@ void GameSettingsState::InitComponents()
                                             sf::Color( BUTTON_ACTIVE_FILL_COLOR ) };
 
 
-    m_Buttons["Back"]->SetButtonProperties( "Button Font", "Back", BUTTON_TEXT_SIZE, textColor, buttonColor );
-    m_Buttons["Apply"]->SetButtonProperties( "Button Font", "Apply", BUTTON_TEXT_SIZE, textColor, buttonColor );
-    m_Buttons["Home"]->SetButtonProperties( "Button Font", "Home", BUTTON_TEXT_SIZE, textColor, buttonColor );
+    m_Buttons["Back"]->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), "Back", BUTTON_TEXT_SIZE, textColor, buttonColor );
+    m_Buttons["Apply"]->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), "Apply", BUTTON_TEXT_SIZE, textColor, buttonColor );
+    m_Buttons["Home"]->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), "Home", BUTTON_TEXT_SIZE, textColor, buttonColor );
 
     // std::string list[] = { "abc", "def", "fgh", "ijk", "lmn" };
     std::string list[] = { "1920 x 1080", "1280 x 720", "800 x 600", "640 x 480" };

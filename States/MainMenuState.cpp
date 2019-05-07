@@ -71,10 +71,10 @@ void MainMenuState::InitComponents()
                                           sf::Color(BUTTON_HOVER_FILL_COLOR),
                                           sf::Color(BUTTON_ACTIVE_FILL_COLOR)};
 
-    m_Buttons["Exit"]->SetButtonProperties("Button Font", "Exit", BUTTON_TEXT_SIZE, textColor, buttonColor);
-    m_Buttons["Settings"]->SetButtonProperties("Button Font", "Settings", BUTTON_TEXT_SIZE, textColor, buttonColor);
-    m_Buttons["Editor"]->SetButtonProperties("Button Font", "Editor", BUTTON_TEXT_SIZE, textColor, buttonColor);
-    m_Buttons["Play"]->SetButtonProperties("Button Font", "Play", BUTTON_TEXT_SIZE, textColor, buttonColor);
+    m_Buttons["Exit"]->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), "Exit", BUTTON_TEXT_SIZE, textColor, buttonColor);
+    m_Buttons["Settings"]->SetButtonProperties( m_Data->assets.GetFont(  "Button Font" ), "Settings", BUTTON_TEXT_SIZE, textColor, buttonColor);
+    m_Buttons["Editor"]->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), "Editor", BUTTON_TEXT_SIZE, textColor, buttonColor);
+    m_Buttons["Play"]->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), "Play", BUTTON_TEXT_SIZE, textColor, buttonColor);
 }
 
 void MainMenuState::InitVariables()

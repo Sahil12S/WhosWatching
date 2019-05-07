@@ -16,7 +16,7 @@ namespace gui
         m_Shape.setPosition( sf::Vector2f( x, y ) );
     }
 
-    void Button::SetButtonProperties(const std::string &fontName, const std::string &text,
+    void Button::SetButtonProperties(const sf::Font& font, const std::string &text,
                                         unsigned int characterSize,
                                         const std::vector<sf::Color>& textColors,
                                         const std::vector<sf::Color>& buttonColors,
@@ -24,6 +24,8 @@ namespace gui
     {
         m_ButtonState = eBtnIdle;
         m_Id = id;
+
+        m_Font = font;
 
         m_TextIdleColor = textColors[0];
         m_TextHoverColor = textColors[1];
@@ -40,8 +42,8 @@ namespace gui
         m_Shape.setFillColor( m_BtnIdleColor );
         m_Shape.setOutlineColor( m_OutlineIdleColor );
         m_Shape.setOutlineThickness( 1 );
-
-        m_Font = m_Data->assets.GetFont( fontName );
+        
+        // m_Font = m_Data->assets.GetFont( fontName );
         m_Text.setFont( m_Font );
         m_Text.setString( text );
         //( 97, 143, 216 )
@@ -67,7 +69,7 @@ namespace gui
         return m_Shape;
     }
 
-    const bool Button::isPressed() const
+    bool Button::isPressed() const
     {
         if ( m_ButtonState == eBtnActive)
         {

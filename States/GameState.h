@@ -9,6 +9,7 @@
 #include "../Game.h"
 #include "../Entities/Player.h"
 #include "../Map/TileMap.h"
+#include "../Items/Callout.h"
 
 class GameState : public State
 {
@@ -26,12 +27,14 @@ private:
     Player* m_Player;
     TileMap* m_TileMap;
     PauseMenu* m_PauseMenu;
+    Callout* m_Callout;
 
     sf::Sprite m_BackgroundSprite;
 
     sf::Text m_CursorText;
 
     bool m_Paused;
+    bool isCallout;
 
 
     std::map< std::string, gui::HUD* > hud;
@@ -49,6 +52,7 @@ private:
     void InitComponents();
     void InitTileMap();
     void InitPlayers();
+    void InitCallout();
 
 
 

@@ -25,16 +25,19 @@ void GameState::InitView()
 void GameState::InitVariables()
 {
     m_Paused = false;
+    isCallout = false;
 }
 
 void GameState::InitTextures()
 {
+    m_Data->assets.LoadTexture( "callout", CALLOUT_TEXTURE_FILEPATH );
 }
 
 void GameState::InitFonts()
 {
     m_Data->assets.LoadFont( "Debug Font", DEBUG_FONT_FILEPATH );
     m_Data->assets.LoadFont( "Hud Font", TEXT_FONT_FILEPATH );
+    m_Data->assets.LoadFont("Button Font", BUTTON_FONT_FILEPATH);
 }
 
 void GameState::InitSounds()
@@ -91,6 +94,11 @@ void GameState::InitPlayers()
     m_Player->SetPosition( 50.f, 150.f );
 }
 
+void GameState::InitCallout()
+{
+    m_Callout = new Callout( m_Data, "Hud Font",  "callout" );
+}
+
 GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
 {
 }
@@ -117,6 +125,7 @@ void GameState::Init()
     InitComponents();
     InitTileMap();
     InitPlayers();
+    InitCallout();
     m_CursorText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
     m_CursorText.setFillColor( sf::Color::White );
     m_CursorText.setCharacterSize( 20 );
@@ -149,10 +158,20 @@ void GameState::HandleInput( float dt )
 
     }
 
+    
+
     if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
                     m_Data->input.GetKeyTime() )
     {
-        m_Paused = !m_Paused;
+        if( isCallout )
+        {
+            isCallout = false;
+        }
+        else
+        {
+            m_Paused = !m_Paused;
+        }
+        
     }
 
     /*
@@ -160,28 +179,32 @@ void GameState::HandleInput( float dt )
     */
     if ( !m_Paused )
     {
-        // Walk Left
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_LEFT"] ) ) )
+        if( !isCallout )
         {
-            m_Player->Move( dt, -1.0f, 0.0f);
-        }
+                
+            // Walk Left
+            if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_LEFT"] ) ) )
+            {
+                m_Player->Move( dt, -1.0f, 0.0f);
+            }
 
-        // Walk right
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_RIGHT"] ) ) )
-        {
-            m_Player->Move( dt, 1.0f, 0.0f);
-        }
+            // Walk right
+            if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_RIGHT"] ) ) )
+            {
+                m_Player->Move( dt, 1.0f, 0.0f);
+            }
 
-        // Walk Up
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_UP"] ) ) )
-        {
-            m_Player->Move( dt, 0.0f, -1.0f);
-        }
+            // Walk Up
+            if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_UP"] ) ) )
+            {
+                m_Player->Move( dt, 0.0f, -1.0f);
+            }
 
-        // Walk Down
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_DOWN"] ) ) )
-        {
-            m_Player->Move( dt, 0.0f, 1.0f);
+            // Walk Down
+            if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["MOVE_DOWN"] ) ) )
+            {
+                m_Player->Move( dt, 0.0f, 1.0f);
+            }
         }
         // Attack ( Enter )
         if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["ATTACK"] ) ) )
@@ -191,7 +214,8 @@ void GameState::HandleInput( float dt )
             {
                 std::cout << "Interactive Tile" << '\n';
                 // Open a callout box
-                m_TileMap->Hide( m_Player );
+                // m_TileMap->Hide( m_Player );
+                isCallout = true;
             }
         }
 
@@ -231,9 +255,12 @@ void GameState::Update(float dt)
 
     if ( !m_Paused )
     {
-        UpdateView( dt );
-        UpdateTileMap( dt );
-        m_Player->Update( dt );
+        if( !isCallout )
+        {
+            UpdateView( dt );
+            UpdateTileMap( dt );
+            m_Player->Update( dt );
+        }
 
         int rem_time = static_cast<int>( m_Player->GetRemainingTime() );
         if( rem_time <= 0 )
@@ -267,12 +294,20 @@ void GameState::Draw()
     hud["timer"]->Draw( m_Data->window );
     hud["score"]->Draw( m_Data->window );
 
+    if( isCallout )
+    {
+        m_Callout->Draw( m_Data->window, "something" );
+    }
+
     if ( m_Paused )
     {
         // m_Data->window.setView( m_Data->window.getDefaultView() );
         m_PauseMenu->Draw( m_Data->window );
     }
 
+    m_Data->window.setView( m_View );
+    m_Data->window.draw( m_CursorText );
+    
 
     m_Data->window.display();
 

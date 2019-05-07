@@ -46,7 +46,7 @@ namespace gui
         * Vector of colors ( or we can set them same for all buttons )
         */
         void CreateButton( float x, float y, float width, float height );
-        void SetButtonProperties( const std::string& fontName, const std::string& text,
+        void SetButtonProperties( const sf::Font& font, const std::string& text,
                                 unsigned int characterSize,
                                 const std::vector<sf::Color>& textColors,
                                 const std::vector< sf::Color >& buttonColors,
@@ -56,7 +56,7 @@ namespace gui
         sf::RectangleShape& GetButton();
 
         // Accessors
-        const bool isPressed() const;
+        bool isPressed() const;
         const std::string getText() const;
         const short unsigned& getId() const;
 

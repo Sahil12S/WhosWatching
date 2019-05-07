@@ -17,6 +17,7 @@
 #define GAME_BACKGROUND_FILEPATH "../Resources/img/background.png"
 #define PLAYER_SHEET_FILEPATH "../Resources/img/player2.png"
 #define TILES_TEXTURE_FILEPATH "../Resources/img/tilesheet.png"
+#define CALLOUT_TEXTURE_FILEPATH "../Resources/img/callout.png"
 
 // Fonts
 #define SCREEN_FONT_FILEPATH "../Resources/font/multivac-interference.ttf"

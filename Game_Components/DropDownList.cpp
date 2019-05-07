@@ -20,7 +20,7 @@ namespace gui
         // int numOfElements = sizeof( list ) / sizeof( std::string );
         m_ActiveElement = new Button(m_Data);
         m_ActiveElement->CreateButton(x, y, LIST_WIDTH, LIST_HEIGHT );
-        m_ActiveElement->SetButtonProperties( font, list[default_idx], LIST_TEXT_SIZE, textColor, listBgColor, outlineColor );
+        m_ActiveElement->SetButtonProperties( m_Data->assets.GetFont( font ), list[default_idx], LIST_TEXT_SIZE, textColor, listBgColor, outlineColor );
 
         outlineColor = { sf::Color( 255, 255, 255, 0 ),
                     sf::Color( 255, 255, 255, 0 ),
@@ -31,7 +31,7 @@ namespace gui
             // Create new button
             m_List.emplace_back( new Button( m_Data ) );
             m_List.back()->CreateButton( x, y + ( ( i + 1 ) * LIST_HEIGHT), LIST_WIDTH, LIST_HEIGHT );
-            m_List.back()->SetButtonProperties( font, list[i], LIST_TEXT_SIZE, textColor, listBgColor, outlineColor, i );
+            m_List.back()->SetButtonProperties( m_Data->assets.GetFont( font ), list[i], LIST_TEXT_SIZE, textColor, listBgColor, outlineColor, i );
         }
 
     }
