@@ -20,16 +20,12 @@ Entity::~Entity()
 void Entity::SetTexture( sf::Texture& tex )
 {
     m_Sprite.setTexture( tex );
-    // m_Sprite.scale( 2.0f, 2.0f );
-    // std::cout << m_Sprite.getGlobalBounds().width << std::endl;
 }
 
 void Entity::CreateHitboxComponent( const float& offset_x, const float& offset_y,
         const float& width, const float& height )
 {
-    m_HC = new HitboxComponent( m_Data, m_Sprite, offset_x, offset_y, width, height );
-    std::cout << m_HC->GetGlobalBounds().width << std::endl;
-    
+    m_HC = new HitboxComponent( m_Data, m_Sprite, offset_x, offset_y, width, height );   
 }
 
 void Entity::CreateMovementComponent(const float& maxVelocity, const float& acceleration, const float& deceleration )
@@ -53,18 +49,18 @@ const sf::Vector2f& Entity::GetPosition() const
     return m_Sprite.getPosition();
 }
 
-const sf::Vector2u Entity::GetGridPosition( const unsigned gridSizeU ) const
+const sf::Vector2i Entity::GetGridPosition( const int& gridSizeI ) const
 {
     if ( m_HC )
     {
-        return sf::Vector2u( 
-            static_cast<unsigned>( m_HC->GetPosition().x ) / gridSizeU,
-            static_cast<unsigned>( m_HC->GetPosition().y ) / gridSizeU
+        return sf::Vector2i( 
+            static_cast<int>( m_HC->GetPosition().x ) / gridSizeI,
+            static_cast<int>( m_HC->GetPosition().y ) / gridSizeI
         );
     }
-    return sf::Vector2u( 
-        static_cast<unsigned>( m_Sprite.getPosition().x ) / gridSizeU,
-        static_cast<unsigned>( m_Sprite.getPosition().y ) / gridSizeU
+    return sf::Vector2i( 
+        static_cast<int>( m_Sprite.getPosition().x ) / gridSizeI,
+        static_cast<int>( m_Sprite.getPosition().y ) / gridSizeI
     );
 }
 
@@ -77,13 +73,13 @@ const sf::FloatRect Entity::GetGlobalBounds() const
     return m_Sprite.getGlobalBounds();
 }
 
-const sf::FloatRect& Entity::GetNextPositionBounds( const float& dt ) const
+const sf::FloatRect Entity::GetNextPositionBounds( const float& dt ) const
 {
     if( m_HC && m_MC )
     {
         return m_HC->GetNextPosition( m_MC->GetVelocity() * dt );
     }
-    return sf::FloatRect(); 
+    return sf::FloatRect( -1, -1, -1, -1 ); 
 }
 
 void Entity::SetPosition( const float& x, const float& y )

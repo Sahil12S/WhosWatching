@@ -42,7 +42,6 @@ void Game::InitStates()
     m_Data->machine.AddState( StateRef( new SplashState ( m_Data ) ) );
 }
 
-
 Game::Game()
 {        
     InitVariables();
@@ -51,12 +50,11 @@ Game::Game()
     InitStates();
 }
 
-
 void Game::UpdateDt()
 {
     /*
-        * Updates the dt variable with time it takes to update & render one frame
-        */
+    * Updates the dt variable with time it takes to update & render one frame
+    */
     dt = m_Clock.restart().asSeconds();
 }
 
@@ -72,27 +70,12 @@ void Game::Run()
         UpdateDt();
         m_Data->machine.ProcessStateChange();
 
-        // newTime = m_Clock.getElapsedTime().asSeconds();
+        if( m_Data->window.hasFocus() )
+        {
+            m_Data->machine.GetActiveState()->HandleInput( dt );
+            m_Data->machine.GetActiveState()->Update( dt );
+        }
 
-        // frameTime = newTime - currentTime;
-
-        // if ( frameTime > 0.25f )
-        // {
-        //     frameTime = 0.25f;
-        // }
-
-        // currentTime = newTime;
-        // accumulator += frameTime;
-
-        // while ( accumulator >= dt )
-        // {
-        m_Data->machine.GetActiveState()->HandleInput( dt );
-        m_Data->machine.GetActiveState()->Update( dt );
-
-            // accumulator -= dt;
-        // }
-
-        // interpolation = accumulator / dt;
         m_Data->machine.GetActiveState()->Draw( );
     }
 }
