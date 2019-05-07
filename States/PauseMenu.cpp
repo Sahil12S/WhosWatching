@@ -90,7 +90,7 @@ void PauseMenu::Draw( sf::RenderTarget& target )
     // }
     target.draw( m_Background );
     target.draw( m_Container );
-    m_Hud->Draw( target, true );
+    m_Hud->Draw( target );
 
     for ( auto button : m_Buttons )
     {

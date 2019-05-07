@@ -35,6 +35,7 @@ Player::Player( GameDataRef data ) : Entity( data ), m_Data( move( data ) )
     CreateAnimationComponent( "Player Sheet" );
     // OffsetX, OffsetY, width, height
     CreateHitboxComponent( 35.f, 20.f, 30.f, 60.f );
+    CreateAttributeComponent();
 
     // Animation name, animation timer, start pos X, start pos Y, frames X, frames Y, tile size
     // Lesser the timer, faster the animation speed
@@ -47,7 +48,19 @@ Player::Player( GameDataRef data ) : Entity( data ), m_Data( move( data ) )
     // m_AC->AddAnimation("TURN_ATTACK", 67, 0, 5, 6, 1, TILE_WIDTH, TILE_HEIGHT );
 }
 
-Player::~Player() = default;
+Player::~Player()
+{
+}
+
+const float Player::GetRemainingTime()
+{
+    return m_AttComp->timer;
+}
+
+const int Player::GetScore()
+{
+    return m_AttComp->points;
+}
 
 void Player::Attack()
 {
@@ -140,10 +153,11 @@ void Player::UpdateAnimation(const float &dt)
 
 void Player::Update(const float& dt)
 {
+    m_AttComp->UpdateTime( dt );
     m_MC->Update( dt );
     UpdateAnimation( dt );
-
     m_HC->Update();
+    
 }
 
 void Player::Draw( sf::RenderTarget& target )

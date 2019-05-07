@@ -195,7 +195,7 @@ void MainMenuState::Draw()
         m_Data->window.draw( m_ExitButton );
         m_Data->window.draw( m_SettingsButton );*/
 
-    m_Hud->Draw(m_Data->window, true);
+    m_Hud->Draw( m_Data->window );
 
     // m_Buttons["Settings"]->Draw();
 

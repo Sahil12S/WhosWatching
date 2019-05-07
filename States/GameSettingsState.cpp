@@ -236,7 +236,7 @@ void GameSettingsState::Draw()
 
     m_Data->window.draw( m_Background );
 
-    m_Hud->Draw( m_Data->window, true );
+    m_Hud->Draw( m_Data->window );
 
     for ( auto button : m_Buttons )
     {

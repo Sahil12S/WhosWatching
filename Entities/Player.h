@@ -7,6 +7,7 @@
 #include "../Game.h"
 #include "../Game.h"
 #include "../Game_Components/MovementComponent.h"
+#include "../Game_Components/HUD.h"
 
 class Player : public Entity
 {
@@ -23,6 +24,7 @@ private:
     // Clock to handle Attack
     sf::Clock m_AttackClock;
 
+
     /* Initializers */
     void InitTextures();
     void InitSounds();
@@ -34,6 +36,9 @@ public:
     explicit Player( GameDataRef data );
     ~Player() override;
 
+
+    const float GetRemainingTime();
+    const int GetScore();
 
     /* Functions */
     void Attack();

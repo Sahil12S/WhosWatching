@@ -19,6 +19,7 @@ Entities/Entity.cpp Entities/Player.cpp
 Game_Components/HUD.cpp Game_Components/Button.cpp Game_Components/MovementComponent.cpp 
 Game_Components/AnimationComponent.cpp Game_Components/HitboxComponent.cpp 
 Game_Components/DropDownList.h Game_Components/DropDownList.cpp 
+Game_Components/AttributeComponent.cpp 
 Game_Components/TextureSelector.cpp Tile/Tile.cpp Map/TileMap.cpp )
 
 add_executable( WhosWatching ${SOURCE_FILES} )

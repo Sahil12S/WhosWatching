@@ -34,6 +34,7 @@ void GameState::InitTextures()
 void GameState::InitFonts()
 {
     m_Data->assets.LoadFont( "Debug Font", DEBUG_FONT_FILEPATH );
+    m_Data->assets.LoadFont( "Hud Font", TEXT_FONT_FILEPATH );
 }
 
 void GameState::InitSounds()
@@ -69,7 +70,10 @@ void GameState::InitPauseMenu()
 
 void GameState::InitComponents()
 {
-    // Nothing for now
+    hud["timer"] = new gui::HUD( m_Data );
+    hud["timer"]->SetText("Hud Font", "Remaining Time: 0", 30, m_Data->GfxSettings.resolution.width / 6, m_Data->GfxSettings.resolution.height / 25 );
+    hud["score"] = new gui::HUD( m_Data );
+    hud["score"]->SetText("Hud Font", "Score: 0", 30, m_Data->GfxSettings.resolution.width / 1.2, m_Data->GfxSettings.resolution.height / 25 );
 }
 
 void GameState::InitTileMap()
@@ -226,6 +230,13 @@ void GameState::Update(float dt)
         UpdateView( dt );
         UpdateTileMap( dt );
         m_Player->Update( dt );
+
+        int rem_time = static_cast<int>( m_Player->GetRemainingTime() );
+        if( rem_time <= 0 )
+        {
+            m_Paused = true;
+        }
+        hud["timer"]->UpdateText( "Remaining Time: " + std::to_string( rem_time  ) );
     }
     else
     {
@@ -245,11 +256,16 @@ void GameState::Draw()
 
     m_Player->Draw( m_Data->window );
     m_Map->RenderDeferred( m_Data->window );
+
     m_Data->window.draw( m_CursorText );
+    
+    m_Data->window.setView( m_Data->window.getDefaultView() );
+    hud["timer"]->Draw( m_Data->window );
+    hud["score"]->Draw( m_Data->window );
 
     if ( m_Paused )
     {
-        m_Data->window.setView( m_Data->window.getDefaultView() );
+        // m_Data->window.setView( m_Data->window.getDefaultView() );
         m_PauseMenu->Draw( m_Data->window );
     }
 

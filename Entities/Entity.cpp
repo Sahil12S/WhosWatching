@@ -14,6 +14,7 @@ Entity::~Entity()
     delete m_MC;
     delete m_AC;
     delete m_HC;
+    delete m_AttComp;
 }
 
 /* Component functions */
@@ -36,6 +37,11 @@ void Entity::CreateMovementComponent(const float& maxVelocity, const float& acce
 void Entity::CreateAnimationComponent(const std::string& texture)
 {
     m_AC = new AnimationComponent( m_Data, m_Sprite, texture );
+}
+
+void Entity::CreateAttributeComponent()
+{
+    m_AttComp = new AttributeComponent();
 }
 
 /* Functions */

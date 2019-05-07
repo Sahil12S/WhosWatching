@@ -33,6 +33,9 @@ private:
 
     bool m_Paused;
 
+
+    std::map< std::string, gui::HUD* > hud;
+
     /* Functions */
     // Initializers
     void InitView();

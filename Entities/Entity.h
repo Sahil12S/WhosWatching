@@ -8,6 +8,7 @@
 #include "../Game_Components/MovementComponent.h"
 #include "../Game_Components/AnimationComponent.h"
 #include "../Game_Components/HitboxComponent.h"
+#include "../Game_Components/AttributeComponent.h"
 
 /* Forward declaration */
 struct GameData;
@@ -16,6 +17,7 @@ typedef std::shared_ptr<GameData> GameDataRef;
 class AnimationComponent;
 class MovementComponent;
 class HitboxComponent;
+class AttributeComponent;
 
 class Entity
 {
@@ -27,6 +29,7 @@ protected:
     MovementComponent* m_MC;
     AnimationComponent* m_AC;
     HitboxComponent* m_HC;
+    AttributeComponent* m_AttComp;
 
 public:
     /* Constructors and Destructors*/
@@ -39,6 +42,7 @@ public:
                                 const float& width, const float& height );
     void CreateMovementComponent( const float& maxVelocity, const float& acceleration, const float& deceleration );
     void CreateAnimationComponent( const std::string& texture );
+    void CreateAttributeComponent( );
     
     // Getters
     virtual const sf::Vector2f& GetPosition() const;

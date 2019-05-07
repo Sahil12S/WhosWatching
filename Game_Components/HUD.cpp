@@ -5,11 +5,18 @@ namespace gui
 
     HUD::HUD(GameDataRef data ) : m_Data ( move ( data ) )
     {
-
+        text = "";
     }
+
+    const std::string& HUD::GetText() const
+    {
+        return text;
+    }
+
 
     void HUD::SetText(const std::string& fontName, const std::string& text, const float& size, const float& x, const float& y )
     {
+        this->text = text;
         font = m_Data->assets.GetFont( fontName );
         m_Text.setFont( font );
         m_Text.setString( text );
@@ -37,17 +44,14 @@ namespace gui
         // offset = sf::Vector2f( 0.f, 0.f );
     }
     
-    void HUD::UpdateText(std::string& text)
+    void HUD::UpdateText( const std::string text)
     {
         m_Text.setString( text );
     }
 
-    void HUD::Draw( sf::RenderTarget& target, bool isTitle )
+    void HUD::Draw( sf::RenderTarget& target )
     {
-        if ( isTitle )
-        {
-            target.draw( m_Text );
-        }
+        target.draw( m_Text );
     }
 
 }
