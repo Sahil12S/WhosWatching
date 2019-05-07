@@ -77,6 +77,14 @@ const sf::FloatRect Entity::GetGlobalBounds() const
     return m_Sprite.getGlobalBounds();
 }
 
+const sf::FloatRect& Entity::GetNextPositionBounds( const float& dt ) const
+{
+    if( m_HC && m_MC )
+    {
+        return m_HC->GetNextPosition( m_MC->GetVelocity() * dt );
+    }
+    return sf::FloatRect(); 
+}
 
 void Entity::SetPosition( const float& x, const float& y )
 {

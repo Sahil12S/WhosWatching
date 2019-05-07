@@ -44,6 +44,7 @@ public:
     virtual const sf::Vector2f& GetPosition() const;
     virtual const sf::FloatRect GetGlobalBounds() const;
     virtual const sf::Vector2u GetGridPosition( const unsigned gridSizeU ) const;
+    virtual const sf::FloatRect& GetNextPositionBounds( const float& dt ) const;
 
     // Setters
     // virtual void SetPosition( sf::Vector2f position );

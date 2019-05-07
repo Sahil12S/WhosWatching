@@ -225,7 +225,7 @@ void TileMap::LoadFromFile( const std::string file_name )
  
 }
 
-void TileMap::UpdateCollision( Entity* entity )
+void TileMap::UpdateCollision( Entity* entity, const float& dt  )
 {
     // Collision with window
     if( entity->GetPosition().x < 0.f )
@@ -299,8 +299,9 @@ void TileMap::UpdateCollision( Entity* entity )
         {
             sf::FloatRect playerBounds = entity->GetGlobalBounds();
             sf::FloatRect wallBounds = m_Map[x][y][layer]->GetGlobalBounds();
+            sf::FloatRect nextPositionBounds = entity->GetNextPositionBounds( dt );
 
-            if(  m_Map[x][y][layer]->GetCollision() && m_Map[x][y][layer]->Intersects( entity->GetGlobalBounds()) )
+            if(  m_Map[x][y][layer]->GetCollision() && m_Map[x][y][layer]->Intersects( nextPositionBounds ) )
             {
                 // std::cout << "COLLISION!" << std::endl;
                 // Bottom Collision
@@ -312,7 +313,7 @@ void TileMap::UpdateCollision( Entity* entity )
                 )
                 {
                     entity->StopVelocityY();
-                    entity->SetPosition(playerBounds.left, wallBounds.top - playerBounds.height );
+                    entity->SetPosition( entity->GetPosition().x, wallBounds.top - playerBounds.height - 2.f );
                 }
                 // Top collision
                 else if ( 
@@ -323,7 +324,29 @@ void TileMap::UpdateCollision( Entity* entity )
                 )
                 {
                     entity->StopVelocityY();
-                    entity->SetPosition(playerBounds.left, wallBounds.top + wallBounds.height );
+                    entity->SetPosition( entity->GetPosition().x, wallBounds.top + wallBounds.height + 2.f );
+                }
+                // Right Collision
+                else if ( 
+                    playerBounds.left < wallBounds.left &&
+                    playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width && 
+                    playerBounds.top < wallBounds.top + wallBounds.height &&
+                    playerBounds.top + playerBounds.height > wallBounds.top
+                )
+                {
+                    entity->StopVelocityX();
+                    entity->SetPosition( wallBounds.left - playerBounds.width - 2.f, entity->GetPosition().y );
+                }
+                // Left collision
+                else if ( 
+                    playerBounds.left > wallBounds.left &&
+                    playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width && 
+                    playerBounds.top < wallBounds.top + wallBounds.height &&
+                    playerBounds.top + playerBounds.height > wallBounds.top
+                )
+                {
+                    entity->StopVelocityX();
+                    entity->SetPosition (wallBounds.left + wallBounds.width + 2.f, entity->GetPosition().y );
                 }
             }
         }

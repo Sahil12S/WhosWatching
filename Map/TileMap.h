@@ -53,7 +53,7 @@ public:
     // Load map from a text file
     void LoadFromFile( const std::string file_name );
 
-    void UpdateCollision( Entity* entity );
+    void UpdateCollision( Entity* entity, const float& dt );
 
     void Update();
     void Draw( sf::RenderTarget& target, Entity* entity = nullptr );

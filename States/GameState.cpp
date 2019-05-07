@@ -193,7 +193,7 @@ void GameState::HandleInput( float dt )
 void GameState::UpdateTileMap( const float& dt )
 {
     m_Map->Update();
-    m_Map->UpdateCollision( m_Player );
+    m_Map->UpdateCollision( m_Player, dt );
 }
 
 void GameState::UpdatePauseMenuButtons( )
