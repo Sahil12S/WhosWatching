@@ -30,11 +30,11 @@ private:
     std::vector< std::vector< std::vector< Tile* > > > m_Map;
 
     // Culling
-    unsigned fromX;
-    unsigned toX;
-    unsigned fromY;
-    unsigned toY;
-    unsigned layer;
+    int fromX;
+    int toX;
+    int fromY;
+    int toY;
+    int layer;
 
     // Clear: clears all the tiles from map
     void Clear();

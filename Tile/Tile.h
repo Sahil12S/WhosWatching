@@ -26,6 +26,8 @@ public:
     const sf::Vector2f& GetPosition() const;
     const std::string GetAsString() const;
 
+    const bool Intersects( const sf::FloatRect bounds ) const;
+
     void Update();
     void Draw( sf::RenderTarget& target );
 };

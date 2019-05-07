@@ -239,7 +239,7 @@ void GameState::Draw()
     m_Data->window.clear();
 
     m_Data->window.setView( m_View );
-    m_Map->Draw( m_Data->window );
+    m_Map->Draw( m_Data->window, m_Player );
 
     m_Player->Draw( m_Data->window );
 

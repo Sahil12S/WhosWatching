@@ -251,51 +251,57 @@ void TileMap::UpdateCollision( Entity* entity )
     }
 
     // Collision with tiles
-    fromX = entity->GetGridPosition( m_GridSizeU ).x - 2;
+    layer = 0;
+    
+    fromX = entity->GetGridPosition( m_GridSizeU ).x - 1;
     if( fromX < 0 )
     {
         fromX = 0;
     }
-    else if ( fromX >= m_MaxSizeWorldGrid.x )
+    else if ( fromX > m_MaxSizeWorldGrid.x )
     {
-        fromX = m_MaxSizeWorldGrid.x - 1;
+        fromX = m_MaxSizeWorldGrid.x;
     }
 
-    toX = entity->GetGridPosition( m_GridSizeU ).x + 1;
+    toX = entity->GetGridPosition( m_GridSizeU ).x + 3;
     if( toX < 0 )
     {
         toX = 0;
     }
-    else if ( toX >= m_MaxSizeWorldGrid.x )
+    else if ( toX > m_MaxSizeWorldGrid.x )
     {
-        toX = m_MaxSizeWorldGrid.x - 1;
+        toX = m_MaxSizeWorldGrid.x;
     }
 
-    fromY = entity->GetGridPosition( m_GridSizeU ).y - 2;
+    fromY = entity->GetGridPosition( m_GridSizeU ).y - 1;
     if( fromY < 0 )
     {
         fromY = 0;
     }
-    else if ( fromY >= m_MaxSizeWorldGrid.y )
+    else if ( fromY > m_MaxSizeWorldGrid.y )
     {
-        fromY = m_MaxSizeWorldGrid.y - 1;
+        fromY = m_MaxSizeWorldGrid.y;
     }
 
-    toY = entity->GetGridPosition( m_GridSizeU ).y + 1;
+    toY = entity->GetGridPosition( m_GridSizeU ).y + 3;
     if( toY < 0 )
     {
         toY = 0;
     }
-    else if ( toY >= m_MaxSizeWorldGrid.y )
+    else if ( toY > m_MaxSizeWorldGrid.y )
     {
-        toY = m_MaxSizeWorldGrid.y - 1;
+        toY = m_MaxSizeWorldGrid.y;
     }
 
     for ( size_t x = fromX; x < toX; x++ )
     {
         for ( size_t y = fromY; y < toY; y++ )
         {
-
+            if(  m_Map[x][y][layer]->GetCollision() && m_Map[x][y][layer]->Intersects( entity->GetGlobalBounds()) )
+            {
+                // Bottom Collision
+                std::cout << "COLLISION!" << std::endl;
+            }
         }
     }
 }
@@ -307,23 +313,82 @@ void TileMap::Update()
 
 void TileMap::Draw( sf::RenderTarget& target, Entity* entity )
 {
-    for ( size_t x = 0; x < m_MaxSizeWorldGrid.x; x++ )
+    if ( entity )
     {
-        for ( size_t y = 0; y < m_MaxSizeWorldGrid.y; y++ )
+        layer = 0;
+
+        fromX = entity->GetGridPosition( m_GridSizeU ).x - 1;
+        if( fromX < 0 )
         {
-            for ( size_t z = 0; z < m_Layers; z++ )
+            fromX = 0;
+        }
+        else if ( fromX > m_MaxSizeWorldGrid.x )
+        {
+            fromX = m_MaxSizeWorldGrid.x;
+        }
+
+        toX = entity->GetGridPosition( m_GridSizeU ).x + 3;
+        if( toX < 0 )
+        {
+            toX = 0;
+        }
+        else if ( toX > m_MaxSizeWorldGrid.x )
+        {
+            toX = m_MaxSizeWorldGrid.x;
+        }
+
+        fromY = entity->GetGridPosition( m_GridSizeU ).y - 1;
+        if( fromY < 0 )
+        {
+            fromY = 0;
+        }
+        else if ( fromY > m_MaxSizeWorldGrid.y )
+        {
+            fromY = m_MaxSizeWorldGrid.y ;
+        }
+
+        toY = entity->GetGridPosition( m_GridSizeU ).y + 3;
+        if( toY < 0 )
+        {
+            toY = 0;
+        }
+        else if ( toY > m_MaxSizeWorldGrid.y )
+        {
+            toY = m_MaxSizeWorldGrid.y;
+        }
+
+        for ( size_t x = fromX; x < toX; x++ )
+        {
+            for ( size_t y = fromY; y < toY; y++ )
             {
-                if ( m_Map[x][y][z] != nullptr )
+                m_Map[x][y][layer]->Draw( target );
+                if( m_Map[x][y][layer]->GetCollision() )
                 {
-                    m_Map[x][y][z]->Draw( target );
-                    if( m_Map[x][y][z]->GetCollision() )
+                    m_CollisionBox.setPosition( m_Map[x][y][layer]->GetPosition() );
+                    target.draw( m_CollisionBox );
+                }
+            }
+        }
+    }
+    else
+    {
+        for ( size_t x = 0; x < m_MaxSizeWorldGrid.x; x++ )
+        {
+            for ( size_t y = 0; y < m_MaxSizeWorldGrid.y; y++ )
+            {
+                for ( size_t z = 0; z < m_Layers; z++ )
+                {
+                    if ( m_Map[x][y][z] != nullptr )
                     {
-                        m_CollisionBox.setPosition( m_Map[x][y][z]->GetPosition() );
-                        target.draw( m_CollisionBox );
+                        m_Map[x][y][z]->Draw( target );
+                        if( m_Map[x][y][z]->GetCollision() )
+                        {
+                            m_CollisionBox.setPosition( m_Map[x][y][z]->GetPosition() );
+                            target.draw( m_CollisionBox );
+                        }
                     }
                 }
             }
         }
     }
-    
 }
