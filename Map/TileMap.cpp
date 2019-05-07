@@ -228,7 +228,6 @@ void TileMap::UpdateCollision( Entity* entity )
     }
     else if( entity->GetPosition().x + entity->GetGlobalBounds().width > m_MaxSizeWorldF.x )
     {
-        std::cout << entity->GetGlobalBounds().width << std::endl;
         entity->SetPosition( m_MaxSizeWorldF.x - entity->GetGlobalBounds().width, entity->GetPosition().y );
         entity->StopVelocityX();
     }

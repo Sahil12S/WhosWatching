@@ -19,6 +19,7 @@ private:
 
     sf::Sprite& m_Sprite;
     sf::RectangleShape m_Hitbox;
+    sf::FloatRect m_NextPosition;
 
     float m_OffsetX;
     float m_OffsetY;
@@ -34,6 +35,12 @@ public:
     /* Functions */
     const sf::Vector2f& GetPosition() const;
     const sf::FloatRect GetGlobalBounds() const;
+
+    /*
+     * Help in predict what next position of hitbox will be
+     * based on current velocity. This will help in deiciding collision
+     */
+    const sf::FloatRect& GetNextPosition( const sf::Vector2f& velocity );
 
     void SetPosition( const sf::Vector2f& position );
     void SetPosition( const float& x, const float& y );

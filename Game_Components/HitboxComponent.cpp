@@ -6,12 +6,12 @@ HitboxComponent::HitboxComponent( GameDataRef data, sf::Sprite& sprite,
         m_Data( std::move( data ) ), m_Sprite( sprite ), m_OffsetX( offset_x ), m_OffsetY( offset_y )
 {
 
-    // m_ShiftX = (m_Sprite.getGlobalBounds().width - width) / 2.f ;
+    m_NextPosition.left = 0.f;
+    m_NextPosition.top = 0.f;
+    m_NextPosition.width = width;
+    m_NextPosition.height = height;
 
-    // m_Hitbox.setPosition( m_Sprite.getPosition().x + offset_x - m_ShiftX, m_Sprite.getPosition().y + offset_y );
     m_Hitbox.setPosition( m_Sprite.getPosition().x + offset_x, m_Sprite.getPosition().y + offset_y );
-    // m_Hitbox.setOrigin( m_Sprite.getOrigin() );
-
     m_Hitbox.setSize( sf::Vector2f( width, height ) );
     m_Hitbox.setFillColor( sf::Color::Transparent );
     m_Hitbox.setOutlineThickness( - 1.f );
@@ -33,6 +33,13 @@ const sf::FloatRect HitboxComponent::GetGlobalBounds() const
     return m_Hitbox.getGlobalBounds();
 }
 
+const sf::FloatRect& HitboxComponent::GetNextPosition( const sf::Vector2f& velocity )
+{
+    m_NextPosition.left = m_Hitbox.getPosition().x + velocity.x;
+    m_NextPosition.top = m_Hitbox.getPosition().y + velocity.y;
+
+    return m_NextPosition;
+}
 
 void HitboxComponent::SetPosition( const sf::Vector2f& position )
 {

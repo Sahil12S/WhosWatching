@@ -21,8 +21,8 @@ const bool& AnimationComponent::isDone(const std::string& key)
 }
 
 void
-AnimationComponent::AddAnimation(const std::string& key, float animation_timer, int start_frame_x, int start_frame_y,
-                                    int frames_x, int frames_y, int width, int height)
+AnimationComponent::AddAnimation( const std::string& key, float animation_timer, int start_frame_x, int start_frame_y,
+    int frames_x, int frames_y, int width, int height)
 {
     m_Animations[key] = new Animation( m_Sprite, m_TextureSheet, animation_timer,
             start_frame_x, start_frame_y, frames_x, frames_y, width, height );

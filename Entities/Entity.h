@@ -56,8 +56,8 @@ public:
     virtual void StopVelocityY();
 
 
-    virtual void Update( const float& dt );
-    virtual void Draw( sf::RenderTarget& target );
+    virtual void Update( const float& dt ) = 0;
+    virtual void Draw( sf::RenderTarget& target ) = 0;
 };
 
 #endif // ENTITY_H

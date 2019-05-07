@@ -20,13 +20,16 @@ Entity::~Entity()
 void Entity::SetTexture( sf::Texture& tex )
 {
     m_Sprite.setTexture( tex );
-    m_Sprite.scale( 2.0f, 2.0f );
+    // m_Sprite.scale( 2.0f, 2.0f );
+    // std::cout << m_Sprite.getGlobalBounds().width << std::endl;
 }
 
 void Entity::CreateHitboxComponent( const float& offset_x, const float& offset_y,
         const float& width, const float& height )
 {
     m_HC = new HitboxComponent( m_Data, m_Sprite, offset_x, offset_y, width, height );
+    std::cout << m_HC->GetGlobalBounds().width << std::endl;
+    
 }
 
 void Entity::CreateMovementComponent(const float& maxVelocity, const float& acceleration, const float& deceleration )
@@ -54,7 +57,8 @@ const sf::FloatRect Entity::GetGlobalBounds() const
 {
     if( m_HC )
     {
-        m_HC->GetGlobalBounds();
+        // std::cout << "=>" << m_Sprite.getGlobalBounds().width << std::endl;
+        return m_HC->GetGlobalBounds();
     }
     return m_Sprite.getGlobalBounds();
 }

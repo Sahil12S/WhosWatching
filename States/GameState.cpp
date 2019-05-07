@@ -29,12 +29,6 @@ void GameState::InitVariables()
 
 void GameState::InitTextures()
 {
-    // Load game background
-    // m_Data->assets.LoadTexture( "Game Background", GAME_BACKGROUND_FILEPATH );
-    // m_BackgroundSprite.setTexture( m_Data->assets.GetTexture( "Game Background" ) );
-
-    // Set Background position
-    // m_BackgroundSprite.setPosition( 0, -( m_BackgroundSprite.getGlobalBounds().height - SCREEN_HEIGHT ) );
 }
 
 void GameState::InitFonts()

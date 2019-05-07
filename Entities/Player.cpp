@@ -34,7 +34,7 @@ Player::Player( GameDataRef data ) : Entity( data ), m_Data( move( data ) )
     CreateMovementComponent( PLAYER_MOVEMENT_SPEED, 1500, 500 );
     CreateAnimationComponent( "Player Sheet" );
     // OffsetX, OffsetY, width, height
-    CreateHitboxComponent( 50.f, 20.f, 30.f, 60.f );
+    CreateHitboxComponent( 35.f, 20.f, 30.f, 60.f );
 
     // Animation name, animation timer, start pos X, start pos Y, frames X, frames Y, tile size
     // Lesser the timer, faster the animation speed
