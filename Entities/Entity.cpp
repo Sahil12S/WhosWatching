@@ -53,11 +53,25 @@ const sf::Vector2f& Entity::GetPosition() const
     return m_Sprite.getPosition();
 }
 
+const sf::Vector2u Entity::GetGridPosition( const unsigned gridSizeU ) const
+{
+    if ( m_HC )
+    {
+        return sf::Vector2u( 
+            static_cast<unsigned>( m_HC->GetPosition().x ) / gridSizeU,
+            static_cast<unsigned>( m_HC->GetPosition().y ) / gridSizeU
+        );
+    }
+    return sf::Vector2u( 
+        static_cast<unsigned>( m_Sprite.getPosition().x ) / gridSizeU,
+        static_cast<unsigned>( m_Sprite.getPosition().y ) / gridSizeU
+    );
+}
+
 const sf::FloatRect Entity::GetGlobalBounds() const
 {
     if( m_HC )
     {
-        // std::cout << "=>" << m_Sprite.getGlobalBounds().width << std::endl;
         return m_HC->GetGlobalBounds();
     }
     return m_Sprite.getGlobalBounds();

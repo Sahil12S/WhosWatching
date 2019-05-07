@@ -32,6 +32,12 @@ TileMap::TileMap( GameDataRef data, unsigned width, unsigned height, const std::
     m_MaxSizeWorldF.x = static_cast<float>( width ) * GRID_SIZE;
     m_MaxSizeWorldF.y =  static_cast<float>( height ) * GRID_SIZE;
 
+    fromX = 0;
+    toX = 0;
+    fromY = 0;
+    toY = 0;
+    layer = 0;
+
     // Initialize map
     m_Map.resize( m_MaxSizeWorldGrid.x, std::vector< std::vector< Tile* > >() );
 
@@ -221,6 +227,7 @@ void TileMap::LoadFromFile( const std::string file_name )
 
 void TileMap::UpdateCollision( Entity* entity )
 {
+    // Collision with window
     if( entity->GetPosition().x < 0.f )
     {
         entity->SetPosition( 0.f, entity->GetPosition().y );
@@ -241,6 +248,55 @@ void TileMap::UpdateCollision( Entity* entity )
     {
         entity->SetPosition( entity->GetPosition().x, m_MaxSizeWorldF.y - entity->GetGlobalBounds().height );
         entity->StopVelocityY();
+    }
+
+    // Collision with tiles
+    fromX = entity->GetGridPosition( m_GridSizeU ).x - 2;
+    if( fromX < 0 )
+    {
+        fromX = 0;
+    }
+    else if ( fromX >= m_MaxSizeWorldGrid.x )
+    {
+        fromX = m_MaxSizeWorldGrid.x - 1;
+    }
+
+    toX = entity->GetGridPosition( m_GridSizeU ).x + 1;
+    if( toX < 0 )
+    {
+        toX = 0;
+    }
+    else if ( toX >= m_MaxSizeWorldGrid.x )
+    {
+        toX = m_MaxSizeWorldGrid.x - 1;
+    }
+
+    fromY = entity->GetGridPosition( m_GridSizeU ).y - 2;
+    if( fromY < 0 )
+    {
+        fromY = 0;
+    }
+    else if ( fromY >= m_MaxSizeWorldGrid.y )
+    {
+        fromY = m_MaxSizeWorldGrid.y - 1;
+    }
+
+    toY = entity->GetGridPosition( m_GridSizeU ).y + 1;
+    if( toY < 0 )
+    {
+        toY = 0;
+    }
+    else if ( toY >= m_MaxSizeWorldGrid.y )
+    {
+        toY = m_MaxSizeWorldGrid.y - 1;
+    }
+
+    for ( size_t x = fromX; x < toX; x++ )
+    {
+        for ( size_t y = fromY; y < toY; y++ )
+        {
+
+        }
     }
 }
 

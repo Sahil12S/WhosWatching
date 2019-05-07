@@ -18,7 +18,9 @@ private:
     float m_GridSizeF;
     unsigned m_GridSizeU;
     unsigned m_Layers;
+    // Number of grids in world
     sf::Vector2u m_MaxSizeWorldGrid;
+    // Size of grid ( num of grid x size of grid )
     sf::Vector2f m_MaxSizeWorldF;
 
     std::string m_TextureFile;
@@ -26,6 +28,13 @@ private:
 
     // 3D vector to store tiles and layers
     std::vector< std::vector< std::vector< Tile* > > > m_Map;
+
+    // Culling
+    unsigned fromX;
+    unsigned toX;
+    unsigned fromY;
+    unsigned toY;
+    unsigned layer;
 
     // Clear: clears all the tiles from map
     void Clear();
