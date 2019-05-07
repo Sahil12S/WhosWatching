@@ -9,6 +9,7 @@ void EditorState::InitVariables()
 
     m_Collision = false;
     m_Type = TileType::eDefault;
+    m_Layer = 0;
 }
 
 void EditorState::InitView()
@@ -78,7 +79,7 @@ void EditorState::InitPauseMenu()
 
 void EditorState::InitTileMap()
 {
-    m_TileMap = new TileMap( m_Data, 10, 10, TILES_TEXTURE_FILEPATH );
+    m_TileMap = new TileMap( m_Data, 15, 15, TILES_TEXTURE_FILEPATH );
 }
 
 void EditorState::InitGui()
@@ -100,7 +101,7 @@ void EditorState::InitGui()
     m_SelectorRect.setTextureRect( m_TextureRect );
 
     // Area of texture selector
-    m_TS = new gui::TextureSelector( m_Data, 20.f, 20.f, 500.f, 400.f, m_TileMap->GetTileSheet() );
+    m_TS = new gui::TextureSelector( m_Data, 20.f, 20.f, 500.f, 500.f, m_TileMap->GetTileSheet() );
 
 }
 
@@ -230,7 +231,9 @@ void EditorState::UpdateGui( const float& dt )
         "Grid Pos: " << m_Data->input.GetGridMousePosition().x << ", " << m_Data->input.GetGridMousePosition().y << '\n' << 
         "TexRect: " << m_TextureRect.left << " " << m_TextureRect.top << '\n' << 
         "Collision: " << m_Collision << '\n' <<
-        "Type: " << m_Type << '\n';
+        "Type: " << m_Type << '\n' <<
+        "Tiles: " << m_TileMap->GetLayerSize( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, m_Layer );
+
     m_CursorText.setString( ss.str() );
     m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );
 
@@ -277,7 +280,8 @@ void EditorState::Draw()
     m_Data->window.clear();
     
     m_Data->window.setView( m_MainView );
-    m_TileMap->Draw( m_Data->window );
+    m_TileMap->Draw( m_Data->window, m_Data->input.GetGridMousePosition() );
+    m_TileMap->RenderDeferred( m_Data->window );
 
     // Render GUI
     if ( !m_TS->GetActive() )

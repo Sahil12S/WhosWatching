@@ -74,7 +74,8 @@ void GameState::InitComponents()
 
 void GameState::InitTileMap()
 {
-    m_Map = new TileMap( m_Data, 10, 10, TILES_TEXTURE_FILEPATH );
+    // m_Map = new TileMap( m_Data, "myMap.txt" );
+    m_Map = new TileMap( m_Data, 15, 15, TILES_TEXTURE_FILEPATH );
     m_Map->LoadFromFile("myMap.txt");
 }
 
@@ -83,7 +84,7 @@ void GameState::InitPlayers()
     // Initialize player & spawn it
     m_Player = new Player( m_Data );
     // m_Player->SetPosition( m_Data->GfxSettings.resolution.width / 2.f, m_Data->GfxSettings.resolution.height / 2.f );
-    m_Player->SetPosition( 200.f, 200.f );
+    m_Player->SetPosition( 50.f, 150.f );
 }
 
 GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
@@ -240,9 +241,10 @@ void GameState::Draw()
     m_Data->window.clear();
 
     m_Data->window.setView( m_View );
-    m_Map->Draw( m_Data->window, m_Player );
+    m_Map->Draw( m_Data->window, m_Player->GetGridPosition( static_cast<int>( GRID_SIZE ) ) );
 
     m_Player->Draw( m_Data->window );
+    m_Map->RenderDeferred( m_Data->window );
     m_Data->window.draw( m_CursorText );
 
     if ( m_Paused )

@@ -6,24 +6,27 @@ void TileMap::Clear()
     /*
     * Delete all the tiles
     */
-    for ( int x = 0; x < m_MaxSizeWorldGrid.x; x++ )
-    {
-        for ( int y = 0; y < m_MaxSizeWorldGrid.y; y++ )
+   if( !m_Map.empty() )
+   {
+        for ( int x = 0; x < m_MaxSizeWorldGrid.x; x++ )
         {
-            for ( int z = 0; z < m_Layers; z++ )
+            for ( int y = 0; y < m_MaxSizeWorldGrid.y; y++ )
             {
-                for( size_t k = 0; k < m_Map[x][y][z].size(); k++ )
+                for ( int z = 0; z < m_Layers; z++ )
                 {
-                    delete m_Map[x][y][z][k];
-                    m_Map[x][y][z][k] = nullptr;
+                    for( size_t k = 0; k < m_Map[x][y][z].size(); k++ )
+                    {
+                        delete m_Map[x][y][z][k];
+                        m_Map[x][y][z][k] = nullptr;
+                    }
+                    m_Map[x][y][z].clear();
                 }
-                m_Map[x][y][z].clear();
+                m_Map[x][y].clear();
             }
-            m_Map[x][y].clear();
+            m_Map[x].clear();
         }
-        m_Map[x].clear();
-    }
-    m_Map.clear();
+        m_Map.clear();
+   }
 }
 
 TileMap::TileMap( GameDataRef data, int width, int height, const std::string& texture_file ) : m_Data( std::move( data ) )
@@ -66,6 +69,22 @@ TileMap::TileMap( GameDataRef data, int width, int height, const std::string& te
     m_CollisionBox.setOutlineThickness( -1.f );
 }
 
+TileMap::TileMap( GameDataRef data, const std::string file_name) : m_Data( std::move( data ) )
+{
+	fromX = 0;
+    toX = 0;
+    fromY = 0;
+    toY = 0;
+    layer = 0;
+
+	LoadFromFile(file_name);
+
+	m_CollisionBox.setSize( sf::Vector2f( m_GridSizeF, m_GridSizeF ) );
+    m_CollisionBox.setFillColor( sf::Color( 255, 0, 0, 50 ) );
+    m_CollisionBox.setOutlineColor( sf::Color::Red );
+    m_CollisionBox.setOutlineThickness( -1.f );
+}
+
 TileMap::~TileMap()
 {
     Clear();
@@ -74,6 +93,21 @@ TileMap::~TileMap()
 const std::string TileMap::GetTileSheet() const
 {
     return "Tiles";
+}
+
+const int TileMap::GetLayerSize( const int& x, const int& y, const int& layer ) const
+{
+    if ( x >= 0 && x < m_Map.size() )
+    {
+        if( y >= 0 && y < m_Map[x].size() )
+        {
+            if( layer >= 0 && layer < m_Map[x][y].size() )
+            {
+                return m_Map[x][y][layer].size();
+            }
+        }
+    }
+    return -1;
 }
 
 void TileMap::AddTile( const int& x, const int& y, const int& z, const sf::IntRect& texture_rect, const bool& collision, const short& type )
@@ -170,7 +204,7 @@ void TileMap::SaveToFile( const std::string file_name )
 void TileMap::LoadFromFile( const std::string file_name )
 {
     std::ifstream in_file;
-   in_file.open( file_name );
+    in_file.open( file_name );
 
     if( in_file.is_open() )
     {
@@ -378,94 +412,83 @@ void TileMap::Update()
 
 }
 
-void TileMap::Draw( sf::RenderTarget& target, Entity* entity )
+void TileMap::Draw( sf::RenderTarget& target, const sf::Vector2i& gridPosition )
 {
-    if ( entity )
+
+    layer = 0;
+
+    fromX = gridPosition.x - 4;
+    if( fromX < 0 )
     {
-        layer = 0;
+        fromX = 0;
+    }
+    else if ( fromX > m_MaxSizeWorldGrid.x )
+    {
+        fromX = m_MaxSizeWorldGrid.x;
+    }
 
-        fromX = entity->GetGridPosition( m_GridSizeI ).x - 4;
-        if( fromX < 0 )
-        {
-            fromX = 0;
-        }
-        else if ( fromX > m_MaxSizeWorldGrid.x )
-        {
-            fromX = m_MaxSizeWorldGrid.x;
-        }
+    toX = gridPosition.x + 5;
+    if( toX < 0 )
+    {
+        toX = 0;
+    }
+    else if ( toX > m_MaxSizeWorldGrid.x )
+    {
+        toX = m_MaxSizeWorldGrid.x;
+    }
 
-        toX = entity->GetGridPosition( m_GridSizeI ).x + 5;
-        if( toX < 0 )
-        {
-            toX = 0;
-        }
-        else if ( toX > m_MaxSizeWorldGrid.x )
-        {
-            toX = m_MaxSizeWorldGrid.x;
-        }
+    fromY = gridPosition.y - 3;
+    if( fromY < 0 )
+    {
+        fromY = 0;
+    }
+    else if ( fromY > m_MaxSizeWorldGrid.y )
+    {
+        fromY = m_MaxSizeWorldGrid.y ;
+    }
 
-        fromY = entity->GetGridPosition( m_GridSizeI ).y - 3;
-        if( fromY < 0 )
-        {
-            fromY = 0;
-        }
-        else if ( fromY > m_MaxSizeWorldGrid.y )
-        {
-            fromY = m_MaxSizeWorldGrid.y ;
-        }
+    toY = gridPosition.y + 5;
+    if( toY < 0 )
+    {
+        toY = 0;
+    }
+    else if ( toY > m_MaxSizeWorldGrid.y )
+    {
+        toY = m_MaxSizeWorldGrid.y;
+    }
 
-        toY = entity->GetGridPosition( m_GridSizeI ).y + 5;
-        if( toY < 0 )
+    for ( int x = fromX; x < toX; x++ )
+    {
+        for ( int y = fromY; y < toY; y++ )
         {
-            toY = 0;
-        }
-        else if ( toY > m_MaxSizeWorldGrid.y )
-        {
-            toY = m_MaxSizeWorldGrid.y;
-        }
-
-        for ( int x = fromX; x < toX; x++ )
-        {
-            for ( int y = fromY; y < toY; y++ )
+            for (size_t k = 0; k < m_Map[x][y][layer].size(); k++)
             {
-                for (size_t k = 0; k < m_Map[x][y][layer].size(); k++)
+                if( m_Map[x][y][layer][k]->getType() == TileType::eDoodad )
                 {
-                    m_Map[x][y][layer][k]->Draw( target );
-                    if( m_Map[x][y][layer][k]->GetCollision() )
-                    {
-                        m_CollisionBox.setPosition( m_Map[x][y][layer][k]->GetPosition() );
-                        target.draw( m_CollisionBox );
-                    }
+                    // something
+                    deferredRenderStack.push( m_Map[x][y][layer][k] );
                 }
-                
-                
+                else
+                {
+                    // render
+                    m_Map[x][y][layer][k]->Draw( target );
+                }
+
+                if( m_Map[x][y][layer][k]->GetCollision() )
+                {
+                    m_CollisionBox.setPosition( m_Map[x][y][layer][k]->GetPosition() );
+                    target.draw( m_CollisionBox );
+                }
             }
         }
     }
-    else
+}
+
+void TileMap::RenderDeferred( sf::RenderTarget& target )
+{
+    while( !deferredRenderStack.empty() )
     {
-        for ( int x = 0; x < m_MaxSizeWorldGrid.x; x++ )
-        {
-            for ( int y = 0; y < m_MaxSizeWorldGrid.y; y++ )
-            {
-                for ( int z = 0; z < m_Layers; z++ )
-                {
-                    if ( !m_Map[x][y][z].empty() )
-                    {
-                        for (size_t k = 0; k < m_Map[x][y][z].size(); k++)
-                        {
-                            m_Map[x][y][z][k]->Draw( target );
-                            if( m_Map[x][y][z][k]->GetCollision() )
-                            {
-                                m_CollisionBox.setPosition( m_Map[x][y][z][k]->GetPosition() );
-                                target.draw( m_CollisionBox );
-                            }
-                        }
-                        
-                       
-                    }
-                }
-            }
-        }
+        deferredRenderStack.top()->Draw( target );
+        deferredRenderStack.pop();
     }
 }

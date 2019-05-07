@@ -22,6 +22,7 @@ public:
     virtual ~Tile();
 
     // Return tile properties as string
+    const short& getType() const;
     const bool GetCollision() const;
     const sf::Vector2f& GetPosition() const;
     const sf::FloatRect GetGlobalBounds() const;

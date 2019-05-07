@@ -31,6 +31,7 @@ private:
     bool m_Paused;
     bool m_Collision;
     short m_Type;
+    int m_Layer;
 
     sf::RectangleShape m_SelectorRect;
     sf::RectangleShape m_SideBar;

@@ -20,6 +20,10 @@ Tile::Tile( GameDataRef data, unsigned grid_x, unsigned grid_y, float gridSizeF,
 Tile::~Tile()
 {
 }
+const short& Tile::getType() const
+{
+    return m_Type;
+}
 
 const bool Tile::GetCollision() const
 {

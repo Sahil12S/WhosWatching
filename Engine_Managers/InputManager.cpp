@@ -67,9 +67,9 @@ void InputManager::UpdateMousePosition(sf::RenderWindow &window,sf::View* view )
     }
 
     m_MousePosView = window.mapPixelToCoords( sf::Mouse::getPosition( window ) );
-    m_MousePosGrid = sf::Vector2u (
-        static_cast<unsigned>( m_MousePosView.x ) / static_cast<unsigned>( GRID_SIZE ),
-        static_cast<unsigned>( m_MousePosView.y ) / static_cast<unsigned>( GRID_SIZE )
+    m_MousePosGrid = sf::Vector2i (
+        static_cast<int>( m_MousePosView.x ) / static_cast<int>( GRID_SIZE ),
+        static_cast<int>( m_MousePosView.y ) / static_cast<int>( GRID_SIZE )
     );
 
     window.setView( window.getDefaultView() );
@@ -99,7 +99,7 @@ sf::Vector2f InputManager::GetViewMousePosition()
     return m_MousePosView;
 }
 
-sf::Vector2u InputManager::GetGridMousePosition()
+sf::Vector2i InputManager::GetGridMousePosition()
 {
     return m_MousePosGrid;
 }

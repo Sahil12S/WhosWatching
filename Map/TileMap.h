@@ -29,6 +29,9 @@ private:
     // 3D vector to store tiles and layers
     std::vector< std::vector< std::vector< std::vector< Tile* > > > > m_Map;
 
+    // Store tiles that we want to render later
+    std::stack<Tile*> deferredRenderStack;
+
     // Culling
     int fromX;
     int toX;
@@ -41,9 +44,11 @@ private:
 
 public:
     TileMap( GameDataRef data, int width, int height, const std::string& texture_file );
+    TileMap( GameDataRef data, const std::string file_name);
     virtual ~TileMap();
     
     const std::string GetTileSheet() const;
+    const int GetLayerSize( const int& x, const int& y, const int& layer ) const;
 
     void AddTile( const int& x, const int& y, const int& z, const sf::IntRect& texture_rect, const bool& collision, const short& type );
     // Remove tile from map
@@ -56,7 +61,10 @@ public:
     void UpdateCollision( Entity* entity, const float& dt );
 
     void Update();
-    void Draw( sf::RenderTarget& target, Entity* entity = nullptr );
+
+    // We can render using position rather than player
+    void Draw( sf::RenderTarget& target, const sf::Vector2i& gridPosition );
+    void RenderDeferred( sf::RenderTarget& target );
 
 };
 

@@ -85,7 +85,7 @@
 #define SPLASH_STATE_SHOW_TIME 0.5f
 
 // For View
-#define CAMERA_SPEED 100.f
+#define CAMERA_SPEED 200.f
 
 enum ButtonState
 {
@@ -120,7 +120,8 @@ enum PlayerStates
 enum TileType
 {
     eDefault = 0,
-    eDamaging
+    eInteracting,
+    eDoodad
 };
 
 #endif // DEFINITIONS_H
