@@ -31,6 +31,11 @@ const sf::Vector2f& Tile::GetPosition() const
     return m_Shape.getPosition();
 }
 
+const sf::FloatRect Tile::GetGlobalBounds() const
+{
+    return m_Shape.getGlobalBounds();
+}
+
 const std::string Tile::GetAsString() const
 {
     std::stringstream ss;

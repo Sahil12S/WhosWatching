@@ -297,10 +297,34 @@ void TileMap::UpdateCollision( Entity* entity )
     {
         for ( size_t y = fromY; y < toY; y++ )
         {
+            sf::FloatRect playerBounds = entity->GetGlobalBounds();
+            sf::FloatRect wallBounds = m_Map[x][y][layer]->GetGlobalBounds();
+
             if(  m_Map[x][y][layer]->GetCollision() && m_Map[x][y][layer]->Intersects( entity->GetGlobalBounds()) )
             {
+                // std::cout << "COLLISION!" << std::endl;
                 // Bottom Collision
-                std::cout << "COLLISION!" << std::endl;
+                if ( 
+                    playerBounds.top < wallBounds.top &&
+                    playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height &&
+                    playerBounds.left < wallBounds.left + wallBounds.width &&
+                    playerBounds.left + playerBounds.width > wallBounds.left 
+                )
+                {
+                    entity->StopVelocityY();
+                    entity->SetPosition(playerBounds.left, wallBounds.top - playerBounds.height );
+                }
+                // Top collision
+                else if ( 
+                    playerBounds.top > wallBounds.top &&
+                    playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height &&
+                    playerBounds.left < wallBounds.left + wallBounds.width &&
+                    playerBounds.left + playerBounds.width > wallBounds.left 
+                )
+                {
+                    entity->StopVelocityY();
+                    entity->SetPosition(playerBounds.left, wallBounds.top + wallBounds.height );
+                }
             }
         }
     }

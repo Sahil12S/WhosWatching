@@ -242,6 +242,7 @@ void GameState::Draw()
     m_Map->Draw( m_Data->window, m_Player );
 
     m_Player->Draw( m_Data->window );
+    m_Data->window.draw( m_CursorText );
 
     if ( m_Paused )
     {
@@ -249,7 +250,6 @@ void GameState::Draw()
         m_PauseMenu->Draw( m_Data->window );
     }
 
-    m_Data->window.draw( m_CursorText );
 
     m_Data->window.display();
 

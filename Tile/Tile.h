@@ -24,6 +24,7 @@ public:
     // Return tile properties as string
     const bool GetCollision() const;
     const sf::Vector2f& GetPosition() const;
+    const sf::FloatRect GetGlobalBounds() const;
     const std::string GetAsString() const;
 
     const bool Intersects( const sf::FloatRect bounds ) const;
