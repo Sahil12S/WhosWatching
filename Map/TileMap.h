@@ -31,6 +31,7 @@ private:
 
     // Store tiles that we want to render later
     std::stack<Tile*> deferredRenderStack;
+    std::stack<Tile*> interactiveRenderStack;
 
     // Culling
     int fromX;
@@ -48,7 +49,9 @@ public:
     virtual ~TileMap();
     
     const std::string GetTileSheet() const;
-    const int GetLayerSize( const int& x, const int& y, const int& layer ) const;
+    int GetLayerSize( const int& x, const int& y, const int& layer ) const;
+    bool TileEmpty( const int& x, const int& y, const int& z ) const;
+    bool TileInteractive( Entity* entity );
 
     void AddTile( const int& x, const int& y, const int& z, const sf::IntRect& texture_rect, const bool& collision, const short& type );
     // Remove tile from map
@@ -58,6 +61,8 @@ public:
     // Load map from a text file
     void LoadFromFile( const std::string file_name );
 
+    void Hide( Entity* entity );
+
     void UpdateCollision( Entity* entity, const float& dt );
 
     void Update();
@@ -65,6 +70,8 @@ public:
     // We can render using position rather than player
     void Draw( sf::RenderTarget& target, const sf::Vector2i& gridPosition );
     void RenderDeferred( sf::RenderTarget& target );
+    void RenderInteractive( sf::RenderTarget& target );
+    // void ( sf::RenderTarget& target );
 
 };
 

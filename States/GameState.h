@@ -24,7 +24,7 @@ private:
     std::map<std::string, int> m_KeyBinds;
 
     Player* m_Player;
-    TileMap* m_Map;
+    TileMap* m_TileMap;
     PauseMenu* m_PauseMenu;
 
     sf::Sprite m_BackgroundSprite;

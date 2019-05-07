@@ -15,6 +15,7 @@ Tile::Tile( GameDataRef data, unsigned grid_x, unsigned grid_y, float gridSizeF,
 
     m_Type = type;
     m_Collision = collision;
+    m_Hidden = false;
 }
 
 Tile::~Tile()
@@ -48,9 +49,20 @@ const std::string Tile::GetAsString() const
     return ss.str();
 }
 
+bool Tile::Hidden() const
+{
+    return m_Hidden;
+}
+
 const bool Tile::Intersects( const sf::FloatRect bounds ) const
 {
     return m_Shape.getGlobalBounds().intersects( bounds );
+}
+
+void Tile::Hide()
+{
+    m_Hidden = true;
+    m_Collision = false;
 }
 
 void Tile::Update()

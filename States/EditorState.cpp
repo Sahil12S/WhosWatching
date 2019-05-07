@@ -10,6 +10,7 @@ void EditorState::InitVariables()
     m_Collision = false;
     m_Type = TileType::eDefault;
     m_Layer = 0;
+    m_TileAddLock = false;
 }
 
 void EditorState::InitView()
@@ -185,14 +186,31 @@ void EditorState::HandleInput( float dt )
             --m_Type;
         }
 
-        // Add texture
+        // Set lock on / off
+        if ( sf::Keyboard::isKeyPressed( ( sf::Keyboard::Key( m_KeyBinds["TOGGLE_TILE_LOCK"] ) ) ) && m_Data->input.GetKeyTime() )
+        {
+            m_TileAddLock = !m_TileAddLock;
+        }
+
+        // Add tile to map
         if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) && m_Data->input.GetKeyTime() )
         {
             if ( !m_SideBar.getGlobalBounds().contains( sf::Vector2f( m_Data->input.GetWindowMousePosition() ) ) )
             {
                 if ( !m_TS->GetActive() )
                 {
-                    m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_TextureRect, m_Collision, m_Type );
+                    if( m_TileAddLock )
+                    {
+                        if ( m_TileMap->TileEmpty( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0 ) )
+                        {
+                            m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_TextureRect, m_Collision, m_Type );
+                        }
+                    }
+                    else
+                    {
+                        m_TileMap->AddTile( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, 0, m_TextureRect, m_Collision, m_Type );
+                    }
+                    
                 }
                 else
                 {
@@ -200,7 +218,7 @@ void EditorState::HandleInput( float dt )
                 }
             }
         }
-        // Remove texture
+        // Remove tile to map
         else if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) && m_Data->input.GetKeyTime() )
         {
             if ( !m_SideBar.getGlobalBounds().contains( sf::Vector2f( m_Data->input.GetWindowMousePosition() ) ) )
@@ -232,7 +250,8 @@ void EditorState::UpdateGui( const float& dt )
         "TexRect: " << m_TextureRect.left << " " << m_TextureRect.top << '\n' << 
         "Collision: " << m_Collision << '\n' <<
         "Type: " << m_Type << '\n' <<
-        "Tiles: " << m_TileMap->GetLayerSize( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, m_Layer );
+        "Tiles: " << m_TileMap->GetLayerSize( m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y, m_Layer ) << '\n' <<
+        "TileAddLock: " << m_TileAddLock;
 
     m_CursorText.setString( ss.str() );
     m_CursorText.setPosition( m_Data->input.GetViewMousePosition().x + 20, m_Data->input.GetViewMousePosition().y );

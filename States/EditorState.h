@@ -32,6 +32,7 @@ private:
     bool m_Collision;
     short m_Type;
     int m_Layer;
+    bool m_TileAddLock;
 
     sf::RectangleShape m_SelectorRect;
     sf::RectangleShape m_SideBar;

@@ -79,8 +79,8 @@ void GameState::InitComponents()
 void GameState::InitTileMap()
 {
     // m_Map = new TileMap( m_Data, "myMap.txt" );
-    m_Map = new TileMap( m_Data, 15, 15, TILES_TEXTURE_FILEPATH );
-    m_Map->LoadFromFile("myMap.txt");
+    m_TileMap = new TileMap( m_Data, 15, 15, TILES_TEXTURE_FILEPATH );
+    m_TileMap->LoadFromFile("myMap.txt");
 }
 
 void GameState::InitPlayers()
@@ -99,7 +99,7 @@ GameState::~GameState()
 {
     Debug( "[DEBUG] Destructor of Game state")
     delete m_Player;
-    delete m_Map;
+    delete m_TileMap;
     delete m_PauseMenu;
 }
 void GameState::Init()
@@ -186,20 +186,24 @@ void GameState::HandleInput( float dt )
         // Attack ( Enter )
         if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["ATTACK"] ) ) )
         {
-            m_Player->Attack();
+            // std::cout <<"Attack pressed" << '\n';
+            if( m_TileMap->TileInteractive( m_Player ) )
+            {
+                std::cout << "Interactive Tile" << '\n';
+                // Open a callout box
+                m_TileMap->Hide( m_Player );
+            }
         }
 
     }
-    
 
-    // Interact ( Use Space )
 
 }
 
 void GameState::UpdateTileMap( const float& dt )
 {
-    m_Map->Update();
-    m_Map->UpdateCollision( m_Player, dt );
+    m_TileMap->Update();
+    m_TileMap->UpdateCollision( m_Player, dt );
 }
 
 void GameState::UpdatePauseMenuButtons( )
@@ -252,10 +256,10 @@ void GameState::Draw()
     m_Data->window.clear();
 
     m_Data->window.setView( m_View );
-    m_Map->Draw( m_Data->window, m_Player->GetGridPosition( static_cast<int>( GRID_SIZE ) ) );
+    m_TileMap->Draw( m_Data->window, m_Player->GetGridPosition( static_cast<int>( GRID_SIZE ) ) );
 
     m_Player->Draw( m_Data->window );
-    m_Map->RenderDeferred( m_Data->window );
+    m_TileMap->RenderDeferred( m_Data->window );
 
     m_Data->window.draw( m_CursorText );
     

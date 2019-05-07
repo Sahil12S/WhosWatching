@@ -95,7 +95,7 @@ const std::string TileMap::GetTileSheet() const
     return "Tiles";
 }
 
-const int TileMap::GetLayerSize( const int& x, const int& y, const int& layer ) const
+int TileMap::GetLayerSize( const int& x, const int& y, const int& layer ) const
 {
     if ( x >= 0 && x < m_Map.size() )
     {
@@ -108,6 +108,18 @@ const int TileMap::GetLayerSize( const int& x, const int& y, const int& layer ) 
         }
     }
     return -1;
+}
+
+bool TileMap::TileEmpty( const int& x, const int& y, const int& z ) const
+{
+    if ( x < m_MaxSizeWorldGrid.x && x >= 0 &&
+        y < m_MaxSizeWorldGrid.y && y >= 0 &&
+        z < m_Layers && z >= 0 
+        )
+    {
+        return m_Map[x][y][z].empty();
+    }
+    throw( "ERROR::TILEMAP::TILEMPTY::TRYING TO ACCESS OUT OF BOUNDS TILE");
 }
 
 void TileMap::AddTile( const int& x, const int& y, const int& z, const sf::IntRect& texture_rect, const bool& collision, const short& type )
@@ -272,6 +284,128 @@ void TileMap::LoadFromFile( const std::string file_name )
 
     in_file.close();
  
+}
+
+
+bool TileMap::TileInteractive( Entity* entity )
+{
+    int layer = 0;
+
+    fromX = entity->GetGridPosition( m_GridSizeI ).x - 1;
+    if( fromX < 0 )
+    {
+        fromX = 0;
+    }
+    else if ( fromX > m_MaxSizeWorldGrid.x )
+    {
+        fromX = m_MaxSizeWorldGrid.x;
+    }
+
+    toX = entity->GetGridPosition( m_GridSizeI ).x + 1;
+    if( toX < 0 )
+    {
+        toX = 0;
+    }
+    else if ( toX > m_MaxSizeWorldGrid.x )
+    {
+        toX = m_MaxSizeWorldGrid.x;
+    }
+
+    fromY = entity->GetGridPosition( m_GridSizeI ).y - 1;
+    if( fromY < 0 )
+    {
+        fromY = 0;
+    }
+    else if ( fromY > m_MaxSizeWorldGrid.y )
+    {
+        fromY = m_MaxSizeWorldGrid.y;
+    }
+
+    toY = entity->GetGridPosition( m_GridSizeI ).y + 1;
+    if( toY < 0 )
+    {
+        toY = 0;
+    }
+    else if ( toY > m_MaxSizeWorldGrid.y )
+    {
+        toY = m_MaxSizeWorldGrid.y;
+    }
+
+    for ( int x = fromX; x <= toX; x++ )
+    {
+        for ( int y = fromY; y <= toY; y++ )
+        {
+            for (size_t k = 0; k < m_Map[x][y][layer].size(); k++)
+            {
+                if( m_Map[x][y][layer][k]->getType() == TileType::eInteractive )
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+void TileMap::Hide( Entity* entity )
+{
+    int layer = 0;
+
+    fromX = entity->GetGridPosition( m_GridSizeI ).x - 1;
+    if( fromX < 0 )
+    {
+        fromX = 0;
+    }
+    else if ( fromX > m_MaxSizeWorldGrid.x )
+    {
+        fromX = m_MaxSizeWorldGrid.x;
+    }
+
+    toX = entity->GetGridPosition( m_GridSizeI ).x + 1;
+    if( toX < 0 )
+    {
+        toX = 0;
+    }
+    else if ( toX > m_MaxSizeWorldGrid.x )
+    {
+        toX = m_MaxSizeWorldGrid.x;
+    }
+
+    fromY = entity->GetGridPosition( m_GridSizeI ).y - 1;
+    if( fromY < 0 )
+    {
+        fromY = 0;
+    }
+    else if ( fromY > m_MaxSizeWorldGrid.y )
+    {
+        fromY = m_MaxSizeWorldGrid.y;
+    }
+
+    toY = entity->GetGridPosition( m_GridSizeI ).y + 1;
+    if( toY < 0 )
+    {
+        toY = 0;
+    }
+    else if ( toY > m_MaxSizeWorldGrid.y )
+    {
+        toY = m_MaxSizeWorldGrid.y;
+    }
+
+    // std::cout << fromX << ", " << toX << ", " << fromY << ", " << toY << '\n';
+
+    for ( int x = fromX; x <= toX; x++ )
+    {
+        for ( int y = fromY; y <= toY; y++ )
+        {
+            for (size_t k = 0; k < m_Map[x][y][layer].size(); k++)
+            {
+                if( m_Map[x][y][layer][k]->getType() == TileType::eInteractive )
+                {
+                    m_Map[x][y][layer][k]->Hide();
+                }
+            }
+        }
+    }
 }
 
 void TileMap::UpdateCollision( Entity* entity, const float& dt  )
@@ -468,7 +602,7 @@ void TileMap::Draw( sf::RenderTarget& target, const sf::Vector2i& gridPosition )
                     // something
                     deferredRenderStack.push( m_Map[x][y][layer][k] );
                 }
-                else
+                else if( !m_Map[x][y][layer][k]->Hidden() )
                 {
                     // render
                     m_Map[x][y][layer][k]->Draw( target );

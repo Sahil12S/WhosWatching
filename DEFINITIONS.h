@@ -120,8 +120,9 @@ enum PlayerStates
 enum TileType
 {
     eDefault = 0,
-    eInteracting,
-    eDoodad
+    eInteractive,
+    eDoodad,
+    eCallout
 };
 
 #endif // DEFINITIONS_H

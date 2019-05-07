@@ -13,6 +13,7 @@ protected:
     sf::RectangleShape m_Shape;
     short m_Type;
     bool m_Collision;
+    bool m_Hidden;
 
 public:
     // Tile( GameDataRef data );
@@ -24,12 +25,14 @@ public:
     // Return tile properties as string
     const short& getType() const;
     const bool GetCollision() const;
+    bool Hidden() const;
     const sf::Vector2f& GetPosition() const;
     const sf::FloatRect GetGlobalBounds() const;
     const std::string GetAsString() const;
 
     const bool Intersects( const sf::FloatRect bounds ) const;
 
+    void Hide();
     void Update();
     void Draw( sf::RenderTarget& target );
 };
