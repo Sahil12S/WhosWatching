@@ -1,0 +1,21 @@
+Today's world has gone rogue!!\nNothing is safe from hackers.\nAnd at this time your friend decided to\nlaunch a website. Hurry!!\nHelp your friend make right decision\nbefore its too late.
+We should ask user to create longer\npasswords with special characters.
+1
+Two factor authentication is just a waste of time.
+0
+We will require SSL Certificates.
+1
+We require encryption for\nuser's credit card information. 
+1
+We do not need alerts for activities.
+0
+We require layering security with Firewall\nthat reduces SQL injection and XSS attacks
+1
+We do not need DoS protection.
+0
+We should perfrom PCI scans annually.
+0
+We should monitor our servers for viruses and malware.
+1
+We do not need to keep installing\npatches once website is released.
+0

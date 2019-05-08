@@ -3,7 +3,7 @@
 
 AttributeComponent::AttributeComponent()
 {
-    timer = 20.f;
+    timer = MAX_GAME_TIME;
     points = 0;
 }
 
@@ -15,10 +15,10 @@ AttributeComponent::~AttributeComponent()
 void AttributeComponent::UpdatePoints()
 {
     points++;
-    timer += 5.f;
-    if( timer >= 20.f )
+    timer += BONUS_TIME;
+    if( timer >= MAX_GAME_TIME )
     {
-        timer = 20.f;
+        timer = MAX_GAME_TIME;
     }
 }
 

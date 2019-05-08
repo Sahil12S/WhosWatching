@@ -2,6 +2,7 @@
 #define ATTRIBUTE_COMPONENT_H
 
 #include "../pch.cpp"
+#include "../DEFINITIONS.h"
 
 class AttributeComponent
 {

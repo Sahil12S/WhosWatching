@@ -51,7 +51,7 @@ public:
     const std::string GetTileSheet() const;
     int GetLayerSize( const int& x, const int& y, const int& layer ) const;
     bool TileEmpty( const int& x, const int& y, const int& z ) const;
-    bool TileInteractive( Entity* entity );
+    bool TileInteractive( Entity* entity, const int& mousePosX, const int& mousePosY );
 
     void AddTile( const int& x, const int& y, const int& z, const sf::IntRect& texture_rect, const bool& collision, const short& type );
     // Remove tile from map

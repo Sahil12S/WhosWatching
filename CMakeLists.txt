@@ -15,6 +15,7 @@ Engine_Managers/StateMachine.cpp Engine_Managers/InputManager.cpp
 Engine_Managers/AssetManager.cpp Engine_Managers/GraphicsSettings.cpp 
 States/SplashState.cpp States/MainMenuState.cpp States/PauseMenu.cpp 
 States/GameState.cpp States/GameSettingsState.cpp States/EditorState.cpp 
+States/GameOverMenu.cpp
 Entities/Entity.cpp Entities/Player.cpp 
 Game_Components/HUD.cpp Game_Components/Button.cpp Game_Components/MovementComponent.cpp 
 Game_Components/AnimationComponent.cpp Game_Components/HitboxComponent.cpp 

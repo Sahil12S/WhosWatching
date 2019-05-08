@@ -35,6 +35,9 @@
 #define PAUSE_STATE_KEY_BIND_FILEPATH "../Config/KeyBindings/PauseStateKeyBinds.ini"
 #define EDITOR_STATE_KEY_BIND_FILEPATH "../Config/KeyBindings/EditorStateKeyBinds.ini"
 
+#define QUESTIONS_FILEATH "../Resources/inputFiles/questions.txt"
+#define MESSAGES_FILEATH "../Resources/inputFiles/messages.txt"
+
 // Tile variables
 #define TITLE_SIZE 80
 #define SCALE_X 2.f
@@ -125,5 +128,10 @@ enum TileType
     eDoodad,
     eCallout
 };
+
+// Game play variables
+#define MAX_GAME_TIME 20.f
+#define BONUS_TIME 3.f
+#define SCORE_TO_WIN 10
 
 #endif // DEFINITIONS_H

@@ -169,5 +169,5 @@ void Player::Draw( sf::RenderTarget& target )
 {
     target.draw( m_Sprite );
 
-    m_HC->Draw( target );
+    // m_HC->Draw( target );
 }

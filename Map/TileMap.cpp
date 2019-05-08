@@ -286,9 +286,9 @@ void TileMap::LoadFromFile( const std::string file_name )
  
 }
 
-
-bool TileMap::TileInteractive( Entity* entity )
+bool TileMap::TileInteractive( Entity* entity, const int& mousePosX, const int& mousePosY )
 {
+    // std::cout << "cliked on " << mousePosX << ", " << mousePosY << '\n';
     int layer = 0;
 
     fromX = entity->GetGridPosition( m_GridSizeI ).x - 1;
@@ -296,9 +296,9 @@ bool TileMap::TileInteractive( Entity* entity )
     {
         fromX = 0;
     }
-    else if ( fromX > m_MaxSizeWorldGrid.x )
+    else if ( fromX >= m_MaxSizeWorldGrid.x )
     {
-        fromX = m_MaxSizeWorldGrid.x;
+        fromX = m_MaxSizeWorldGrid.x - 1;
     }
 
     toX = entity->GetGridPosition( m_GridSizeI ).x + 1;
@@ -306,19 +306,18 @@ bool TileMap::TileInteractive( Entity* entity )
     {
         toX = 0;
     }
-    else if ( toX > m_MaxSizeWorldGrid.x )
+    else if ( toX >= m_MaxSizeWorldGrid.x )
     {
-        toX = m_MaxSizeWorldGrid.x;
+        toX = m_MaxSizeWorldGrid.x - 1;
     }
-
     fromY = entity->GetGridPosition( m_GridSizeI ).y - 1;
     if( fromY < 0 )
     {
         fromY = 0;
     }
-    else if ( fromY > m_MaxSizeWorldGrid.y )
+    else if ( fromY >= m_MaxSizeWorldGrid.y )
     {
-        fromY = m_MaxSizeWorldGrid.y;
+        fromY = m_MaxSizeWorldGrid.y - 1;
     }
 
     toY = entity->GetGridPosition( m_GridSizeI ).y + 1;
@@ -326,24 +325,32 @@ bool TileMap::TileInteractive( Entity* entity )
     {
         toY = 0;
     }
-    else if ( toY > m_MaxSizeWorldGrid.y )
+    else if ( toY >= m_MaxSizeWorldGrid.y )
     {
-        toY = m_MaxSizeWorldGrid.y;
+        toY = m_MaxSizeWorldGrid.y - 1;
     }
 
+    // std::cout << "from Y pos: " << fromY << "to Y pos: " << toY << '\n';
     for ( int x = fromX; x <= toX; x++ )
     {
         for ( int y = fromY; y <= toY; y++ )
         {
+            // std::cout << "k: " << m_Map[x][y][layer].size() <<  '\n';
             for (size_t k = 0; k < m_Map[x][y][layer].size(); k++)
             {
+                // std::cout << "X pos: " << x << " Y pos: " << y << " k pos: " << k << '\n';
                 if( m_Map[x][y][layer][k]->getType() == TileType::eInteractive )
                 {
-                    return true;
+                    if( x == mousePosX && y == mousePosY )
+                    {
+                        // std::cout << "returning True" << '\n';
+                        return true;
+                    }
                 }
             }
         }
     }
+    // std::cout << "returning false" << '\n';
     return false;
 }
 
@@ -356,9 +363,9 @@ void TileMap::Hide( Entity* entity )
     {
         fromX = 0;
     }
-    else if ( fromX > m_MaxSizeWorldGrid.x )
+    else if ( fromX >= m_MaxSizeWorldGrid.x )
     {
-        fromX = m_MaxSizeWorldGrid.x;
+        fromX = m_MaxSizeWorldGrid.x - 1;
     }
 
     toX = entity->GetGridPosition( m_GridSizeI ).x + 1;
@@ -366,9 +373,9 @@ void TileMap::Hide( Entity* entity )
     {
         toX = 0;
     }
-    else if ( toX > m_MaxSizeWorldGrid.x )
+    else if ( toX >= m_MaxSizeWorldGrid.x )
     {
-        toX = m_MaxSizeWorldGrid.x;
+        toX = m_MaxSizeWorldGrid.x - 1;
     }
 
     fromY = entity->GetGridPosition( m_GridSizeI ).y - 1;
@@ -376,9 +383,9 @@ void TileMap::Hide( Entity* entity )
     {
         fromY = 0;
     }
-    else if ( fromY > m_MaxSizeWorldGrid.y )
+    else if ( fromY >= m_MaxSizeWorldGrid.y )
     {
-        fromY = m_MaxSizeWorldGrid.y;
+        fromY = m_MaxSizeWorldGrid.y - 1;
     }
 
     toY = entity->GetGridPosition( m_GridSizeI ).y + 1;
@@ -386,9 +393,9 @@ void TileMap::Hide( Entity* entity )
     {
         toY = 0;
     }
-    else if ( toY > m_MaxSizeWorldGrid.y )
+    else if ( toY >= m_MaxSizeWorldGrid.y )
     {
-        toY = m_MaxSizeWorldGrid.y;
+        toY = m_MaxSizeWorldGrid.y - 1;
     }
 
     // std::cout << fromX << ", " << toX << ", " << fromY << ", " << toY << '\n';
@@ -608,11 +615,11 @@ void TileMap::Draw( sf::RenderTarget& target, const sf::Vector2i& gridPosition )
                     m_Map[x][y][layer][k]->Draw( target );
                 }
 
-                if( m_Map[x][y][layer][k]->GetCollision() )
-                {
-                    m_CollisionBox.setPosition( m_Map[x][y][layer][k]->GetPosition() );
-                    target.draw( m_CollisionBox );
-                }
+                // if( m_Map[x][y][layer][k]->GetCollision() )
+                // {
+                //     m_CollisionBox.setPosition( m_Map[x][y][layer][k]->GetPosition() );
+                //     target.draw( m_CollisionBox );
+                // }
             }
         }
     }
