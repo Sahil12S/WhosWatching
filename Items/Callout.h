@@ -18,12 +18,24 @@ private:
 
     std::map< std::string, gui::Button* > m_Buttons;
 
+    bool isQuestion;
+
+    void InitVariables();
+    void InitTexture();
+    void InitButtons();
+
 public:
     Callout( GameDataRef data, const std::string& font_name, const std::string& texture_file );
     virtual ~Callout();
 
-    void Update();
-    void Draw( sf::RenderTarget& target, const std::string& text );
+    bool IsButtonPressed( const std::string& key );
+    void AddButton( 
+        const std::string key, 
+        const float y, 
+        const std::string text );
+
+    void Update( const sf::Vector2i& mousePosWindow, const std::string& text );
+    void Draw( sf::RenderTarget& target );
 };
 
 

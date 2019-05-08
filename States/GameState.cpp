@@ -158,8 +158,6 @@ void GameState::HandleInput( float dt )
 
     }
 
-    
-
     if ( sf::Keyboard::isKeyPressed(( sf::Keyboard::Key( m_KeyBinds["QUIT"] ) ) ) && 
                     m_Data->input.GetKeyTime() )
     {
@@ -220,8 +218,6 @@ void GameState::HandleInput( float dt )
         }
 
     }
-
-
 }
 
 void GameState::UpdateTileMap( const float& dt )
@@ -238,6 +234,14 @@ void GameState::UpdatePauseMenuButtons( )
     }
 }
 
+void GameState::UpdateCalloutButtons( const float& dt )
+{
+    if( m_Callout->IsButtonPressed("Close") && m_Data->input.GetKeyTime() )
+    {
+        isCallout = false;
+    }
+}
+
 void GameState::UpdateGui()
 {
     std::stringstream ss;
@@ -251,6 +255,7 @@ void GameState::Update(float dt)
 {
     m_Data->input.UpdateMousePosition( m_Data->window, &m_View );
     m_Data->input.UpdateKeyTime( dt );
+    
     UpdateGui();
 
     if ( !m_Paused )
@@ -261,6 +266,12 @@ void GameState::Update(float dt)
             UpdateTileMap( dt );
             m_Player->Update( dt );
         }
+        else
+        {
+            m_Callout->Update( m_Data->input.GetWindowMousePosition(), "something" );
+            UpdateCalloutButtons( dt );
+        }
+        
 
         int rem_time = static_cast<int>( m_Player->GetRemainingTime() );
         if( rem_time <= 0 )
@@ -296,7 +307,7 @@ void GameState::Draw()
 
     if( isCallout )
     {
-        m_Callout->Draw( m_Data->window, "something" );
+        m_Callout->Draw( m_Data->window );
     }
 
     if ( m_Paused )

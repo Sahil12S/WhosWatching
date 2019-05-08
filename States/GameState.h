@@ -71,6 +71,7 @@ public:
 
     void UpdateTileMap( const float& dt );
     void UpdatePauseMenuButtons();
+    void UpdateCalloutButtons( const float& dt );
     void UpdateGui();
 
     void Update( float dt ) override;
