@@ -71,6 +71,11 @@ void Player::Attack()
     m_IsAttacking = true;
 }
 
+void Player::WinPoints()
+{
+    m_AttComp->UpdatePoints();
+}
+
 void Player::UpdateAnimation(const float &dt)
 {
     if ( m_AttackClock.getElapsedTime().asSeconds() > 1.3f )

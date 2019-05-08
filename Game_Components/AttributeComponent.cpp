@@ -3,7 +3,8 @@
 
 AttributeComponent::AttributeComponent()
 {
-    timer = 30.f;
+    timer = 20.f;
+    points = 0;
 }
 
 AttributeComponent::~AttributeComponent()
@@ -13,8 +14,12 @@ AttributeComponent::~AttributeComponent()
 
 void AttributeComponent::UpdatePoints()
 {
-
+    points++;
     timer += 5.f;
+    if( timer >= 20.f )
+    {
+        timer = 20.f;
+    }
 }
 
 void AttributeComponent::UpdateTime( const float& dt )

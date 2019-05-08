@@ -25,7 +25,12 @@ void GameState::InitView()
 void GameState::InitVariables()
 {
     m_Paused = false;
-    isCallout = false;
+    isCallout = true;
+    question = false;
+    calloutMessage = "Today's world has gone rouge!!\nEveryone's personal items are at risk,\nnothing is safe. Hurry up!!\nSecure your accounts before time runs out.";
+    answer = false;
+    maxScore = 5;
+    
 }
 
 void GameState::InitTextures()
@@ -91,12 +96,31 @@ void GameState::InitPlayers()
     // Initialize player & spawn it
     m_Player = new Player( m_Data );
     // m_Player->SetPosition( m_Data->GfxSettings.resolution.width / 2.f, m_Data->GfxSettings.resolution.height / 2.f );
-    m_Player->SetPosition( 50.f, 150.f );
+    m_Player->SetPosition( 50.f, 300.f );
 }
 
 void GameState::InitCallout()
 {
     m_Callout = new Callout( m_Data, "Hud Font",  "callout" );
+}
+
+void GameState::InitQuestions()
+{
+    std::ifstream in_file;
+    in_file.open("../Resources/questions/questions.txt");
+    std::string line;
+
+    int i = 0;
+
+    while( std::getline( in_file, line ) )
+    {
+        questionMap[i].first = line;
+        std::getline( in_file, line );
+        questionMap[i].second = stoi( line );
+        i++;
+    }
+
+    in_file.close();
 }
 
 GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
@@ -126,6 +150,8 @@ void GameState::Init()
     InitTileMap();
     InitPlayers();
     InitCallout();
+    InitQuestions();
+
     m_CursorText.setFont( m_Data->assets.GetFont( "Debug Font" ) );
     m_CursorText.setFillColor( sf::Color::White );
     m_CursorText.setCharacterSize( 20 );
@@ -164,6 +190,7 @@ void GameState::HandleInput( float dt )
         if( isCallout )
         {
             isCallout = false;
+            question = false;
         }
         else
         {
@@ -205,14 +232,26 @@ void GameState::HandleInput( float dt )
             }
         }
         // Attack ( Enter )
-        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["ATTACK"] ) ) )
+        if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Key( m_KeyBinds["ATTACK"] ) ) && m_Data->input.GetKeyTime() )
         {
+
             // std::cout <<"Attack pressed" << '\n';
-            if( m_TileMap->TileInteractive( m_Player ) )
+            if( m_TileMap->TileInteractive( m_Player ) && !isCallout )
             {
-                std::cout << "Interactive Tile" << '\n';
+                if( questionMap.size() > 0 )
+                {
+                    calloutMessage = questionMap.begin()->second.first;
+                    answer = questionMap.begin()->second.second;
+                    question = true;
+                }
+                else
+                {
+                    question = false;
+                    calloutMessage = "";
+                    answer = false;
+                }
                 // Open a callout box
-                // m_TileMap->Hide( m_Player );
+                
                 isCallout = true;
             }
         }
@@ -239,6 +278,49 @@ void GameState::UpdateCalloutButtons( const float& dt )
     if( m_Callout->IsButtonPressed("Close") && m_Data->input.GetKeyTime() )
     {
         isCallout = false;
+    }
+    
+    if( question )
+    {
+        if ( m_Callout->IsButtonPressed("True") && m_Data->input.GetKeyTime() )
+        {
+            if( answer )
+            {
+                m_Player->WinPoints();
+            }
+            
+            if( !questionMap.empty() )
+            {
+                questionMap.erase( questionMap.begin() );
+            }
+            isCallout = false;
+            question = false;
+            m_TileMap->Hide( m_Player );
+        }
+        else if ( m_Callout->IsButtonPressed("False") && m_Data->input.GetKeyTime() )
+        {
+            if( !answer )
+            {
+                m_Player->WinPoints();
+            }
+            if( !questionMap.empty() )
+            {
+                questionMap.erase( questionMap.begin() );
+            }
+            question = false;
+            isCallout = false;
+            m_TileMap->Hide( m_Player );
+        }
+    }
+
+    if( m_Player->GetScore() >= maxScore )
+    {
+        // Get to game over state
+        calloutMessage = "You succeeded in securing your account";
+        // isCallout = true;
+        // question = false;
+        std::cout << calloutMessage << '\n';
+        m_Paused = true;
     }
 }
 
@@ -268,7 +350,7 @@ void GameState::Update(float dt)
         }
         else
         {
-            m_Callout->Update( m_Data->input.GetWindowMousePosition(), "something" );
+            m_Callout->Update( m_Data->input.GetWindowMousePosition(), calloutMessage );
             UpdateCalloutButtons( dt );
         }
         
@@ -278,7 +360,8 @@ void GameState::Update(float dt)
         {
             m_Paused = true;
         }
-        hud["timer"]->UpdateText( "Remaining Time: " + std::to_string( rem_time  ) );
+        hud["timer"]->UpdateText( "Remaining Time: " + std::to_string( rem_time ) );
+        hud["score"]->UpdateText( "Score: " + std::to_string( m_Player->GetScore() ) );
     }
     else
     {
@@ -307,7 +390,7 @@ void GameState::Draw()
 
     if( isCallout )
     {
-        m_Callout->Draw( m_Data->window );
+        m_Callout->Draw( m_Data->window, question );
     }
 
     if ( m_Paused )

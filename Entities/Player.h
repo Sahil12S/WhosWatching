@@ -42,6 +42,7 @@ public:
 
     /* Functions */
     void Attack();
+    void WinPoints();
 
     void UpdateAnimation( const float& dt );
 

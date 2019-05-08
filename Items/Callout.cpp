@@ -100,13 +100,14 @@ void Callout::Update( const sf::Vector2i& mousePosWindow, const std::string& tex
     }
 }
 
-void Callout::Draw( sf::RenderTarget& target )
+void Callout::Draw( sf::RenderTarget& target, const bool question )
 {
     target.draw( m_Background );
     target.draw( sprite );
     target.draw( m_Text );
     m_Buttons["Close"]->Draw( target );
-    if( isQuestion )
+
+    if( question )
     {
         m_Buttons["True"]->Draw( target );
         m_Buttons["False"]->Draw( target );

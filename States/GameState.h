@@ -35,9 +35,15 @@ private:
 
     bool m_Paused;
     bool isCallout;
-
+    bool question;
+    bool answer;
 
     std::map< std::string, gui::HUD* > hud;
+    std::map< int, std::pair<std::string, bool> > questionMap;
+
+    std::string calloutMessage;
+
+    int maxScore;
 
     /* Functions */
     // Initializers
@@ -53,6 +59,8 @@ private:
     void InitTileMap();
     void InitPlayers();
     void InitCallout();
+
+    void InitQuestions();
 
 
 

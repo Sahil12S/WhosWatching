@@ -35,7 +35,7 @@ public:
         const std::string text );
 
     void Update( const sf::Vector2i& mousePosWindow, const std::string& text );
-    void Draw( sf::RenderTarget& target );
+    void Draw( sf::RenderTarget& target, const bool question );
 };
 
 
