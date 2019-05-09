@@ -51,10 +51,10 @@ void GameOverMenu::InitMessages()
 
     in_file.close();
 
-    for( auto& it : lossMessages )
-    {
-        std::cout << it << '\n';
-    }
+    // for( auto& it : lossMessages )
+    // {
+    //     std::cout << it << '\n';
+    // }
 }
 
 

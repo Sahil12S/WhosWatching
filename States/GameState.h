@@ -41,10 +41,13 @@ private:
     bool question;
     bool answer;
 
+    int idx;
+
     std::map< std::string, gui::HUD* > hud;
-    std::map< int, std::pair<std::string, bool> > questionMap;
+    std::vector< std::pair<std::string, bool> > questionVec;
 
     std::string calloutMessage;
+    std::list< std::string > startMessages;
 
     int maxScore;
 

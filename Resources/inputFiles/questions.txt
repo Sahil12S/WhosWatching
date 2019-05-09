@@ -1,11 +1,12 @@
-Today's world has gone rogue!!\nNothing is safe from hackers.\nAnd at this time your friend decided to\nlaunch a website. Hurry!!\nHelp your friend make right decision\nbefore its too late.
+Today's world has gone rogue!!\nNothing is safe from hackers.\nAnd at this sad time your friend\ndecided to launch a website.\nHurry!! Help your friend make right decision\nbefore its too late.
+Save website from hackers by giving\ncorrect answers to 8 questions.\nFind computers and left click to interact.\nUse W, A, S, D to move around.\nTime is running out!!!!
 We should ask user to create longer\npasswords with special characters.
 1
 Two factor authentication is just a waste of time.
 0
-We will require SSL Certificates.
+We will require SSL Certificate for our website.
 1
-We require encryption for\nuser's credit card information. 
+We should encrypt user's credit card information. 
 1
 We do not need alerts for activities.
 0
@@ -13,7 +14,7 @@ We require layering security with Firewall\nthat reduces SQL injection and XSS a
 1
 We do not need DoS protection.
 0
-We should perfrom PCI scans annually.
+We do not require PCI scans.
 0
 We should monitor our servers for viruses and malware.
 1

@@ -31,6 +31,7 @@ void GameState::InitVariables()
     calloutMessage = "";
     answer = false;
     maxScore = SCORE_TO_WIN;
+    idx = 0;
     
 }
 
@@ -126,32 +127,39 @@ void GameState::InitQuestions()
 {
     std::ifstream in_file;
     in_file.open( QUESTIONS_FILEATH );
-
-    std::getline( in_file, calloutMessage );
-    fix_newlines( calloutMessage );
-    std::cout << calloutMessage << std::endl;
     
     std::string line;
 
-    int i = 0;
+    std::getline( in_file, line );
+    fix_newlines( line );
+    startMessages.emplace_back( line );
+    std::getline( in_file, line );
+    fix_newlines( line );
+    startMessages.emplace_back( line );
 
+    calloutMessage = startMessages.front();
+    startMessages.pop_front();
+    // std::cout << calloutMessage << std::endl;
+    std::pair< std::string, bool > p;
     while( std::getline( in_file, line ) )
     {
+        
         fix_newlines( line );
-        questionMap[i].first = line;
+        p.first = line;
         std::getline( in_file, line );
+        p.second = stoi( line );
+        questionVec.emplace_back( p );
+        // questionVec.back().second = stoi( line );
         
-        questionMap[i].second = stoi( line );
-        
-        i++;
+        // i++;
     }
 
     in_file.close();
 
-    for( auto& it : questionMap )
-    {
-        std::cout << it.second.first << '\n';
-    }
+    // for( auto& it : questionVec )
+    // {
+    //     std::cout << it.second.first << '\n';
+    // }
 }
 
 GameState::GameState( GameDataRef data ) : m_Data( std::move( data ) )
@@ -225,8 +233,14 @@ void GameState::HandleInput( float dt )
         {
             if( isCallout )
             {
-                isCallout = false;
                 question = false;
+                isCallout = false;   
+                if( startMessages.size() > 0 )
+                {
+                    isCallout = true;
+                    calloutMessage = startMessages.front();
+                    startMessages.pop_front();
+                }
             }
             else
             {
@@ -271,10 +285,12 @@ void GameState::HandleInput( float dt )
                 {
                     if( m_TileMap->TileInteractive( m_Player, m_Data->input.GetGridMousePosition().x, m_Data->input.GetGridMousePosition().y ) && !isCallout )
                     {
-                        if( questionMap.size() > 0 )
+                        if( questionVec.size() > 0 )
                         {
-                            calloutMessage = questionMap.begin()->second.first;
-                            answer = questionMap.begin()->second.second;
+                            idx = rand() % questionVec.size();
+                            calloutMessage = questionVec[idx].first;
+                            answer = questionVec[idx].second;
+                            questionVec.erase( questionVec.begin() + idx );
                             question = true;
                         }
                         else
@@ -284,9 +300,9 @@ void GameState::HandleInput( float dt )
                             answer = false;
                         }
                         // Open a callout box
-                        
+                        std::cout << idx << ", " << calloutMessage << '\n';
                         isCallout = true;
-                        std::cout << "Opened Question" << '\n';
+                        // std::cout << "Opened Question" << '\n';
                     }
                 }
             }
@@ -318,12 +334,22 @@ void GameState::UpdateGameOverMenuButtons( )
 
 void GameState::UpdateCalloutButtons( const float& dt )
 {
+    std::cout << isCallout << std::endl;
     if( m_Callout->IsButtonPressed("Close") && m_Data->input.GetKeyTime() )
     {
         isCallout = false;
     }
     
-    if( question )
+    if( !isCallout && startMessages.size() > 0 )
+    {
+        // std::cout << "Tyrue again" << '\n';
+        isCallout = true;
+        calloutMessage = startMessages.front();
+        startMessages.pop_front();
+    }
+
+
+    if( question && startMessages.size() == 0 )
     {
         if ( m_Callout->IsButtonPressed("True") && m_Data->input.GetKeyTime() )
         {
@@ -332,11 +358,6 @@ void GameState::UpdateCalloutButtons( const float& dt )
             {
                 m_Player->WinPoints();
             }            
-            
-            if( !questionMap.empty() )
-            {
-                questionMap.erase( questionMap.begin() );
-            }
             
             isCallout = false;
             question = false;
@@ -348,10 +369,6 @@ void GameState::UpdateCalloutButtons( const float& dt )
             if( !answer )
             {
                 m_Player->WinPoints();
-            }
-            if( !questionMap.empty() )
-            {
-                questionMap.erase( questionMap.begin() );
             }
             question = false;
             isCallout = false;
@@ -395,12 +412,14 @@ void GameState::Update(float dt)
             UpdateView( dt );
             UpdateTileMap( dt );
         }
+
         if( isCallout )
         {
             m_Callout->Update( m_Data->input.GetWindowMousePosition(), calloutMessage );
             UpdateCalloutButtons( dt );
         }
-        else
+
+        if( startMessages.size() == 0 )
         {
             m_Player->Update( dt );
         }
@@ -461,7 +480,7 @@ void GameState::Draw()
     }
 
     m_Data->window.setView( m_View );
-    m_Data->window.draw( m_CursorText );
+    // m_Data->window.draw( m_CursorText );
     
 
     m_Data->window.display();
