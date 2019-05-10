@@ -1,5 +1,6 @@
-Today's world has gone rogue!!\nNothing is safe from hackers.\nAnd at this sad time your friend\ndecided to launch a website.\nHurry!! Help your friend make right decision\nbefore its too late.
-Save website from hackers by giving\ncorrect answers to 8 questions.\nFind computers and left click to interact.\nUse W, A, S, D to move around.\nTime is running out!!!!
+Today's world has gone rogue!!\nNothing is safe from hackers.\nAnd in this sad time your friend\ndecided to launch a website.
+Hurry!! Help your friend make right decision\nbefore its too late.\nSave website from hackers by giving\ncorrect answers to 8 questions.
+Use W, A, S, D to move around.\nFind computers and left click to interact.\nEarn score & time on giving correct answers\nGo and save before its too late.
 We should ask user to create longer\npasswords with special characters.
 1
 Two factor authentication is just a waste of time.
@@ -16,7 +17,7 @@ We do not need DoS protection.
 0
 We do not require PCI scans.
 0
-We should monitor our servers for viruses and malware.
+We should monitor our servers\nfor viruses and malware.
 1
 We do not need to keep installing\npatches once website is released.
 0

@@ -104,7 +104,7 @@ void GameOverMenu::AddButton( const std::string key,
     m_Buttons[key]->CreateButton(  m_Container.getPosition().x + m_Container.getSize().x / 2.f - BUTTON_WIDTH / 2.f,
                                 y, BUTTON_WIDTH, BUTTON_HEIGHT );
 
-    std::vector<sf::Color> textColor = { sf::Color( TEXT_IDLE_FILL_COLOR ),
+    std::vector<sf::Color> textColor = { sf::Color( 255, 224, 53, 200 ),
                                         sf::Color( TEXT_HOVER_FILL_COLOR ),
                                         sf::Color( TEXT_ACTIVE_FILL_COLOR ) };
 
@@ -115,16 +115,16 @@ void GameOverMenu::AddButton( const std::string key,
     m_Buttons[key]->SetButtonProperties( m_Data->assets.GetFont( "Button Font" ), text, BUTTON_TEXT_SIZE, textColor, buttonColor );
 }
 
-void GameOverMenu::SetMessage( bool win )
+void GameOverMenu::SetMessage( bool win, const std::string& s )
 {
     std::string msg;
     if ( win )
     {
-        msg = "Congrats!! You saved it.";
+        msg = "Congrats!! You saved it.\n\nYour score: " + s;
     }
     else
     {
-        msg = lossMessages[ rand() % lossMessages.size() ];
+        msg = lossMessages[ rand() % lossMessages.size() ] + "\n\nYour score: " + s;
     }
     message->SetText( "Hud Font",  msg,
         35.f, ( m_Container.getPosition().x + m_Container.getSize().x / 2.f ),

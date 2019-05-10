@@ -47,7 +47,7 @@ public:
                 const float y, 
                 const std::string text );
 
-    void SetMessage( bool win );
+    void SetMessage( bool win, const std::string& s );
 
     void Update( const sf::Vector2i& mousePosWindow );
 

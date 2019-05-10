@@ -87,9 +87,9 @@ void GameState::InitGameOverMenu()
 void GameState::InitComponents()
 {
     hud["timer"] = new gui::HUD( m_Data );
-    hud["timer"]->SetText("Hud Font", "Remaining Time: 0", 30, m_Data->GfxSettings.resolution.width / 6, m_Data->GfxSettings.resolution.height / 25 );
+    hud["timer"]->SetText("Hud Font", "Remaining Time: 0", 50, m_Data->GfxSettings.resolution.width / 6, m_Data->GfxSettings.resolution.height / 25 );
     hud["score"] = new gui::HUD( m_Data );
-    hud["score"]->SetText("Hud Font", "Score: 0", 30, m_Data->GfxSettings.resolution.width / 1.2, m_Data->GfxSettings.resolution.height / 25 );
+    hud["score"]->SetText("Hud Font", "Score: 0", 50, m_Data->GfxSettings.resolution.width / 1.2, m_Data->GfxSettings.resolution.height / 25 );
 }
 
 void GameState::InitTileMap()
@@ -120,7 +120,7 @@ void GameState::fix_newlines( std::string& s )
          s.replace(start_pos, 2, "\n");
          start_pos += 1;
     }
-    std::cout << "=> " << s << '\n';
+    // std::cout << "=> " << s << '\n';
 }
 
 void GameState::InitQuestions()
@@ -130,6 +130,9 @@ void GameState::InitQuestions()
     
     std::string line;
 
+    std::getline( in_file, line );
+    fix_newlines( line );
+    startMessages.emplace_back( line );
     std::getline( in_file, line );
     fix_newlines( line );
     startMessages.emplace_back( line );
@@ -385,7 +388,7 @@ void GameState::UpdateCalloutButtons( const float& dt )
         // question = false;
         std::cout << calloutMessage << '\n';
         m_GameOver = true;
-        m_GOMenu->SetMessage( true );
+        m_GOMenu->SetMessage( true, std::to_string( m_Player->GetScore() ) );
     }
 }
 
@@ -430,7 +433,7 @@ void GameState::Update(float dt)
         if( rem_time <= 0 )
         {
             m_GameOver = true;
-            m_GOMenu->SetMessage( false );
+            m_GOMenu->SetMessage( false, std::to_string( m_Player->GetScore() ) );
         }
         hud["timer"]->UpdateText( "Remaining Time: " + std::to_string( rem_time ) );
         hud["score"]->UpdateText( "Score: " + std::to_string( m_Player->GetScore() ) );
@@ -459,7 +462,7 @@ void GameState::Draw()
     m_Player->Draw( m_Data->window );
     m_TileMap->RenderDeferred( m_Data->window );
 
-    m_Data->window.draw( m_CursorText );
+    // m_Data->window.draw( m_CursorText );
     
     m_Data->window.setView( m_Data->window.getDefaultView() );
     hud["timer"]->Draw( m_Data->window );

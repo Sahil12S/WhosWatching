@@ -58,7 +58,7 @@ void PauseMenu::AddButton( const std::string key,
     m_Buttons[key]->CreateButton(  m_Container.getPosition().x + m_Container.getSize().x / 2.f - BUTTON_WIDTH / 2.f,
                                 y, BUTTON_WIDTH, BUTTON_HEIGHT );
 
-    std::vector<sf::Color> textColor = { sf::Color( TEXT_IDLE_FILL_COLOR ),
+    std::vector<sf::Color> textColor = { sf::Color( 255, 224, 53, 200 ),
                                         sf::Color( TEXT_HOVER_FILL_COLOR ),
                                         sf::Color( TEXT_ACTIVE_FILL_COLOR ) };
 

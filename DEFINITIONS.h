@@ -130,8 +130,8 @@ enum TileType
 };
 
 // Game play variables
-#define MAX_GAME_TIME 30.f
+#define MAX_GAME_TIME 35.f
 #define BONUS_TIME 5.f
-#define SCORE_TO_WIN 10
+#define SCORE_TO_WIN 8
 
 #endif // DEFINITIONS_H
